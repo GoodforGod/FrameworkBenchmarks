@@ -10,7 +10,6 @@ import ru.tinkoff.kora.http.common.body.HttpBody;
 import ru.tinkoff.kora.http.server.common.HttpServerResponse;
 import ru.tinkoff.kora.http.server.common.handler.HttpServerResponseMapper;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 @Module
@@ -20,12 +19,11 @@ public interface JteModule {
 
     default HttpServerResponseMapper<List<Fortune>> jteListHttpServerResponseMapper() {
         return (ctx, request, result) -> {
-            var out = new Utf8ByteOutput();
-            HtmlTemplateOutput _output = new OwaspHtmlTemplateOutput(out);
-            JtefortunesGenerated.render(_output, null, result);
-            var buf = ByteBuffer.allocate(out.getContentLength());
-            out.writeTo(buf::put);
-            return HttpServerResponse.of(200, HttpBody.of(CONTENT_TYPE, buf.flip()));
+            var out = new Utf8ByteOutput(64);
+            HtmlTemplateOutput template = new OwaspHtmlTemplateOutput(out);
+            JtefortunesGenerated.render(template, null, result);
+            var response = out.toByteArray();
+            return HttpServerResponse.of(200, HttpBody.of(CONTENT_TYPE, response));
         };
     }
 }
