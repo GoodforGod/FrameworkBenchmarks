@@ -51,37 +51,31 @@ class BenchmarksController(
     @HttpRoute(method = HttpMethod.GET, path = "/queries")
     suspend fun queries(@Nullable @Query("queries") queries: String?): List<World> {
         val count = QueryUtils.parseCount(queries)
-        val ids = HashSet<Int>(count)
-        repeat(count) {
-            val nextId = QueryUtils.randomWorld()
-            if (!ids.add(nextId)) {
-                QueryUtils.addNextRandomWorld(ids, nextId)
-            }
+        val worlds: MutableList<World> = ArrayList(count)
+        for (i in 0 until count) {
+            val id = QueryUtils.randomWorld()
+            val world = repository.findById(id)
+            worlds.add(world)
         }
-        return repository.findById(ids as Collection<Int>)
+
+        return worlds
     }
 
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/updates")
     suspend fun updates(@Nullable @Query("queries") queries: String?): List<World> {
         val count = QueryUtils.parseCount(queries)
-        val ids = HashSet<Int>(count)
-        repeat(count) {
-            val nextId = QueryUtils.randomWorld()
-            if (!ids.add(nextId)) {
-                QueryUtils.addNextRandomWorld(ids, nextId)
-            }
-        }
+        val worlds: MutableList<World> = ArrayList(count)
 
-        val worlds = repository.findById(ids).toMutableList().apply {
-            for (i in indices) {
-                val oldWorld = this[i]
-                this[i] = World(oldWorld.id, QueryUtils.randomWorld())
-            }
+        for (i in 0 until count) {
+            val id = QueryUtils.randomWorld()
+            val oldWorld = repository.findById(id)
+            val newWorld = World(oldWorld.id, QueryUtils.randomWorld())
+            worlds.add(newWorld)
         }
-        repository.update(worlds)
 
         worlds.sortWith(WORLD_COMPARATOR)
+        repository.update(worlds)
         return worlds
     }
 

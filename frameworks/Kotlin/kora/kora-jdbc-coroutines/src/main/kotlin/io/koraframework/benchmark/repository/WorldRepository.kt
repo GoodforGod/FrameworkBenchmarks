@@ -13,9 +13,6 @@ interface WorldRepository : JdbcRepository {
     @Query("SELECT id, randomnumber FROM world WHERE id = :id")
     suspend fun findById(id: Int): World
 
-    @Query("SELECT id, randomnumber FROM world WHERE id = ANY(:ids)")
-    suspend fun findById(ids: Collection<Int>): List<World>
-
     @Query("UPDATE world SET randomnumber = :world.randomNumber WHERE id = :world.id")
     suspend fun update(@Batch world: List<World>)
 

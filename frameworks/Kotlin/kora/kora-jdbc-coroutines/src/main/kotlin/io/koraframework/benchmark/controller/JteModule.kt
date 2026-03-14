@@ -1,7 +1,6 @@
 package io.koraframework.benchmark.controller
 
 import gg.jte.generated.precompiled.JtefortunesGenerated
-import gg.jte.html.HtmlTemplateOutput
 import gg.jte.html.OwaspHtmlTemplateOutput
 import gg.jte.output.Utf8ByteOutput
 import io.koraframework.benchmark.model.Fortune

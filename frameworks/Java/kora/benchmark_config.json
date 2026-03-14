@@ -3,7 +3,7 @@
   "maintainers": ["GoodforGod", "Squiry"],
   "tests": [
     {
-      "jdbc": {
+      "default": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -23,32 +23,6 @@
         "os": "Linux",
         "database_os": "Linux",
         "display_name": "kora-jdbc",
-        "notes": "",
-        "versus": "undertow",
-        "tags": []
-      }
-    },
-    {
-      "jdbc-direct": {
-        "json_url": "/json",
-        "plaintext_url": "/plaintext",
-        "db_url": "/db",
-        "query_url": "/queries?queries=",
-        "fortune_url": "/fortunes",
-        "update_url": "/updates?queries=",
-        "port": 8080,
-        "approach": "Realistic",
-        "classification": "Fullstack",
-        "database": "Postgres",
-        "framework": "Kora",
-        "language": "Java",
-        "flavor": "None",
-        "orm": "Micro",
-        "platform": "Kora",
-        "webserver": "Undertow",
-        "os": "Linux",
-        "database_os": "Linux",
-        "display_name": "kora-jdbc-direct",
         "notes": "",
         "versus": "undertow",
         "tags": []

@@ -2,9 +2,9 @@ FROM maven:3.8.6-openjdk-18 as maven
 WORKDIR /undertow
 COPY pom.xml .
 COPY src src
-RUN mvn package -q
+RUN mvn package -B
 
-FROM openjdk:18
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /undertow
 COPY --from=maven /undertow/target/lib lib
 COPY --from=maven /undertow/target/app.jar .

@@ -1,10 +1,10 @@
-FROM gradle:9.4.0-jdk25 AS builder
+FROM gradle:9.4.0-jdk21 AS builder
 
 COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN chmod +x ./gradlew && ./gradlew kora-jdbc:distTar --no-daemon
+RUN chmod +x ./gradlew && ./gradlew kora-jdbc-coroutines:distTar --no-daemon
 
 FROM eclipse-temurin:25-jre-jammy AS runner
 
@@ -16,10 +16,11 @@ ENV POSTGRES_JDBC_URL="jdbc:postgresql://tfb-database:5432/hello_world"
 ENV POSTGRES_USER="benchmarkdbuser"
 ENV POSTGRES_PASS="benchmarkdbpass"
 
-COPY --from=builder /home/gradle/src/kora-jdbc/build/distributions/application.tar /app/application.tar
+COPY --from=builder /home/gradle/src/kora-jdbc-coroutines/build/distributions/application.tar /app/application.tar
 RUN tar -xf /app/application.tar -C /app
 RUN rm /app/application.tar
 
 EXPOSE 8080
 
 ENTRYPOINT ["/app/application/bin/application"]
+

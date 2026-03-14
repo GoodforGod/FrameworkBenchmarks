@@ -19,7 +19,7 @@
       "display_name": "undertow",
       "notes": "",
       "versus": "",
-      "tags": ["broken"]
+      "tags": []
     },
     "postgresql" : {
       "db_url": "/db",
@@ -41,7 +41,7 @@
       "display_name": "undertow-postgresql",
       "notes": "",
       "versus": "",
-      "tags": ["broken"]
+      "tags": []
     }
   }]
 }
