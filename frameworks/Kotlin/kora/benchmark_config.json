@@ -22,7 +22,33 @@
         "webserver": "Undertow",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "Kora Kotlin JDBC Coroutines",
+        "display_name": "kora-jdbc-coroutines",
+        "notes": "",
+        "versus": "undertow",
+        "tags": []
+      }
+    },
+    {
+      "jdbc-coroutines": {
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "db_url": "/db",
+        "query_url": "/queries?queries=",
+        "fortune_url": "/fortunes",
+        "update_url": "/updates?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Fullstack",
+        "database": "Postgres",
+        "framework": "Kora",
+        "language": "Kotlin",
+        "flavor": "None",
+        "orm": "Micro",
+        "platform": "Kora",
+        "webserver": "Undertow",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "kora-jdbc-coroutines-direct",
         "notes": "",
         "versus": "undertow",
         "tags": []
@@ -30,5 +56,3 @@
     }
   ]
 }
-
-

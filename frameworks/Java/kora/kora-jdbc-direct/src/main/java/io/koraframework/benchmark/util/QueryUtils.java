@@ -33,13 +33,4 @@ public final class QueryUtils {
     public static int randomWorld() {
         return ThreadLocalRandom.current().nextInt(WORLD_ROWS) + 1;
     }
-
-    public static void addNextRandomWorld(Set<Integer> ids, int randomOccupied) {
-        do {
-            randomOccupied++;
-            if (randomOccupied > 10000) {
-                randomOccupied = 1;
-            }
-        } while (!ids.add(randomOccupied));
-    }
 }

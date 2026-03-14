@@ -1,3 +1,4 @@
 rootProject.name = 'kora-benchmark'
 
 include 'kora-jdbc'
+include 'kora-jdbc-direct'
