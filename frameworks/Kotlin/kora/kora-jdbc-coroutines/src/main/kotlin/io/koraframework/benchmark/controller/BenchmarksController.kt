@@ -23,9 +23,16 @@ class BenchmarksController(
     private val repository: WorldRepository,
 ) {
 
+    private companion object {
+        val PLAINTEXT_RESPONSE: ByteBuffer = ByteBuffer.wrap("Hello, World!".toByteArray(StandardCharsets.UTF_8))
+        val MESSAGE = Message("Hello, World!")
+        val FORTUNE_COMPARATOR: Comparator<Fortune> = Comparator.comparing(Fortune::message)
+        val WORLD_COMPARATOR: Comparator<World> = Comparator.comparingInt(World::id)
+    }
+
     @HttpRoute(method = HttpMethod.GET, path = "/plaintext")
     suspend fun plaintext(): HttpServerResponse {
-        return HttpServerResponse.of(200, HttpBody.plaintext(PLAINTEXT_RESPONSE.duplicate()))
+        return HttpServerResponse.of(200, HttpBody.plaintext(PLAINTEXT_RESPONSE))
     }
 
     @Json
@@ -42,29 +49,39 @@ class BenchmarksController(
 
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/queries")
-    suspend fun queries(@Nullable @Query("queries") queries: Int?): List<World> {
+    suspend fun queries(@Nullable @Query("queries") queries: String?): List<World> {
         val count = QueryUtils.parseCount(queries)
-        val ids = ArrayList<Int>(count)
+        val ids = HashSet<Int>(count)
         repeat(count) {
-            ids += QueryUtils.randomWorld()
+            val nextId = QueryUtils.randomWorld()
+            if (!ids.add(nextId)) {
+                QueryUtils.addNextRandomWorld(ids, nextId)
+            }
         }
-        return repository.findById(ids)
+        return repository.findById(ids as Collection<Int>)
     }
 
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/updates")
-    suspend fun updates(@Nullable @Query("queries") queries: Int?): List<World> {
+    suspend fun updates(@Nullable @Query("queries") queries: String?): List<World> {
         val count = QueryUtils.parseCount(queries)
-        val ids = ArrayList<Int>(count)
+        val ids = HashSet<Int>(count)
         repeat(count) {
-            ids += QueryUtils.randomWorld()
+            val nextId = QueryUtils.randomWorld()
+            if (!ids.add(nextId)) {
+                QueryUtils.addNextRandomWorld(ids, nextId)
+            }
         }
 
-        val worlds = repository.findById(ids).mapTo(ArrayList(count)) { world ->
-            World(world.id, QueryUtils.randomWorld())
+        val worlds = repository.findById(ids).toMutableList().apply {
+            for (i in indices) {
+                val oldWorld = this[i]
+                this[i] = World(oldWorld.id, QueryUtils.randomWorld())
+            }
         }
-        worlds.sortBy(World::id)
         repository.update(worlds)
+
+        worlds.sortWith(WORLD_COMPARATOR)
         return worlds
     }
 
@@ -72,12 +89,8 @@ class BenchmarksController(
     suspend fun fortunes(): List<Fortune> {
         val fortunes = repository.fortunes().toMutableList()
         fortunes += Fortune(0, "Additional fortune added at request time.")
-        fortunes.sortBy(Fortune::message)
-        return fortunes
-    }
 
-    private companion object {
-        val PLAINTEXT_RESPONSE: ByteBuffer = ByteBuffer.wrap("Hello, World!".toByteArray(StandardCharsets.UTF_8))
-        val MESSAGE = Message("Hello, World!")
+        fortunes.sortWith(FORTUNE_COMPARATOR)
+        return fortunes
     }
 }

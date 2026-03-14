@@ -10,7 +10,6 @@ import ru.tinkoff.kora.database.jdbc.JdbcDatabaseModule
 import ru.tinkoff.kora.http.server.undertow.UndertowHttpServerModule
 import ru.tinkoff.kora.json.module.JsonModule
 import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 @KoraApp
 interface Application :
@@ -20,9 +19,7 @@ interface Application :
     UndertowHttpServerModule {
 
     @Tag(JdbcDatabase::class)
-    fun jdbcExecutor(): Executor {
-        return kotlinx.coroutines.Dispatchers.IO.limitedParallelism(48).asExecutor()
-    }
+    fun jdbcExecutor(): Executor = kotlinx.coroutines.Dispatchers.IO.limitedParallelism(512).asExecutor()
 }
 
 fun main() {

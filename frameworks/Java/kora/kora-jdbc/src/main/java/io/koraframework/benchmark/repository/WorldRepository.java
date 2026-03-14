@@ -2,7 +2,10 @@ package io.koraframework.benchmark.repository;
 
 import io.koraframework.benchmark.model.Fortune;
 import io.koraframework.benchmark.model.World;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import ru.tinkoff.kora.database.common.UpdateCount;
 import ru.tinkoff.kora.database.common.annotation.Batch;
@@ -17,7 +20,7 @@ public interface WorldRepository extends JdbcRepository {
     World findById(int id);
 
     @Query("SELECT id, randomnumber FROM world WHERE id = ANY(:ids)")
-    List<World> findById(List<Integer> ids);
+    List<World> findById(Collection<Integer> ids);
 
     @Query("UPDATE world SET randomnumber = :world.randomNumber WHERE id = :world.id")
     void update(@Batch List<World> world);

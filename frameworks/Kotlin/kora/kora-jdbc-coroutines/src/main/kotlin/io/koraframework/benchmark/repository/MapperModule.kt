@@ -6,7 +6,7 @@ import ru.tinkoff.kora.database.jdbc.mapper.parameter.JdbcParameterColumnMapper
 @Module
 interface MapperModule {
 
-    fun postgresListOfIntJdbcParameterColumnMapper(): JdbcParameterColumnMapper<List<Int>> {
+    fun postgresCollectionOfIntJdbcParameterColumnMapper(): JdbcParameterColumnMapper<Collection<Int>> {
         return JdbcParameterColumnMapper { stmt, index, value ->
             val typeArray = value.toTypedArray()
             val sqlArray = stmt.connection.createArrayOf("INT", typeArray)

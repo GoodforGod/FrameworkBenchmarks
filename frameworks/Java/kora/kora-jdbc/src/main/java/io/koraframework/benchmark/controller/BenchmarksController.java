@@ -17,9 +17,10 @@ import ru.tinkoff.kora.json.common.annotation.Json;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @HttpController
@@ -37,45 +38,56 @@ public final class BenchmarksController {
         this.repository = repository;
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#plaintext
     @HttpRoute(method = HttpMethod.GET, path = "/plaintext")
     public HttpServerResponse plaintext() {
         return HttpServerResponse.of(200, HttpBody.plaintext(PLAINTEXT_RESPONSE));
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#json-serialization
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/json")
     public Message json() {
         return MESSAGE;
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#single-database-query
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/db")
     public World db() {
         return repository.findById(QueryUtils.randomWorld());
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#multiple-database-queries
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/queries")
-    public List<World> queries(@Nullable @Query("queries") Integer queries) {
+    public List<World> queries(@Nullable @Query("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
-        List<Integer> ids = new ArrayList<>(count);
+        Set<Integer> ids = new HashSet<>(count);
         for (int i = 0; i < count; i++) {
-            ids.add(QueryUtils.randomWorld());
+            int nextId = QueryUtils.randomWorld();
+            if (!ids.add(nextId)) {
+                QueryUtils.addNextRandomWorld(ids, nextId);
+            }
         }
 
         return this.repository.findById(ids);
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#database-updates
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/updates")
-    public List<World> updates(@Nullable @Query("queries") Integer queries) {
-        return this.repository.getJdbcConnectionFactory().withConnection(() -> {
-            int count = QueryUtils.parseCount(queries);
-            List<Integer> ids = new ArrayList<>(count);
-            for (int i = 0; i < count; i++) {
-                ids.add(QueryUtils.randomWorld());
+    public List<World> updates(@Nullable @Query("queries") String queries) {
+        int count = QueryUtils.parseCount(queries);
+        Set<Integer> ids = new HashSet<>(count);
+        for (int i = 0; i < count; i++) {
+            int nextId = QueryUtils.randomWorld();
+            if (!ids.add(nextId)) {
+                QueryUtils.addNextRandomWorld(ids, nextId);
             }
+        }
 
+        var result = this.repository.getJdbcConnectionFactory().withConnection(() -> {
             //TODO or better call 1 by 1???
             List<World> worlds = repository.findById(ids);
             for (int i = 0; i < worlds.size(); i++) {
@@ -84,13 +96,15 @@ public final class BenchmarksController {
                 worlds.set(i, newWorld);
             }
 
-            worlds.sort(WORLD_COMPARATOR);
             repository.update(worlds);
-
             return worlds;
         });
+
+        result.sort(WORLD_COMPARATOR);
+        return result;
     }
 
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes
     @HttpRoute(method = HttpMethod.GET, path = "/fortunes")
     public List<Fortune> fortunes() {
         List<Fortune> fortunes = repository.fortunes();
