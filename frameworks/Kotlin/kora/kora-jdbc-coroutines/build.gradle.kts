@@ -27,6 +27,16 @@ dependencies {
 
     compileOnly("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
+    implementation("io.undertow:undertow-core") {
+        version { strictly("2.3.23.Final") }
+    }
+    implementation("org.jboss.threads:jboss-threads") {
+        version { strictly("3.9.2") }
+    }
+    implementation("org.jboss.xnio:xnio-nio") {
+        version { strictly("3.8.17.Final") }
+    }
+
     implementation("gg.jte:jte:3.2.3")
     implementation("org.postgresql:postgresql:42.7.10")
     implementation("org.slf4j:slf4j-nop:2.0.17")

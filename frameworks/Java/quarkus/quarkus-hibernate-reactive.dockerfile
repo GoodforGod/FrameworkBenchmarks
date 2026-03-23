@@ -27,7 +27,7 @@ WORKDIR /quarkus/$MODULE
 RUN mvn package -B -q
 WORKDIR /quarkus
 
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:25-jre-jammy
 ENV LANGUAGE='en_US:en'
 WORKDIR /quarkus
 ENV MODULE=resteasy-reactive-hibernate-reactive

@@ -79,18 +79,16 @@ public final class BenchmarksController {
         int count = QueryUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
 
-        return this.repository.getJdbcConnectionFactory().withConnection(() -> {
-            for (int i = 0; i < count; i++) {
-                int id = QueryUtils.randomWorld();
-                var oldWorld = repository.findById(id);
-                var newWorld = new World(oldWorld.id(), QueryUtils.randomWorld());
-                worlds.add(newWorld);
-            }
+        for (int i = 0; i < count; i++) {
+            int id = QueryUtils.randomWorld();
+            var oldWorld = repository.findById(id);
+            var newWorld = new World(oldWorld.id(), QueryUtils.randomWorld());
+            worlds.add(newWorld);
+        }
 
-            worlds.sort(WORLD_COMPARATOR);
-            repository.update(worlds);
-            return worlds;
-        });
+        worlds.sort(WORLD_COMPARATOR);
+        repository.update(worlds);
+        return worlds;
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes

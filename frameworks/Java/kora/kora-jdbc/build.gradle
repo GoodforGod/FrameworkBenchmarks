@@ -26,6 +26,15 @@ dependencies {
     annotationProcessor "ru.tinkoff.kora:annotation-processors"
 
     compileOnly "jakarta.annotation:jakarta.annotation-api:2.1.1"
+    implementation("io.undertow:undertow-core") {
+        version { strictly("2.3.23.Final") }
+    }
+    implementation("org.jboss.threads:jboss-threads") {
+        version { strictly("3.9.2") }
+    }
+    implementation("org.jboss.xnio:xnio-nio") {
+        version { strictly("3.8.17.Final") }
+    }
 
     implementation "gg.jte:jte:3.2.3"
     implementation "org.postgresql:postgresql:42.7.10"
@@ -42,6 +51,7 @@ run {
             "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
             "POSTGRES_USER"    : "postgres",
             "POSTGRES_PASS"    : "postgres",
+            "JET_FAST"    : "true",
     ])
 }
 

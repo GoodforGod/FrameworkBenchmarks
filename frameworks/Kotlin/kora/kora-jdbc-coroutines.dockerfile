@@ -10,7 +10,7 @@ FROM eclipse-temurin:25-jre-jammy AS runner
 
 WORKDIR /app
 
-ENV DEFAULT_JVM_OPTS="-XX:+UseParallelGC -XX:+UseNUMA -XX:+AlwaysPreTouch -Xms2g -Xmx2g -Djava.net.preferIPv4Stack=true -Djdk.trackAllThreads=false -XX:AutoBoxCacheMax=11000 -XX:InitialCodeCacheSize=256m -XX:ReservedCodeCacheSize=256m -XX:MaxInlineLevel=20 -XX:-StackTraceInThrowable -XX:+UseCompactObjectHeaders -XX:+UseCompressedClassPointers"
+ENV DEFAULT_JVM_OPTS="-XX:+UseParallelGC -Djava.net.preferIPv4Stack=true -Djdk.trackAllThreads=false -XX:AutoBoxCacheMax=11000 -XX:InitialCodeCacheSize=256m -XX:ReservedCodeCacheSize=256m -XX:MaxInlineLevel=20 -XX:-StackTraceInThrowable"
 
 ENV POSTGRES_JDBC_URL="jdbc:postgresql://tfb-database:5432/hello_world"
 ENV POSTGRES_USER="benchmarkdbuser"

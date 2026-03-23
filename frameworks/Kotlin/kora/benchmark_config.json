@@ -3,7 +3,7 @@
   "maintainers": ["GoodforGod", "Squiry"],
   "tests": [
     {
-      "default": {
+      "jdbc-coroutines": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
