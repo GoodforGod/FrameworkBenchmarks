@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+./tfb \
+  --test \
+  kora \
+  kora-vt \
+  kora-fast-jte \
+  kora-jdbc-coroutines \
+  kora2 \
+  kora2-fast-jte \
+  korad \
+  korad-loom-carrier \
+  korad-loom-default \
+  micronaut \
+  micronaut-graalvm \
+  micronaut-jdbc \
+  micronaut-jdbc-graalvm \
+  micronaut-data-jdbc \
+  micronaut-data-jdbc-graalvm \
+  micronaut-loom-fjp \
+  micronaut-loom-on-netty \
+  micronaut-r2dbc \
+  micronaut-r2dbc-graalvm \
+  quarkus \
+  quarkus-hibernate-reactive \
+  quarkus-reactive-routes-pgclient \
+  quarkus-vertx \
+  spring \
+  spring-jooq \
+  spring-data-jdbc \
+  spring-webflux \
+  undertow-postgresql \
+  --type all \
+  --concurrency-levels 32 \
+  --pipeline-concurrency-levels 256 1024 \
+  -m benchmark
