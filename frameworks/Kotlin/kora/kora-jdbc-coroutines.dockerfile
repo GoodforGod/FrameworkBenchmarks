@@ -4,7 +4,7 @@ COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN chmod +x ./gradlew && ./gradlew kora-jdbc-coroutines:distTar --no-daemon
+RUN gradle kora-jdbc-coroutines:distTar --no-daemon
 
 FROM eclipse-temurin:25-jre-jammy AS runner
 
@@ -15,6 +15,7 @@ ENV DEFAULT_JVM_OPTS="-XX:+UseParallelGC -Djava.net.preferIPv4Stack=true -Djdk.t
 ENV POSTGRES_JDBC_URL="jdbc:postgresql://tfb-database:5432/hello_world"
 ENV POSTGRES_USER="benchmarkdbuser"
 ENV POSTGRES_PASS="benchmarkdbpass"
+ENV KORA_CONFIG_WATCHER_ENABLED="false"
 
 COPY --from=builder /home/gradle/src/kora-jdbc-coroutines/build/distributions/application.tar /app/application.tar
 RUN tar -xf /app/application.tar -C /app

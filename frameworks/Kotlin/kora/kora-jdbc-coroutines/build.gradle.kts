@@ -28,7 +28,7 @@ dependencies {
     compileOnly("jakarta.annotation:jakarta.annotation-api:2.1.1")
 
     implementation("io.undertow:undertow-core") {
-        version { strictly("2.3.23.Final") }
+        version { strictly("2.3.24.Final") }
     }
     implementation("org.jboss.threads:jboss-threads") {
         version { strictly("3.9.2") }
@@ -38,7 +38,7 @@ dependencies {
     }
 
     implementation("gg.jte:jte:3.2.3")
-    implementation("org.postgresql:postgresql:42.7.10")
+    implementation("org.postgresql:postgresql:42.7.11")
     implementation("org.slf4j:slf4j-nop:2.0.17")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("ru.tinkoff.kora:config-hocon")
