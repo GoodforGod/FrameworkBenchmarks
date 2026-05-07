@@ -1,0 +1,11 @@
+rootProject.name = 'kora'
+
+
+include(
+    'jte:jte-annotation-processor',
+    'jte:jte-common',
+    'common',
+    'agent',
+    'korad-blocking',
+    'korad-loom-undertow',
+)
