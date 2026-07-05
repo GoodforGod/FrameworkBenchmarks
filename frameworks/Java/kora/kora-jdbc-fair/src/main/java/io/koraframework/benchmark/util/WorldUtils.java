@@ -1,11 +1,10 @@
 package io.koraframework.benchmark.util;
 
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public final class QueryUtils {
+public final class WorldUtils {
 
-    private QueryUtils() { }
+    private WorldUtils() { }
 
     private static final int MIN_QUERIES = 1;
     private static final int MAX_QUERIES = 500;
@@ -34,28 +33,11 @@ public final class QueryUtils {
         return ThreadLocalRandom.current().nextInt(WORLD_ROWS) + 1;
     }
 
-    public static int randomWorld(int exclusion) {
-        var nextWorldId = ThreadLocalRandom.current().nextInt(WORLD_ROWS) + 1;
-        if (exclusion == nextWorldId) {
-            return randomWorld(exclusion);
-        }
-        return nextWorldId;
-    }
-
     public static int[] randomWorlds(int amount) {
         return ThreadLocalRandom.current()
                 .ints(1, WORLD_ROWS + 1)
                 .distinct()
                 .limit(amount)
                 .toArray();
-    }
-
-    public static void addNextRandomWorld(Set<Integer> ids, int randomOccupied) {
-        do {
-            randomOccupied++;
-            if (randomOccupied > 10000) {
-                randomOccupied = 1;
-            }
-        } while (!ids.add(randomOccupied));
     }
 }

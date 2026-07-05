@@ -1,10 +1,9 @@
 package io.koraframework.benchmark.controller;
 
-import io.koraframework.benchmark.model.Fortune;
 import io.koraframework.benchmark.model.Message;
 import io.koraframework.benchmark.model.World;
 import io.koraframework.benchmark.repository.WorldRepository;
-import io.koraframework.benchmark.util.QueryUtils;
+import io.koraframework.benchmark.util.WorldUtils;
 import io.koraframework.common.Component;
 import io.koraframework.http.common.HttpMethod;
 import io.koraframework.http.common.annotation.HttpRoute;
@@ -28,7 +27,6 @@ public final class BenchmarksController {
     private static final ByteBuffer PLAINTEXT_RESPONSE = ByteBuffer.wrap("Hello, World!".getBytes(StandardCharsets.UTF_8));
     private static final Message MESSAGE = new Message("Hello, World!");
 
-    private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(Fortune::message);
     private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(World::id);
 
     private final WorldRepository repository;
@@ -54,18 +52,19 @@ public final class BenchmarksController {
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/db")
     public World db() {
-        return repository.findById(QueryUtils.randomWorld());
+        return repository.findById(WorldUtils.randomWorld());
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#multiple-database-queries
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/queries")
     public List<World> queries(@Nullable @Query("queries") String queries) {
-        int count = QueryUtils.parseCount(queries);
+        int count = WorldUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            var world = repository.findById(id);
+        var randomIds = WorldUtils.randomWorlds(count);
+
+        for (int randomId : randomIds) {
+            var world = repository.findById(randomId);
             worlds.add(world);
         }
 
@@ -76,28 +75,17 @@ public final class BenchmarksController {
     @Json
     @HttpRoute(method = HttpMethod.GET, path = "/updates")
     public List<World> updates(@Nullable @Query("queries") String queries) {
-        int count = QueryUtils.parseCount(queries);
+        int count = WorldUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
-
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            var oldRandomNumber = repository.findRandomNumberById(id);
-            var newWorld = new World(id, QueryUtils.randomWorld(oldRandomNumber));
+        var randomIds = WorldUtils.randomWorlds(count);
+        for (int randomId : randomIds) {
+            var oldWorld = repository.findById(randomId);
+            var newWorld = new World(oldWorld.id(), WorldUtils.randomWorld());
             worlds.add(newWorld);
         }
 
         worlds.sort(WORLD_COMPARATOR);
         repository.update(worlds);
         return worlds;
-    }
-
-    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes
-    @HttpRoute(method = HttpMethod.GET, path = "/fortunes")
-    public List<Fortune> fortunes() {
-        List<Fortune> fortunes = repository.fortunes();
-        fortunes.add(new Fortune(0, "Additional fortune added at request time."));
-
-        fortunes.sort(FORTUNE_COMPARATOR);
-        return fortunes;
     }
 }
