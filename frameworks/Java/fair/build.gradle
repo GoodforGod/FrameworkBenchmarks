@@ -1,0 +1,14 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group = groupId
+version = koraVersion
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = "https://central.sonatype.com/repository/maven-snapshots" }
+}
