@@ -4,6 +4,8 @@ plugins {
     id "gg.jte.gradle" version "3.2.3"
 }
 
+version = koraVersion
+
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
@@ -21,6 +23,13 @@ dependencies {
 
     annotationProcessor "io.koraframework:annotation-processors"
 
+    implementation "io.koraframework:database-jdbc"
+    implementation "io.koraframework:config-hocon"
+    implementation "io.koraframework:json-common"
+    implementation "io.koraframework:http-server-undertow"
+    implementation "gg.jte:jte:3.2.3"
+    implementation "org.postgresql:postgresql:42.7.11"
+    implementation "org.slf4j:slf4j-nop:2.0.17"
     implementation("io.undertow:undertow-core") {
         version { strictly("2.3.24.Final") }
     }
@@ -31,13 +40,9 @@ dependencies {
         version { strictly("3.8.17.Final") }
     }
 
-    implementation "gg.jte:jte:3.2.3"
-    implementation "org.postgresql:postgresql:42.7.11"
-    implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation "io.koraframework:database-jdbc"
-    implementation "io.koraframework:config-hocon"
-    implementation "io.koraframework:json-common"
-    implementation "io.koraframework:http-server-undertow"
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
 //noinspection GroovyAssignabilityCheck

@@ -1,61 +1,34 @@
-# Kora JDBC Benchmarking Test
+# Quarkus JPA Repository Benchmark
 
-This is the `kora-jdbc` implementation of the Java benchmark suite.
+This is the Quarkus JPA Repository (Panache) benchmark implementation for the TechEmpower Framework Benchmarks.
 
-It uses Kora HTTP Server on Undertow, Kora JDBC repositories for PostgreSQL, Java 25.
+## Implementation Details
 
-## Implementation Notes
+- **Framework**: Quarkus 3.20.0
+- **ORM**: Hibernate ORM with Panache Repository pattern
+- **Database**: PostgreSQL via JDBC
+- **Template Engine**: jte
+- **Java Version**: 25
 
-- HTTP server: Undertow via Kora HTTP Server
-- Database access: Kora JDBC repositories with PostgreSQL
-- Runtime model: Java 25 virtual threads enabled in [`application.conf`](src/main/resources/application.conf)
-- Covered tests: plaintext, json, db, queries, updates, fortunes
+## Test Endpoints
 
-## Local Development
+- `/plaintext` - Returns "Hello, World!" as text/plain
+- `/json` - Returns JSON object with message
+- `/db` - Single database query using Panache Repository
+- `/queries?queries=N` - Multiple database queries using Panache Repository
+- `/updates?queries=N` - Multiple database updates using Panache Repository
+- `/fortunes` - HTML template rendering with fortunes
 
-Build the distribution:
+## Running the Benchmark
+
 ```bash
-./gradlew kora-jdbc:distTar
+./gradlew run -DPOSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres \
+              -DPOSTGRES_USER=postgres \
+              -DPOSTGRES_PASS=postgres
 ```
 
-Check PostgreSQL environment values in:
-```groovy
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER": "postgres",
-            "POSTGRES_PASS": "postgres",
-    ])
-}
-```
+## Build
 
-Run locally with PostgreSQL environment variables:
 ```bash
-./gradlew kora-jdbc:run
+./gradlew build
 ```
-
-## Test URLs
-
-### Plaintext Test
-
-    http://localhost:8080/plaintext
-
-### JSON Encoding Test
-
-    http://localhost:8080/json
-
-### Database Query Test
-
-    http://localhost:8080/db
-
-### Database Queries Test
-
-    http://localhost:8080/queries?queries=5
-
-### Database Update Test
-
-    http://localhost:8080/updates?queries=5
-
-### Template Rendering Test
-
-    http://localhost:8080/fortunes

@@ -1,61 +1,35 @@
-# Kora JDBC Benchmarking Test
+# Quarkus JPA DAO Benchmark
 
-This is the `kora-jdbc` implementation of the Java benchmark suite.
+This is the Quarkus portion of the Java benchmarking test suite using JPA with Panache DAO pattern.
 
-It uses Kora HTTP Server on Undertow, Kora JDBC repositories for PostgreSQL, Java 25.
+## Implementation Details
 
-## Implementation Notes
-
-- HTTP server: Undertow via Kora HTTP Server
-- Database access: Kora JDBC repositories with PostgreSQL
-- Runtime model: Java 25 virtual threads enabled in [`application.conf`](src/main/resources/application.conf)
-- Covered tests: plaintext, json, db, queries, updates, fortunes
-
-## Local Development
-
-Build the distribution:
-```bash
-./gradlew kora-jdbc:distTar
-```
-
-Check PostgreSQL environment values in:
-```groovy
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER": "postgres",
-            "POSTGRES_PASS": "postgres",
-    ])
-}
-```
-
-Run locally with PostgreSQL environment variables:
-```bash
-./gradlew kora-jdbc:run
-```
+- **Framework**: Quarkus 3.21.0
+- **ORM**: Hibernate ORM with Panache DAO
+- **Database**: PostgreSQL
+- **Web**: JAX-RS (RESTEasy Reactive)
+- **JSON**: Jackson
+- **Template**: jte (for fortunes)
+- **Java**: 25
 
 ## Test URLs
 
-### Plaintext Test
+- Plaintext: http://localhost:8080/plaintext
+- JSON: http://localhost:8080/json
+- Single Query: http://localhost:8080/db
+- Multiple Queries: http://localhost:8080/queries?queries=5
+- Updates: http://localhost:8080/updates?queries=5
+- Fortunes: http://localhost:8080/fortunes
 
-    http://localhost:8080/plaintext
+## Running
 
-### JSON Encoding Test
+```bash
+./gradlew run -DPOSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres -DPOSTGRES_USER=postgres -DPOSTGRES_PASS=postgres
+```
 
-    http://localhost:8080/json
+Or build and run the native image:
 
-### Database Query Test
-
-    http://localhost:8080/db
-
-### Database Queries Test
-
-    http://localhost:8080/queries?queries=5
-
-### Database Update Test
-
-    http://localhost:8080/updates?queries=5
-
-### Template Rendering Test
-
-    http://localhost:8080/fortunes
+```bash
+./gradlew build
+java -jar build/quarkus-app/quarkus-run.jar
+```

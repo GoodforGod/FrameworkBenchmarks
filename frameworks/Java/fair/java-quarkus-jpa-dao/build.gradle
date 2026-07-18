@@ -1,67 +1,26 @@
 plugins {
     id "java"
-    id "application"
+    id "io.quarkus" version "3.37.2"
     id "gg.jte.gradle" version "3.2.3"
 }
 
-repositories {
-    mavenCentral()
-}
+version = quarkusVersion
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
 
-configurations {
-    koraBom
-    compileOnly.extendsFrom(koraBom)
-    annotationProcessor.extendsFrom(koraBom)
-    implementation.extendsFrom(koraBom)
-}
-
 dependencies {
-    koraBom platform("io.koraframework:kora-parent:$koraVersion")
-
-    annotationProcessor "io.koraframework:annotation-processors"
-
-    implementation("io.undertow:undertow-core") {
-        version { strictly("2.3.24.Final") }
-    }
-    implementation("org.jboss.threads:jboss-threads") {
-        version { strictly("3.9.2") }
-    }
-    implementation("org.jboss.xnio:xnio-nio") {
-        version { strictly("3.8.17.Final") }
-    }
-
+    implementation "io.quarkus:quarkus-arc"
+    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "io.quarkus:quarkus-hibernate-orm-panache"
+    implementation "io.quarkus:quarkus-jdbc-postgresql"
     implementation "gg.jte:jte:3.2.3"
-    implementation "org.postgresql:postgresql:42.7.11"
-    implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation "io.koraframework:database-jdbc"
-    implementation "io.koraframework:config-hocon"
-    implementation "io.koraframework:json-common"
-    implementation "io.koraframework:http-server-undertow"
-}
 
-//noinspection GroovyAssignabilityCheck
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER"    : "postgres",
-            "POSTGRES_PASS"    : "postgres",
-            "JET_CUSTOM"         : "true",
-    ])
-}
-
-application {
-    applicationName = "application"
-    mainClass = "io.koraframework.benchmark.Application"
-    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
-}
-
-distTar {
-    archiveFileName = "application.tar"
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
 tasks.withType(JavaCompile).configureEach {

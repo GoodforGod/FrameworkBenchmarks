@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  threads:
+    virtual:
+      enabled: ${VIRTUAL_THREADS_ENABLED:false}
+  datasource:
+    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 512
+      minimum-idle: 16
+      connection-timeout: 10000
+      idle-timeout: 10000
+      max-lifetime: 1800000
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
+
+logging:
+  level:
+    root: OFF

@@ -1,14 +1,9 @@
+group = 'io.fairframework'
+version = '1.0.0'
+
 allprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
-}
-
-group = groupId
-version = koraVersion
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven { url = "https://central.sonatype.com/repository/maven-snapshots" }
 }

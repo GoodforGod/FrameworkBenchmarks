@@ -1,0 +1,33 @@
+micronaut:
+  application:
+    name: benchmark
+  server:
+    port: 8080
+  jvm:
+    virtual:
+      threads:
+        enabled: ${VIRTUAL_THREADS_ENABLED:false}
+
+datasources:
+  default:
+    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    dialect: POSTGRES
+    maximum-pool-size: 512
+    minimum-idle: 16
+    connection-timeout: 10000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    pool-name: HikariPool
+    data-source-properties:
+      preparedStatementCacheQueries: 512
+      preparedStatementCacheSizeMiB: 16
+      prepareThreshold: 1
+      loggerLevel: OFF
+      sslmode: disable
+      disableColumnSanitiser: true
+
+jackson:
+  serialization-inclusion: ALWAYS

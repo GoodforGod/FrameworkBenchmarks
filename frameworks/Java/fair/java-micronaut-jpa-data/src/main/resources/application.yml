@@ -1,0 +1,49 @@
+micronaut:
+  application:
+    name: micronaut-jpa-benchmark
+  server:
+    port: 8080
+  jvm:
+    virtual:
+      threads:
+        enabled: ${VIRTUAL_THREADS_ENABLED:false}
+
+datasources:
+  default:
+    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+    hikari:
+      maximum-pool-size: 512
+      minimum-idle: 16
+      connection-timeout: 10000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: micronaut-jpa-pool
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
+
+jpa:
+  default:
+    entity-scan:
+      packages:
+        - io.micronaut.benchmark.jpa.model
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: false
+        format_sql: false
+      jakarta:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            database:
+              action: none

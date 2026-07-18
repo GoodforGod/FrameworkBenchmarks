@@ -1,38 +1,20 @@
-# Kora JDBC Benchmarking Test
+# Micronaut JDBC Benchmark
 
-This is the `kora-jdbc` implementation of the Java benchmark suite.
+This is the Micronaut JDBC portion of the Java benchmarking test suite comparing a variety of web development platforms.
 
-It uses Kora HTTP Server on Undertow, Kora JDBC repositories for PostgreSQL, Java 25.
+## Implementation
 
-## Implementation Notes
+This implementation uses Micronaut Framework with JDBC Data repositories.
 
-- HTTP server: Undertow via Kora HTTP Server
-- Database access: Kora JDBC repositories with PostgreSQL
-- Runtime model: Java 25 virtual threads enabled in [`application.conf`](src/main/resources/application.conf)
-- Covered tests: plaintext, json, db, queries, updates, fortunes
+## Tech Stack
 
-## Local Development
-
-Build the distribution:
-```bash
-./gradlew kora-jdbc:distTar
-```
-
-Check PostgreSQL environment values in:
-```groovy
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER": "postgres",
-            "POSTGRES_PASS": "postgres",
-    ])
-}
-```
-
-Run locally with PostgreSQL environment variables:
-```bash
-./gradlew kora-jdbc:run
-```
+- [Java 25 (Temurin)](https://adoptium.net/temurin/releases/?version=25)
+- [Gradle 9.4.0](https://gradle.org/releases/)
+- [Micronaut 4.5.0](https://micronaut.io/)
+- [Micronaut Data JDBC](https://micronaut-projects.github.io/micronaut-data/latest/guide/)
+- [HikariCP](https://github.com/brettwooldridge/HikariCP)
+- [PostgreSQL Driver](https://jdbc.postgresql.org/)
+- [JTE 3.2.3](https://jte.gg/)
 
 ## Test URLs
 
@@ -59,3 +41,12 @@ Run locally with PostgreSQL environment variables:
 ### Template Rendering Test
 
     http://localhost:8080/fortunes
+
+## Running
+
+```bash
+export POSTGRES_JDBC_URL="jdbc:postgresql://localhost:5432/postgres"
+export POSTGRES_USER="postgres"
+export POSTGRES_PASS="postgres"
+./gradlew run
+```

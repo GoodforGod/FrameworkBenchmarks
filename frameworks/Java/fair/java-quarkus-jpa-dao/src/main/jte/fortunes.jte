@@ -1,4 +1,4 @@
-@import io.koraframework.benchmark.model.Fortune
+@import io.quarkus.benchmark.dao.model.Fortune
 @import java.util.List
 
 @param List<Fortune> fortunes
@@ -6,6 +6,6 @@
 <head><title>Fortunes</title></head><body><table>
 <tr><th>id</th><th>message</th></tr>
 @for(var fortune : fortunes)
-    <tr><td>${fortune.id()}</td><td>${fortune.message()}</td></tr>
+    <tr><td>${fortune.id}</td><td>${fortune.message}</td></tr>
 @endfor
 </table></body></html>

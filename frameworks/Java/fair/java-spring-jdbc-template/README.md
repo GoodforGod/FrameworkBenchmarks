@@ -1,61 +1,32 @@
-# Kora JDBC Benchmarking Test
+# Spring JDBC Template Benchmark
 
-This is the `kora-jdbc` implementation of the Java benchmark suite.
+This is the Spring Boot with JdbcTemplate portion of the Java benchmarking test suite.
 
-It uses Kora HTTP Server on Undertow, Kora JDBC repositories for PostgreSQL, Java 25.
+## Implementation
 
-## Implementation Notes
+This implementation uses:
+- Spring Boot 3.5.0
+- Spring JDBC (JdbcTemplate)
+- PostgreSQL database
+- jte templates for server-side rendering
+- Jackson for JSON serialization
 
-- HTTP server: Undertow via Kora HTTP Server
-- Database access: Kora JDBC repositories with PostgreSQL
-- Runtime model: Java 25 virtual threads enabled in [`application.conf`](src/main/resources/application.conf)
-- Covered tests: plaintext, json, db, queries, updates, fortunes
+## Endpoints
 
-## Local Development
+- `/plaintext` - Returns "Hello, World!" as text/plain
+- `/json` - Returns `{"message":"Hello, World!"}` as application/json
+- `/db` - Single database query returning a World object
+- `/queries?queries=N` - Multiple database queries (1-500)
+- `/updates?queries=N` - Multiple database updates (1-500)
+- `/fortunes` - HTML page with sorted fortunes
 
-Build the distribution:
+## Running
+
 ```bash
-./gradlew kora-jdbc:distTar
+./gradlew bootRun
 ```
 
-Check PostgreSQL environment values in:
-```groovy
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER": "postgres",
-            "POSTGRES_PASS": "postgres",
-    ])
-}
-```
-
-Run locally with PostgreSQL environment variables:
-```bash
-./gradlew kora-jdbc:run
-```
-
-## Test URLs
-
-### Plaintext Test
-
-    http://localhost:8080/plaintext
-
-### JSON Encoding Test
-
-    http://localhost:8080/json
-
-### Database Query Test
-
-    http://localhost:8080/db
-
-### Database Queries Test
-
-    http://localhost:8080/queries?queries=5
-
-### Database Update Test
-
-    http://localhost:8080/updates?queries=5
-
-### Template Rendering Test
-
-    http://localhost:8080/fortunes
+Environment variables:
+- `POSTGRES_JDBC_URL` - PostgreSQL JDBC URL
+- `POSTGRES_USER` - Database username
+- `POSTGRES_PASS` - Database password

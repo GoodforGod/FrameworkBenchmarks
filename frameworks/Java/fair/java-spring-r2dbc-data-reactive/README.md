@@ -1,37 +1,29 @@
-# Kora JDBC Benchmarking Test
+# Spring WebFlux R2DBC Reactive Benchmarking Test
 
-This is the `kora-jdbc` implementation of the Java benchmark suite.
+This is the `java-spring-r2dbc-data-reactive` implementation of the Java benchmark suite.
 
-It uses Kora HTTP Server on Undertow, Kora JDBC repositories for PostgreSQL, Java 25.
+It uses Spring Boot WebFlux, Spring Data R2DBC for reactive PostgreSQL access, Java 25.
 
 ## Implementation Notes
 
-- HTTP server: Undertow via Kora HTTP Server
-- Database access: Kora JDBC repositories with PostgreSQL
-- Runtime model: Java 25 virtual threads enabled in [`application.conf`](src/main/resources/application.conf)
+- HTTP server: Spring WebFlux (reactive, non-blocking)
+- Database access: Spring Data R2DBC with PostgreSQL R2DBC driver
+- Runtime model: Fully reactive with Project Reactor (Mono/Flux)
 - Covered tests: plaintext, json, db, queries, updates, fortunes
 
 ## Local Development
 
 Build the distribution:
 ```bash
-./gradlew kora-jdbc:distTar
-```
-
-Check PostgreSQL environment values in:
-```groovy
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER": "postgres",
-            "POSTGRES_PASS": "postgres",
-    ])
-}
+./gradlew java-spring-r2dbc-data-reactive:bootJar
 ```
 
 Run locally with PostgreSQL environment variables:
 ```bash
-./gradlew kora-jdbc:run
+export POSTGRES_R2DBC_URL="r2dbc:postgresql://localhost:5432/postgres"
+export POSTGRES_USER="postgres"
+export POSTGRES_PASS="postgres"
+./gradlew java-spring-r2dbc-data-reactive:bootRun
 ```
 
 ## Test URLs

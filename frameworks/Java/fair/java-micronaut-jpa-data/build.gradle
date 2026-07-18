@@ -1,62 +1,51 @@
 plugins {
     id "java"
     id "application"
+    id "io.micronaut.application" version "5.0.2"
+    id "io.micronaut.aot" version "5.0.2"
     id "gg.jte.gradle" version "3.2.3"
 }
 
-repositories {
-    mavenCentral()
-}
+version = micronautVersion
+group = "io.micronaut.benchmark.jpa"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
 
-configurations {
-    koraBom
-    compileOnly.extendsFrom(koraBom)
-    annotationProcessor.extendsFrom(koraBom)
-    implementation.extendsFrom(koraBom)
+ext {
+    micronautVersion = "5.1.5"
+    micronautDataVersion = "5.13.0"
+    micronautSqlVersion = "5.7.0"
 }
 
 dependencies {
-    koraBom platform("io.koraframework:kora-parent:$koraVersion")
+    annotationProcessor platform("io.micronaut.platform:micronaut-platform:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
 
-    annotationProcessor "io.koraframework:annotation-processors"
+    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
 
-    implementation("io.undertow:undertow-core") {
-        version { strictly("2.3.24.Final") }
-    }
-    implementation("org.jboss.threads:jboss-threads") {
-        version { strictly("3.9.2") }
-    }
-    implementation("org.jboss.xnio:xnio-nio") {
-        version { strictly("3.8.17.Final") }
-    }
-
-    implementation "gg.jte:jte:3.2.3"
+    implementation platform("io.micronaut.platform:micronaut-platform:$micronautVersion")
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion"
+    implementation "io.micronaut.sql:micronaut-hibernate-jpa:$micronautSqlVersion"
+    implementation "io.micronaut.sql:micronaut-jdbc-hikari:$micronautSqlVersion"
     implementation "org.postgresql:postgresql:42.7.11"
+    implementation "gg.jte:jte:3.2.3"
     implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation "io.koraframework:database-jdbc"
-    implementation "io.koraframework:config-hocon"
-    implementation "io.koraframework:json-common"
-    implementation "io.koraframework:http-server-undertow"
-}
 
-//noinspection GroovyAssignabilityCheck
-run {
-    environment([
-            "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
-            "POSTGRES_USER"    : "postgres",
-            "POSTGRES_PASS"    : "postgres",
-            "JET_CUSTOM"         : "true",
-    ])
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
 application {
-    applicationName = "application"
-    mainClass = "io.koraframework.benchmark.Application"
+    mainClass = "io.micronaut.benchmark.jpa.Application"
     applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
 }
 
