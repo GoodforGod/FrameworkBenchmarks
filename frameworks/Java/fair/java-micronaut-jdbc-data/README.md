@@ -1,52 +1,64 @@
-# Micronaut JDBC Benchmark
+# Micronaut JDBC Data Benchmark
 
-This is the Micronaut JDBC portion of the Java benchmarking test suite comparing a variety of web development platforms.
+TechEmpower `fair-micronaut-jdbc-data` implementation.
 
-## Implementation
+## Stack
 
-This implementation uses Micronaut Framework with JDBC Data repositories.
+- Framework: Micronaut `5.0.4`
+- HTTP: Micronaut HTTP Server Netty
+- Database: Micronaut Data JDBC with PostgreSQL JDBC and HikariCP
+- Templates: JTE `3.2.3`
+- Runtime: Java 25
 
-## Tech Stack
+## Commands
 
-- [Java 25 (Temurin)](https://adoptium.net/temurin/releases/?version=25)
-- [Gradle 9.4.0](https://gradle.org/releases/)
-- [Micronaut 4.5.0](https://micronaut.io/)
-- [Micronaut Data JDBC](https://micronaut-projects.github.io/micronaut-data/latest/guide/)
-- [HikariCP](https://github.com/brettwooldridge/HikariCP)
-- [PostgreSQL Driver](https://jdbc.postgresql.org/)
-- [JTE 3.2.3](https://jte.gg/)
+```bash
+./gradlew :java-micronaut-jdbc-data:compileJava
+./gradlew :java-micronaut-jdbc-data:testClasses
+./gradlew :java-micronaut-jdbc-data:distTar
+./gradlew :java-micronaut-jdbc-data:run
+```
 
-## Test URLs
+Docker image used by the BlackBox test:
 
-### Plaintext Test
+```bash
+./gradlew :java-micronaut-jdbc-data:distTar
+docker build -t fair-micronaut-jdbc-data java-micronaut-jdbc-data
+```
+
+## Configuration
+
+```bash
+POSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres
+POSTGRES_USER=postgres
+POSTGRES_PASS=postgres
+```
+
+Module configuration is in `src/main/resources/application.yml`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+
+## Benchmark Test URLs
+
+### Plaintext
 
     http://localhost:8080/plaintext
 
-### JSON Encoding Test
+### JSON
 
     http://localhost:8080/json
 
-### Database Query Test
+### Single Query
 
     http://localhost:8080/db
 
-### Database Queries Test
+### Multiple Queries
 
     http://localhost:8080/queries?queries=5
 
-### Database Update Test
+### Data Update
 
     http://localhost:8080/updates?queries=5
 
-### Template Rendering Test
+### Fortunes
 
     http://localhost:8080/fortunes
-
-## Running
-
-```bash
-export POSTGRES_JDBC_URL="jdbc:postgresql://localhost:5432/postgres"
-export POSTGRES_USER="postgres"
-export POSTGRES_PASS="postgres"
-./gradlew run
-```

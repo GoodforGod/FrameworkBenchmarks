@@ -7,4 +7,4 @@ RUN tar -xf app.tar && rm app.tar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "application/bin/application"]
+ENTRYPOINT ["/app/application/bin/application"]

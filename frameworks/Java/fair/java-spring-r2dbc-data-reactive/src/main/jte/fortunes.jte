@@ -1,4 +1,4 @@
-@import io.spring.benchmark.model.Fortune
+@import io.techempower.benchmark.spring.model.Fortune
 @import java.util.List
 
 @param List<Fortune> fortunes

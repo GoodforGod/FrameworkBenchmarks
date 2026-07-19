@@ -1,53 +1,65 @@
-# Spring WebFlux R2DBC Reactive Benchmarking Test
+# Spring R2DBC Data Reactive Benchmark
 
-This is the `java-spring-r2dbc-data-reactive` implementation of the Java benchmark suite.
+TechEmpower `fair-spring-r2dbc-data-reactive` implementation.
 
-It uses Spring Boot WebFlux, Spring Data R2DBC for reactive PostgreSQL access, Java 25.
+## Stack
 
-## Implementation Notes
+- Framework: Spring Boot `4.1.0`
+- HTTP: Spring WebFlux on Netty
+- Database: Spring Data R2DBC with PostgreSQL R2DBC driver
+- Reactive type: Reactor `Mono` / `Flux`
+- Templates: JTE `3.2.3`
+- Runtime: Java 25
 
-- HTTP server: Spring WebFlux (reactive, non-blocking)
-- Database access: Spring Data R2DBC with PostgreSQL R2DBC driver
-- Runtime model: Fully reactive with Project Reactor (Mono/Flux)
-- Covered tests: plaintext, json, db, queries, updates, fortunes
+## Commands
 
-## Local Development
-
-Build the distribution:
 ```bash
-./gradlew java-spring-r2dbc-data-reactive:bootJar
+./gradlew :java-spring-r2dbc-data-reactive:compileJava
+./gradlew :java-spring-r2dbc-data-reactive:testClasses
+./gradlew :java-spring-r2dbc-data-reactive:bootJar
+./gradlew :java-spring-r2dbc-data-reactive:bootRun
 ```
 
-Run locally with PostgreSQL environment variables:
+Docker image used by the BlackBox test:
+
 ```bash
-export POSTGRES_R2DBC_URL="r2dbc:postgresql://localhost:5432/postgres"
-export POSTGRES_USER="postgres"
-export POSTGRES_PASS="postgres"
-./gradlew java-spring-r2dbc-data-reactive:bootRun
+./gradlew :java-spring-r2dbc-data-reactive:bootJar
+docker build -t fair-spring-r2dbc-data-reactive java-spring-r2dbc-data-reactive
 ```
 
-## Test URLs
+## Configuration
 
-### Plaintext Test
+```bash
+POSTGRES_R2DBC_URL=r2dbc:postgresql://localhost:5432/postgres
+POSTGRES_USER=postgres
+POSTGRES_PASS=postgres
+```
+
+Module configuration is in `src/main/resources/application.yml`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+
+## Benchmark Test URLs
+
+### Plaintext
 
     http://localhost:8080/plaintext
 
-### JSON Encoding Test
+### JSON
 
     http://localhost:8080/json
 
-### Database Query Test
+### Single Query
 
     http://localhost:8080/db
 
-### Database Queries Test
+### Multiple Queries
 
     http://localhost:8080/queries?queries=5
 
-### Database Update Test
+### Data Update
 
     http://localhost:8080/updates?queries=5
 
-### Template Rendering Test
+### Fortunes
 
     http://localhost:8080/fortunes

@@ -1,4 +1,4 @@
-@import io.spring.benchmark.entity.Fortune
+@import io.techempower.benchmark.spring.model.Fortune
 @import java.util.List
 
 @param List<Fortune> fortunes
@@ -6,6 +6,6 @@
 <head><title>Fortunes</title></head><body><table>
 <tr><th>id</th><th>message</th></tr>
 @for(var fortune : fortunes)
-    <tr><td>${fortune.id}</td><td>${fortune.message}</td></tr>
+    <tr><td>${fortune.getId()}</td><td>${fortune.getMessage()}</td></tr>
 @endfor
 </table></body></html>

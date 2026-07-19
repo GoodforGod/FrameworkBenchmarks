@@ -1,7 +1,8 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "4.1.0"
+    id "org.springframework.boot" version "$springBootVersion"
     id "io.spring.dependency-management" version "1.1.7"
+    id "gg.jte.gradle" version "3.2.3"
 }
 
 version = springBootVersion
@@ -12,15 +13,15 @@ java {
 }
 
 dependencies {
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+
     implementation "org.springframework.boot:spring-boot-starter-data-jdbc"
-    implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.postgresql:postgresql:42.7.11"
-    implementation "org.slf4j:slf4j-nop:2.0.17"
-    implementation("org.springframework.boot:spring-boot-starter-undertow") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
-    }
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "gg.jte:jte:3.2.3"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-webmvc-test"
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
@@ -30,6 +31,21 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs += "-parameters"
 }
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
+    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
+    sourceSets.main.java.srcDirs += "build/generated/jte"
+    contentType = gg.jte.ContentType.Html
+}
+
+compileJava.dependsOn tasks.generateJte
 
 tasks.named("bootJar") {
     archiveFileName = "${project.name}.jar"

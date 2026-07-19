@@ -14,30 +14,34 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
-ext {
-    micronautVersion = "5.1.5"
-    micronautDataVersion = "5.13.0"
-    micronautSqlVersion = "5.7.0"
+micronaut {
+    version("$micronautVersion")
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        module(project.name)
+        group(project.group)
+        annotations("io.micronaut.benchmark.jpa.*")
+    }
 }
 
 dependencies {
-    annotationProcessor platform("io.micronaut.platform:micronaut-platform:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
-    annotationProcessor "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor"
 
-    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
 
-    implementation platform("io.micronaut.platform:micronaut-platform:$micronautVersion")
     implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-runtime"
     implementation "io.micronaut.serde:micronaut-serde-jackson"
-    implementation "io.micronaut.data:micronaut-data-hibernate-jpa:$micronautDataVersion"
-    implementation "io.micronaut.sql:micronaut-hibernate-jpa:$micronautSqlVersion"
-    implementation "io.micronaut.sql:micronaut-jdbc-hikari:$micronautSqlVersion"
+    implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
+    implementation "io.micronaut.sql:micronaut-hibernate-jpa"
+    implementation "io.micronaut.sql:micronaut-jdbc-hikari"
     implementation "org.postgresql:postgresql:42.7.11"
     implementation "gg.jte:jte:3.2.3"
-    implementation "org.slf4j:slf4j-nop:2.0.17"
+    implementation "gg.jte:jte-runtime:3.2.3"
 
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"

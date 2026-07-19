@@ -3,7 +3,67 @@ version = '1.0.0'
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: "java"
+
+    def postgresEnvironment = providers.provider {
+        [
+                "POSTGRES_JDBC_URL"    : "jdbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase".toString(),
+                "POSTGRES_R2DBC_URL"   : "r2dbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase".toString(),
+                "POSTGRES_REACTIVE_URL": "postgresql://$postgresHost:$postgresPort/$postgresDatabase".toString(),
+                "POSTGRES_USER"        : "$postgresUser".toString(),
+                "POSTGRES_PASS"        : "$postgresPassword".toString(),
+        ]
+    }
+
+    tasks.withType(JavaExec).configureEach {
+        environment(postgresEnvironment.get())
+    }
+
+    plugins.withId("io.quarkus") {
+        tasks.matching { it.name == "quarkusDev" }.configureEach {
+            environmentVariables.putAll(postgresEnvironment)
+        }
+        tasks.matching { it.name == "quarkusRun" }.configureEach {
+            jvmArguments.addAll(providers.provider {
+                postgresEnvironment.get().collect { key, value -> "-D$key=$value".toString() }
+            })
+        }
+    }
+
+    dependencies {
+        testImplementation platform("org.junit:junit-bom:5.14.4")
+        testRuntimeOnly platform("org.junit:junit-bom:5.14.4")
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    }
+
+    test {
+        jvmArgs += [
+                "-XX:+TieredCompilation",
+                "-XX:TieredStopAtLevel=1",
+        ]
+
+        environment([
+                "": ""
+        ])
+
+        useJUnitPlatform()
+        testLogging {
+            showStandardStreams = true
+            events("passed", "skipped", "failed")
+            exceptionFormat = "full"
+        }
+
+        exclude("**/\$*")
+
+        reports {
+            html.required = false
+            junitXml.required = false
+        }
     }
 }

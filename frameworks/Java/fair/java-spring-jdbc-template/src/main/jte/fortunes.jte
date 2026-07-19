@@ -1,12 +1,13 @@
+@param java.util.List<io.techempower.benchmark.spring.model.Fortune> fortunes
 <!DOCTYPE html>
 <html>
 <head><title>Fortunes</title></head>
 <body>
 <table>
 <tr><th>id</th><th>message</th></tr>
-{% for fortune in fortunes %}
+@for(var fortune : fortunes)
 <tr><td>${fortune.id()}</td><td>${fortune.message()}</td></tr>
-{% endfor %}
+@endfor
 </table>
 </body>
 </html>

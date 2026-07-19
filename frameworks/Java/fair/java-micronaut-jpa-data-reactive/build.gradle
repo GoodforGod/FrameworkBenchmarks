@@ -1,0 +1,76 @@
+plugins {
+    id "java"
+    id "application"
+    id "io.micronaut.application" version "5.0.2"
+    id "io.micronaut.aot" version "5.0.2"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = micronautVersion
+group = "io.micronaut.benchmark.jpa"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+micronaut {
+    version("$micronautVersion")
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        module(project.name)
+        group(project.group)
+        annotations("io.micronaut.benchmark.jpa.*")
+    }
+}
+
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
+    annotationProcessor "io.micronaut.data:micronaut-data-processor"
+
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "io.micronaut.data:micronaut-data-hibernate-reactive"
+    implementation "io.micronaut.reactor:micronaut-reactor"
+    implementation "io.vertx:vertx-pg-client"
+    implementation "gg.jte:jte:3.2.3"
+    implementation "gg.jte:jte-runtime:3.2.3"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+}
+
+application {
+    mainClass = "io.micronaut.benchmark.jpa.Application"
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+distTar {
+    archiveFileName = "application.tar"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
+    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
+    sourceSets.main.java.srcDirs += "build/generated/jte"
+    contentType = gg.jte.ContentType.Html
+}
+
+compileJava.dependsOn tasks.generateJte

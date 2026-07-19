@@ -1,0 +1,2 @@
+@param java.util.List<io.techempower.benchmark.helidon.model.Fortune> fortunes
+<!DOCTYPE html><html><head><title>Fortunes</title></head><body><table><tr><th>id</th><th>message</th></tr>@for(io.techempower.benchmark.helidon.model.Fortune fortune : fortunes)<tr><td>${fortune.getId()}</td><td>${fortune.getMessage()}</td></tr>@endfor</table></body></html>

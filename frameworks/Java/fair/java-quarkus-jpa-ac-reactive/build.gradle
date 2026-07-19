@@ -1,0 +1,50 @@
+plugins {
+    id "java"
+    id "io.quarkus" version "$quarkusVersion"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = quarkusVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    implementation platform("io.quarkus:quarkus-bom:$quarkusVersion")
+
+    implementation "io.quarkus:quarkus-arc"
+    implementation "io.quarkus:quarkus-rest-jackson"
+    implementation "io.quarkus:quarkus-hibernate-reactive-panache"
+    implementation "io.quarkus:quarkus-reactive-pg-client"
+    implementation "org.jboss.slf4j:slf4j-jboss-logmanager"
+    implementation "gg.jte:jte:3.2.3"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+    testImplementation "io.quarkus:quarkus-junit5"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "org.hamcrest:hamcrest:3.0"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
+    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
+    sourceSets.main.java.srcDirs += "build/generated/jte"
+    contentType = gg.jte.ContentType.Html
+}
+
+compileJava.dependsOn tasks.generateJte

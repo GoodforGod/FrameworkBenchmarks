@@ -1,32 +1,64 @@
-# Spring JDBC Template Benchmark
+# Spring JdbcTemplate Benchmark
 
-This is the Spring Boot with JdbcTemplate portion of the Java benchmarking test suite.
+TechEmpower `fair-spring-jdbc-template` implementation.
 
-## Implementation
+## Stack
 
-This implementation uses:
-- Spring Boot 3.5.0
-- Spring JDBC (JdbcTemplate)
-- PostgreSQL database
-- jte templates for server-side rendering
-- Jackson for JSON serialization
+- Framework: Spring Boot `4.1.0`
+- HTTP: Spring MVC on Tomcat
+- Database: Spring `JdbcTemplate` with PostgreSQL JDBC
+- Templates: JTE `3.2.3`
+- Runtime: Java 25
 
-## Endpoints
-
-- `/plaintext` - Returns "Hello, World!" as text/plain
-- `/json` - Returns `{"message":"Hello, World!"}` as application/json
-- `/db` - Single database query returning a World object
-- `/queries?queries=N` - Multiple database queries (1-500)
-- `/updates?queries=N` - Multiple database updates (1-500)
-- `/fortunes` - HTML page with sorted fortunes
-
-## Running
+## Commands
 
 ```bash
-./gradlew bootRun
+./gradlew :java-spring-jdbc-template:compileJava
+./gradlew :java-spring-jdbc-template:testClasses
+./gradlew :java-spring-jdbc-template:distTar
+./gradlew :java-spring-jdbc-template:bootRun
 ```
 
-Environment variables:
-- `POSTGRES_JDBC_URL` - PostgreSQL JDBC URL
-- `POSTGRES_USER` - Database username
-- `POSTGRES_PASS` - Database password
+Docker image used by the BlackBox test:
+
+```bash
+./gradlew :java-spring-jdbc-template:distTar
+docker build -t fair-spring-jdbc-template java-spring-jdbc-template
+```
+
+## Configuration
+
+```bash
+POSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres
+POSTGRES_USER=postgres
+POSTGRES_PASS=postgres
+```
+
+Module configuration is in `src/main/resources/application.yml`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+
+## Benchmark Test URLs
+
+### Plaintext
+
+    http://localhost:8080/plaintext
+
+### JSON
+
+    http://localhost:8080/json
+
+### Single Query
+
+    http://localhost:8080/db
+
+### Multiple Queries
+
+    http://localhost:8080/queries?queries=5
+
+### Data Update
+
+    http://localhost:8080/updates?queries=5
+
+### Fortunes
+
+    http://localhost:8080/fortunes

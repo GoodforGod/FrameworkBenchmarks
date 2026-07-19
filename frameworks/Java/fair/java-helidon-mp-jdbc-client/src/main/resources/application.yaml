@@ -1,0 +1,31 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+  virtual-threads:
+    enabled: ${VIRTUAL_THREADS_ENABLED:true}
+  backlog: 8192
+  write-queue-length: 8192
+  smart-async-writes: true
+  connection-options:
+    read-timeout: PT0S
+    connect-timeout: PT0S
+    tcp-no-delay: true
+  protocols:
+    "http_1_1":
+      validate-request-headers: false
+      validate-response-headers: false
+      validate-path: false
+      recv-log: false
+      send-log: false
+
+db:
+  source: jdbc
+  connection:
+    url: ${POSTGRES_JDBC_URL:"jdbc:postgresql://localhost:5432/postgres"}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    ssl: false
+    tcpKeepAlive: true

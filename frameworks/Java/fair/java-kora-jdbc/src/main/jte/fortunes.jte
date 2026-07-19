@@ -1,4 +1,4 @@
-@import io.koraframework.benchmark.model.Fortune
+@import io.techempower.benchmark.kora.model.Fortune
 @import java.util.List
 
 @param List<Fortune> fortunes

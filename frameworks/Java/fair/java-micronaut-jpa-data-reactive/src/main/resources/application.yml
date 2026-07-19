@@ -1,0 +1,33 @@
+micronaut:
+  application:
+    name: micronaut-jpa-reactive-benchmark
+  server:
+    port: 8080
+  jvm:
+    virtual:
+      threads:
+        enabled: ${VIRTUAL_THREADS_ENABLED:false}
+
+jpa:
+  default:
+    reactive: true
+    entity-scan:
+      packages:
+        - io.micronaut.benchmark.jpa.model
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: false
+        format_sql: false
+        connection:
+          url: ${POSTGRES_REACTIVE_URL:postgresql://localhost:5432/postgres}
+          username: ${POSTGRES_USER:postgres}
+          password: ${POSTGRES_PASS:postgres}
+          pool_size: 512
+      jakarta:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            database:
+              action: none

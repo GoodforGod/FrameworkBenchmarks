@@ -15,19 +15,23 @@ java {
 }
 
 micronaut {
+    version("$micronautVersion")
     runtime("netty")
     testRuntime("junit5")
     processing {
         incremental(true)
+        module(project.name)
+        group(project.group)
         annotations("io.micronaut.benchmark.*")
     }
 }
+
 
 dependencies {
     annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
     annotationProcessor "io.micronaut.data:micronaut-data-processor"
 
-    runtimeOnly "ch.qos.logback:logback-classic"
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
 
     implementation "io.micronaut.serde:micronaut-serde-jackson"
     implementation "io.micronaut.data:micronaut-data-jdbc"
@@ -36,9 +40,9 @@ dependencies {
     implementation "gg.jte:jte:3.2.3"
     implementation "io.micronaut:micronaut-http-server-netty"
 
-    testImplementation "org.testcontainers:testcontainers:1.20.1"
-    testImplementation "org.testcontainers:postgresql:1.20.1"
-    testImplementation "org.testcontainers:junit-jupiter:1.20.1"
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
 application {

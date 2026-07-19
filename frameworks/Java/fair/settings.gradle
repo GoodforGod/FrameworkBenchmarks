@@ -1,6 +1,5 @@
 pluginManagement {
     repositories {
-        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -8,7 +7,6 @@ pluginManagement {
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -17,12 +15,17 @@ buildscript {
 rootProject.name = 'fair-benchmark'
 
 include 'java-kora-jdbc'
-include 'java-quarkus-jpa-dao'
+include 'java-quarkus-jpa-ac'
 include 'java-quarkus-jpa-repository'
-include 'java-micronaut-jdbc-data'
+include 'java-quarkus-jpa-ac-reactive'
+include 'java-quarkus-jpa-repository-reactive'
 include 'java-micronaut-jpa-data'
+include 'java-micronaut-jdbc-data'
+include 'java-micronaut-jpa-data-reactive'
+include 'java-micronaut-r2dbc-data-reactive'
 include 'java-spring-jdbc-data'
 include 'java-spring-jdbc-template'
 include 'java-spring-jpa-data'
 include 'java-spring-r2dbc-data-reactive'
-include 'java-helidon-jdbc-nima'
+include 'java-helidon-mp-jdbc-client'
+include 'java-helidon-mp-jpa-data'

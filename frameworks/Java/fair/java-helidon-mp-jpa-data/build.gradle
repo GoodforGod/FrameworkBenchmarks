@@ -1,0 +1,54 @@
+plugins {
+    id "java"
+    id "application"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = helidonVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    implementation platform("io.helidon:helidon-dependencies:$helidonVersion")
+
+    annotationProcessor "io.helidon.bundles:helidon-bundles-apt:$helidonVersion"
+    annotationProcessor "io.helidon.data.jakarta.persistence:helidon-data-jakarta-persistence-codegen:$helidonVersion"
+
+    implementation "io.helidon.config:helidon-config-yaml"
+    implementation "io.helidon.microprofile.bundles:helidon-microprofile-core"
+    implementation "io.helidon.data:helidon-data"
+    implementation "io.helidon.data.jakarta.persistence:helidon-data-jakarta-persistence"
+    implementation "io.helidon.service:helidon-service-registry"
+    implementation "org.glassfish.jersey.media:jersey-media-json-binding"
+
+    runtimeOnly "org.hibernate.orm:hibernate-core"
+    implementation "org.postgresql:postgresql:42.7.11"
+    implementation "gg.jte:jte:3.2.3"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+}
+
+application {
+    mainClass = "io.helidon.benchmark.nima.Application"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "resources", "views")
+    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
+    sourceSets.main.java.srcDirs += "build/generated/jte"
+    contentType = gg.jte.ContentType.Html
+}
+
+compileJava.dependsOn tasks.generateJte

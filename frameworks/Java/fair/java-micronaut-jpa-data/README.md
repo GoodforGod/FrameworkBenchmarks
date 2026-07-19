@@ -1,65 +1,64 @@
 # Micronaut JPA Data Benchmark
 
-This is the Micronaut JPA Data portion of the Java benchmarking test suite comparing a variety of web development platforms.
+TechEmpower `fair-micronaut-jpa-data` implementation.
 
-## Implementation
+## Stack
 
-This implementation uses:
-- Micronaut Framework 4.5.x
-- Micronaut Data JPA with Hibernate
-- HikariCP connection pool
-- PostgreSQL database
-- jte template engine for Fortunes test
-- Netty server runtime
+- Framework: Micronaut `5.0.4`
+- HTTP: Micronaut HTTP Server Netty
+- Database: Micronaut Data JPA with Hibernate ORM, PostgreSQL JDBC, and HikariCP
+- Templates: JTE `3.2.3`
+- Runtime: Java 25
 
-## Test URLs
-
-### Plaintext Test
-```
-http://localhost:8080/plaintext
-```
-
-### JSON Encoding Test
-```
-http://localhost:8080/json
-```
-
-### Database Query Test
-```
-http://localhost:8080/db
-```
-
-### Database Queries Test
-```
-http://localhost:8080/queries?queries=5
-```
-
-### Database Update Test
-```
-http://localhost:8080/updates?queries=5
-```
-
-### Template Rendering Test
-```
-http://localhost:8080/fortunes
-```
-
-## Versions
-
-- Java 25 (Temurin)
-- Gradle 9.4.0
-- Micronaut 4.5.3
-- Micronaut Data 4.13.0
-- Hibernate 6.6.x
-- PostgreSQL Driver 42.7.11
-
-## Running
+## Commands
 
 ```bash
-./gradlew run
+./gradlew :java-micronaut-jpa-data:compileJava
+./gradlew :java-micronaut-jpa-data:testClasses
+./gradlew :java-micronaut-jpa-data:distTar
+./gradlew :java-micronaut-jpa-data:run
 ```
 
-Environment variables:
-- `POSTGRES_JDBC_URL` - JDBC URL for PostgreSQL (default: jdbc:postgresql://localhost:5432/postgres)
-- `POSTGRES_USER` - Database username (default: postgres)
-- `POSTGRES_PASS` - Database password (default: postgres)
+Docker image used by the BlackBox test:
+
+```bash
+./gradlew :java-micronaut-jpa-data:distTar
+docker build -t fair-micronaut-jpa-data java-micronaut-jpa-data
+```
+
+## Configuration
+
+```bash
+POSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres
+POSTGRES_USER=postgres
+POSTGRES_PASS=postgres
+```
+
+Module configuration is in `src/main/resources/application.yml`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+
+## Benchmark Test URLs
+
+### Plaintext
+
+    http://localhost:8080/plaintext
+
+### JSON
+
+    http://localhost:8080/json
+
+### Single Query
+
+    http://localhost:8080/db
+
+### Multiple Queries
+
+    http://localhost:8080/queries?queries=5
+
+### Data Update
+
+    http://localhost:8080/updates?queries=5
+
+### Fortunes
+
+    http://localhost:8080/fortunes

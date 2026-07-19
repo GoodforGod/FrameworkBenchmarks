@@ -1,34 +1,71 @@
 # Quarkus JPA Repository Benchmark
 
-This is the Quarkus JPA Repository (Panache) benchmark implementation for the TechEmpower Framework Benchmarks.
+TechEmpower `fair-quarkus-jpa-repository` implementation.
 
-## Implementation Details
+## Stack
 
-- **Framework**: Quarkus 3.20.0
-- **ORM**: Hibernate ORM with Panache Repository pattern
-- **Database**: PostgreSQL via JDBC
-- **Template Engine**: jte
-- **Java Version**: 25
+- Framework: Quarkus `3.37.2`
+- HTTP: Quarkus REST / JAX-RS on Vert.x
+- Database: Hibernate ORM Panache Repository with PostgreSQL JDBC
+- Templates: JTE `3.2.3`
+- Runtime: Java 25
 
-## Test Endpoints
-
-- `/plaintext` - Returns "Hello, World!" as text/plain
-- `/json` - Returns JSON object with message
-- `/db` - Single database query using Panache Repository
-- `/queries?queries=N` - Multiple database queries using Panache Repository
-- `/updates?queries=N` - Multiple database updates using Panache Repository
-- `/fortunes` - HTML template rendering with fortunes
-
-## Running the Benchmark
+## Commands
 
 ```bash
-./gradlew run -DPOSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres \
-              -DPOSTGRES_USER=postgres \
-              -DPOSTGRES_PASS=postgres
+./gradlew :java-quarkus-jpa-repository:compileJava
+./gradlew :java-quarkus-jpa-repository:testClasses
+./gradlew :java-quarkus-jpa-repository:assemble
+./gradlew :java-quarkus-jpa-repository:quarkusRun
+./gradlew :java-quarkus-jpa-repository:quarkusDev
 ```
 
-## Build
+Packaged Quarkus fast-jar:
 
 ```bash
-./gradlew build
+java -jar java-quarkus-jpa-repository/build/quarkus-app/quarkus-run.jar
 ```
+
+Docker image used by the BlackBox test:
+
+```bash
+./gradlew :java-quarkus-jpa-repository:assemble
+docker build -t fair-quarkus-jpa-repository java-quarkus-jpa-repository
+```
+
+## Configuration
+
+```bash
+POSTGRES_JDBC_URL=jdbc:postgresql://localhost:5432/postgres
+POSTGRES_USER=postgres
+POSTGRES_PASS=postgres
+```
+
+Module configuration is in `src/main/resources/application.properties`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+
+## Benchmark Test URLs
+
+### Plaintext
+
+    http://localhost:8080/plaintext
+
+### JSON
+
+    http://localhost:8080/json
+
+### Single Query
+
+    http://localhost:8080/db
+
+### Multiple Queries
+
+    http://localhost:8080/queries?queries=5
+
+### Data Update
+
+    http://localhost:8080/updates?queries=5
+
+### Fortunes
+
+    http://localhost:8080/fortunes
