@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY build/libs/java-spring-jpa-data.jar app.jar
 
+# Virtual Threads (по умолчанию выключены)
 ENV VIRTUAL_THREADS_ENABLED=false
 
 EXPOSE 8080

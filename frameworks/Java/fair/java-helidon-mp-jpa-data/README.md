@@ -36,7 +36,8 @@ VIRTUAL_THREADS_ENABLED=true
 ```
 
 Module configuration is in `src/main/resources/application.yaml`.
-Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`,
+`postgresDatabase`, `postgresUser`, `postgresPassword`.
 
 ## Benchmark Test URLs
 

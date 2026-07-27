@@ -9,6 +9,7 @@ import io.techempower.benchmark.quarkus.util.JteUtils;
 import io.techempower.benchmark.quarkus.util.QueryUtils;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -19,7 +20,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -75,14 +75,9 @@ public class BenchmarksController {
     @WithSession
     public Uni<List<World>> queries(@QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
-        List<Uni<World>> worlds = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            worlds.add(worldRepository.findWorld(id));
-        }
-
-        return Uni.combine().all().unis(worlds)
-                .with(results -> results.stream().map(World.class::cast).toList());
+        return Multi.createFrom().range(0, count)
+                .onItem().transformToUniAndConcatenate(ignored -> worldRepository.findWorld(QueryUtils.randomWorld()))
+                .collect().asList();
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#database-updates
@@ -92,25 +87,17 @@ public class BenchmarksController {
     @WithTransaction
     public Uni<List<World>> updates(@QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
-        List<Uni<World>> worlds = new ArrayList<>(count);
-
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            worlds.add(worldRepository.findWorld(id)
-                    .map(world -> {
-                        world.randomNumber = QueryUtils.randomWorld(world.randomNumber);
-                        return world;
-                    }));
-        }
-
-        return Uni.combine().all().unis(worlds)
-                .with(results -> results.stream().map(World.class::cast).sorted(WORLD_COMPARATOR).toList())
-                .flatMap(updatedWorlds -> {
-                    List<Uni<Integer>> updates = updatedWorlds.stream()
-                            .map(world -> worldRepository.updateRandomNumber(world.id, world.randomNumber))
-                            .toList();
-                    return Uni.combine().all().unis(updates).discardItems().replaceWith(updatedWorlds);
-                });
+        return Multi.createFrom().range(0, count)
+                .onItem().transformToUniAndConcatenate(ignored -> worldRepository.findWorld(QueryUtils.randomWorld())
+                        .map(world -> {
+                            // Keep this endpoint in the reactive Panache repository style: load a
+                            // managed entity, read the current value required by TechEmpower, mutate it,
+                            // and let Hibernate Reactive flush dirty entities inside the transaction.
+                            world.randomNumber = QueryUtils.randomWorld(world.randomNumber);
+                            return world;
+                        }))
+                .collect().asList()
+                .map(worlds -> worlds.stream().sorted(WORLD_COMPARATOR).toList());
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes

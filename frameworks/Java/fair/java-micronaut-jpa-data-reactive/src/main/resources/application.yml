@@ -13,7 +13,7 @@ jpa:
     reactive: true
     entity-scan:
       packages:
-        - io.micronaut.benchmark.jpa.model
+        - io.techempower.benchmark.micronaut.model
     properties:
       hibernate:
         hbm2ddl:

@@ -35,7 +35,8 @@ POSTGRES_PASS=postgres
 ```
 
 Kora-specific configuration is in `src/main/resources/application.conf`.
-Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`,
+`postgresDatabase`, `postgresUser`, `postgresPassword`.
 
 ## Benchmark Test URLs
 

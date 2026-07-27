@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Table("world")
 public record World(
-    @Id @Column("id") @JsonProperty("id") int id,
-    @Column("randomnumber") @JsonProperty("randomNumber") int randomNumber) {
+        @Id @Column("id") @JsonProperty("id") int id,
+        @Column("randomnumber") @JsonProperty("randomNumber") int randomNumber) {
 }

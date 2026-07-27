@@ -1,5 +1,6 @@
 package io.techempower.benchmark.micronaut.controller;
 
+import io.micronaut.core.annotation.Introspected;
 import io.techempower.benchmark.micronaut.model.Fortune;
 import io.techempower.benchmark.micronaut.model.Message;
 import io.techempower.benchmark.micronaut.model.World;
@@ -21,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+@Introspected
 @Controller
 public final class BenchmarksController {
 

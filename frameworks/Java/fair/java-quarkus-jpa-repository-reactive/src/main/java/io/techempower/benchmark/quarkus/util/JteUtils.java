@@ -10,7 +10,8 @@ import java.util.List;
 
 public final class JteUtils {
 
-    private JteUtils() { }
+    private JteUtils() {
+    }
 
     public static byte[] serializeStandard(List<Fortune> fortunes) {
         var out = new Utf8ByteOutput(64);

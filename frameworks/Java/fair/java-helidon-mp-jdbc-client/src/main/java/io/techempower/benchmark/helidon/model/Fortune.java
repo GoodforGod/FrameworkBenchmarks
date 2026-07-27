@@ -17,6 +17,7 @@ public final class Fortune implements Comparable<Fortune> {
     public String getMessage() {
         return message;
     }
+
     @Override
     public int compareTo(Fortune other) {
         return message.compareTo(other.message);

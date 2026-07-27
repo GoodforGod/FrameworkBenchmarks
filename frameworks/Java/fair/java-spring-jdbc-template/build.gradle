@@ -14,33 +14,17 @@ java {
 }
 
 dependencies {
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
-
-    implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.postgresql:postgresql:42.7.11"
-    implementation "gg.jte:jte:3.2.3"
     implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "gg.jte:jte-runtime:3.2.3"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-webmvc-test"
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
-}
-
-application {
-    applicationName = "application"
-    mainClass = "org.springframework.benchmark.jdbctemplate.Application"
-    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
-}
-
-distTar {
-    archiveFileName = "application.tar"
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
 }
 
 jte {
@@ -50,10 +34,28 @@ jte {
 }
 
 tasks.generateJte {
-    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
-    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
-    sourceSets.main.java.srcDirs += "build/generated/jte"
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
     contentType = gg.jte.ContentType.Html
 }
 
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
 compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("bootJar"))
+}
+
+tasks.named("bootJar") {
+    archiveFileName = "${project.name}.jar"
+}

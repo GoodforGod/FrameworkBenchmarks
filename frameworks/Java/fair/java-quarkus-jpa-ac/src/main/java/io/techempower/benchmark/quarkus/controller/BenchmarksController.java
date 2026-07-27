@@ -10,6 +10,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.transaction.Transactional;
 import org.jspecify.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
@@ -64,21 +65,21 @@ public class BenchmarksController {
     @GET
     @Path("/updates")
     @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
     public List<World> updates(@Nullable @QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            var oldRandomNumber = World.findRandomNumber(id);
-            var newWorld = new World(id, QueryUtils.randomWorld(oldRandomNumber));
-            worlds.add(newWorld);
+            World world = World.findWorld(QueryUtils.randomWorld());
+            // Keep this endpoint in the Panache active-record style: load a managed entity,
+            // read the current value required by TechEmpower, mutate it, and let Hibernate
+            // flush dirty entities inside the Quarkus transaction.
+            world.setRandomNumber(QueryUtils.randomWorld(world.getRandomNumber()));
+            worlds.add(world);
         }
 
         worlds.sort(WORLD_COMPARATOR);
-        for (World world : worlds) {
-            World.updateRandomNumber(world.getId(), world.getRandomNumber());
-        }
         return worlds;
     }
 
@@ -94,12 +95,13 @@ public class BenchmarksController {
                 .type(MediaType.TEXT_HTML_TYPE.withCharset("UTF-8"))
                 .build();
     }
-    
+
     public static class Message {
         public String message;
-        
-        public Message() {}
-        
+
+        public Message() {
+        }
+
         public Message(String message) {
             this.message = message;
         }

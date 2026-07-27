@@ -1,5 +1,6 @@
 package io.techempower.benchmark.micronaut.repository;
 
+import io.micronaut.core.annotation.Introspected;
 import io.techempower.benchmark.micronaut.model.Fortune;
 import io.techempower.benchmark.micronaut.model.World;
 import io.micronaut.data.annotation.Query;
@@ -9,6 +10,7 @@ import io.micronaut.data.repository.CrudRepository;
 
 import java.util.List;
 
+@Introspected
 @JdbcRepository(dialect = Dialect.POSTGRES)
 public interface WorldRepository extends CrudRepository<World, Integer> {
 

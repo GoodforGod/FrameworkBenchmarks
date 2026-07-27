@@ -22,16 +22,13 @@ dependencies {
     implementation "org.glassfish.jersey.media:jersey-media-json-binding"
 
     implementation "org.postgresql:postgresql:42.7.11"
-    implementation "gg.jte:jte:3.2.3"
+    implementation "gg.jte:jte-runtime:3.2.3"
+
+    runtimeOnly "org.slf4j:slf4j-simple:2.0.17"
 
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
-}
-
-application {
-    mainClass = "io.helidon.benchmark.nima.Application"
 }
 
 jte {
@@ -41,10 +38,69 @@ jte {
 }
 
 tasks.generateJte {
-    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "resources", "views")
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
     targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
     sourceSets.main.java.srcDirs += "build/generated/jte"
     contentType = gg.jte.ContentType.Html
 }
 
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
 compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.helidon.Application")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+distTar {
+    archiveFileName = "application.tar"
+}
+
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
+def sourceBeansXml = layout.projectDirectory.file("src/main/resources/META-INF/beans.xml")
+def targetBeansXml = layout.buildDirectory.file("classes/java/main/META-INF/beans.xml")
+tasks.named("processResources") {
+    exclude("META-INF/beans.xml")
+    doFirst { delete(layout.buildDirectory.file("resources/main/META-INF/beans.xml")) }
+}
+
+def copyBeansXml = tasks.register("copyBeansXml") {
+    dependsOn tasks.named("compileJava")
+
+    inputs.file(sourceBeansXml)
+    outputs.file(targetBeansXml)
+
+    doLast {
+        File source = sourceBeansXml.asFile
+        File target = targetBeansXml.get().asFile
+
+        Files.createDirectories(target.toPath().parent)
+        if (!target.exists() || Files.mismatch(source.toPath(), target.toPath()) != -1) {
+            Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+    }
+}
+
+tasks.named("classes") {
+    dependsOn(copyBeansXml)
+}
+tasks.named("jar") {
+    dependsOn(copyBeansXml)
+}

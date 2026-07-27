@@ -6,6 +6,7 @@ import io.techempower.benchmark.quarkus.util.JteUtils;
 import io.techempower.benchmark.quarkus.util.QueryUtils;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -57,13 +58,9 @@ public class BenchmarksController {
     @WithSession
     public Uni<List<World>> queries(@Nullable @QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
-        List<Uni<World>> worlds = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            worlds.add(World.findWorld(id));
-        }
-        return Uni.combine().all().unis(worlds)
-                .with(results -> results.stream().map(World.class::cast).toList());
+        return Multi.createFrom().range(0, count)
+                .onItem().transformToUniAndConcatenate(ignored -> World.findWorld(QueryUtils.randomWorld()))
+                .collect().asList();
     }
 
     @GET
@@ -72,25 +69,17 @@ public class BenchmarksController {
     @WithTransaction
     public Uni<List<World>> updates(@Nullable @QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
-        List<Uni<World>> worlds = new ArrayList<>(count);
-
-        for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            worlds.add(World.findWorld(id)
-                    .map(world -> {
-                        world.setRandomNumber(QueryUtils.randomWorld(world.getRandomNumber()));
-                        return world;
-                    }));
-        }
-
-        return Uni.combine().all().unis(worlds)
-                .with(results -> results.stream().map(World.class::cast).sorted(WORLD_COMPARATOR).toList())
-                .flatMap(updatedWorlds -> {
-                    List<Uni<Integer>> updates = updatedWorlds.stream()
-                            .map(world -> World.updateRandomNumber(world.getId(), world.getRandomNumber()))
-                            .toList();
-                    return Uni.combine().all().unis(updates).discardItems().replaceWith(updatedWorlds);
-                });
+        return Multi.createFrom().range(0, count)
+                .onItem().transformToUniAndConcatenate(ignored -> World.findWorld(QueryUtils.randomWorld())
+                        .map(world -> {
+                            // Keep this endpoint in the reactive Panache active-record style: load a
+                            // managed entity, read the current value required by TechEmpower, mutate it,
+                            // and let Hibernate Reactive flush dirty entities inside the transaction.
+                            world.setRandomNumber(QueryUtils.randomWorld(world.getRandomNumber()));
+                            return world;
+                        }))
+                .collect().asList()
+                .map(worlds -> worlds.stream().sorted(WORLD_COMPARATOR).toList());
     }
 
     @GET
@@ -107,12 +96,13 @@ public class BenchmarksController {
                             .build();
                 });
     }
-    
+
     public static class Message {
         public String message;
-        
-        public Message() {}
-        
+
+        public Message() {
+        }
+
         public Message(String message) {
             this.message = message;
         }

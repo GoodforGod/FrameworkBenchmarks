@@ -1,6 +1,8 @@
 {
   "framework": "fair",
-  "maintainers": ["GoodforGod"],
+  "maintainers": [
+    "GoodforGod"
+  ],
   "tests": [
     {
       "kora-jdbc": {
@@ -145,7 +147,9 @@
         "display_name": "fair-micronaut-jpa-data-reactive",
         "notes": "Reactive implementation using Micronaut Data Hibernate Reactive",
         "versus": "undertow",
-        "tags": ["reactive"]
+        "tags": [
+          "reactive"
+        ]
       },
       "micronaut-r2dbc-data-reactive": {
         "json_url": "/json",
@@ -169,7 +173,9 @@
         "display_name": "fair-micronaut-r2dbc-data-reactive",
         "notes": "Reactive implementation using Micronaut Data R2DBC",
         "versus": "undertow",
-        "tags": ["reactive"]
+        "tags": [
+          "reactive"
+        ]
       },
       "quarkus-jpa-ac": {
         "json_url": "/json",
@@ -241,7 +247,9 @@
         "display_name": "fair-quarkus-jpa-ac-reactive",
         "notes": "Reactive implementation using Hibernate Reactive Panache Active Record",
         "versus": "vertx",
-        "tags": ["reactive"]
+        "tags": [
+          "reactive"
+        ]
       },
       "quarkus-jpa-repository-reactive": {
         "json_url": "/json",
@@ -265,7 +273,9 @@
         "display_name": "fair-quarkus-jpa-repository-reactive",
         "notes": "Reactive implementation using Hibernate Reactive Panache Repository",
         "versus": "vertx",
-        "tags": ["reactive"]
+        "tags": [
+          "reactive"
+        ]
       },
       "spring-jdbc-data": {
         "json_url": "/json",
@@ -361,7 +371,9 @@
         "display_name": "fair-spring-r2dbc-reactive",
         "notes": "Fully reactive implementation using WebFlux and R2DBC",
         "versus": "undertow",
-        "tags": ["reactive"]
+        "tags": [
+          "reactive"
+        ]
       }
     }
   ]

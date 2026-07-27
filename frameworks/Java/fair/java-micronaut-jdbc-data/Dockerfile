@@ -2,7 +2,7 @@ FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 
-COPY build/libs/application.tar app.tar
+COPY build/distributions/application.tar app.tar
 RUN tar -xf app.tar && rm app.tar
 
 ENV VIRTUAL_THREADS_ENABLED=false

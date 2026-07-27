@@ -7,7 +7,6 @@ plugins {
 }
 
 version = micronautVersion
-group = "io.micronaut.benchmark.jpa"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -22,7 +21,7 @@ micronaut {
         incremental(true)
         module(project.name)
         group(project.group)
-        annotations("io.micronaut.benchmark.jpa.*")
+        annotations("io.techempower.benchmark.*")
     }
 }
 
@@ -31,14 +30,17 @@ dependencies {
     annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
     annotationProcessor "io.micronaut.data:micronaut-data-processor"
 
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
+    runtimeOnly "org.yaml:snakeyaml"
 
-    implementation "io.micronaut:micronaut-inject"
-    implementation "io.micronaut:micronaut-runtime"
-    implementation "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
     implementation "io.micronaut.sql:micronaut-hibernate-jpa"
     implementation "io.micronaut.sql:micronaut-jdbc-hikari"
+    implementation "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-runtime"
+
     implementation "org.postgresql:postgresql:42.7.11"
     implementation "gg.jte:jte:3.2.3"
     implementation "gg.jte:jte-runtime:3.2.3"
@@ -48,19 +50,6 @@ dependencies {
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
-application {
-    mainClass = "io.micronaut.benchmark.jpa.Application"
-    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
-}
-
-distTar {
-    archiveFileName = "application.tar"
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-}
-
 jte {
     generate()
     binaryStaticContent = true
@@ -68,10 +57,34 @@ jte {
 }
 
 tasks.generateJte {
-    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
-    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
-    sourceSets.main.java.srcDirs += "build/generated/jte"
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
     contentType = gg.jte.ContentType.Html
 }
 
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
 compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.micronaut.Application")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+tasks.named("distTar") {
+    archiveFileName = "application.tar"
+}

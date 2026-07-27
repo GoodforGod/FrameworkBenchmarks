@@ -18,16 +18,13 @@ dependencies {
     implementation "io.quarkus:quarkus-rest-jackson"
     implementation "io.quarkus:quarkus-hibernate-reactive-panache"
     implementation "io.quarkus:quarkus-reactive-pg-client"
-    implementation "org.jboss.slf4j:slf4j-jboss-logmanager"
-    implementation "gg.jte:jte:3.2.3"
+    implementation "gg.jte:jte-runtime:3.2.3"
 
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.postgresql:postgresql:42.7.11"
     testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
-    testImplementation "io.quarkus:quarkus-junit5"
-    testImplementation "io.rest-assured:rest-assured"
-    testImplementation "org.hamcrest:hamcrest:3.0"
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -41,10 +38,20 @@ jte {
 }
 
 tasks.generateJte {
-    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
-    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
-    sourceSets.main.java.srcDirs += "build/generated/jte"
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
     contentType = gg.jte.ContentType.Html
 }
 
-compileJava.dependsOn tasks.generateJte
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn(tasks.named("generateJte"))
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("quarkusBuild"))
+}

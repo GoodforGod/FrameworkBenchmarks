@@ -4,26 +4,18 @@ plugins {
     id "gg.jte.gradle" version "3.2.3"
 }
 
-version = koraVersion
+version = kora2Version
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
 }
 
-configurations {
-    koraBom
-    compileOnly.extendsFrom(koraBom)
-    annotationProcessor.extendsFrom(koraBom)
-    implementation.extendsFrom(koraBom)
-}
-
 dependencies {
-    koraBom platform("io.koraframework:kora-parent:$koraVersion")
+    annotationProcessor "io.koraframework:annotation-processors:$kora2Version"
+    implementation platform("io.koraframework:kora-parent:$kora2Version")
 
-    annotationProcessor "io.koraframework:annotation-processors"
-
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
 
     implementation "io.koraframework:database-jdbc"
     implementation "io.koraframework:config-hocon"
@@ -47,20 +39,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
 }
 
-application {
-    applicationName = "application"
-    mainClass = "io.koraframework.benchmark.Application"
-    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
-}
-
-distTar {
-    archiveFileName = "application.tar"
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-}
-
 jte {
     generate()
     binaryStaticContent = true
@@ -74,4 +52,29 @@ tasks.generateJte {
     contentType = gg.jte.ContentType.Html
 }
 
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
 compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass = "io.techempower.benchmark.kora.Application"
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+distTar {
+    archiveFileName = "application.tar"
+}

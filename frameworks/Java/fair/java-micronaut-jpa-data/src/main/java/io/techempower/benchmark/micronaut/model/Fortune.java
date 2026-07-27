@@ -1,10 +1,12 @@
 package io.techempower.benchmark.micronaut.model;
 
+import io.micronaut.core.annotation.Introspected;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+@Introspected
 @Entity
 @Table(name = "fortune")
 public class Fortune implements Comparable<Fortune> {

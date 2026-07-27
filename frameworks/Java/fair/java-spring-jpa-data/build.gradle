@@ -13,12 +13,10 @@ java {
 }
 
 dependencies {
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
-
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.postgresql:postgresql:42.7.11"
-    implementation "gg.jte:jte:3.2.3"
+    implementation "gg.jte:jte-runtime:3.2.3"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-webmvc-test"
@@ -34,21 +32,26 @@ jte {
 }
 
 tasks.generateJte {
-    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
-    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
-    sourceSets.main.java.srcDirs += "build/generated/jte"
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
     contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
 }
 
 compileJava.dependsOn tasks.generateJte
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-    options.compilerArgs += "-parameters"
 }
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    dependsOn(tasks.named("bootJar"))
 }
 
 tasks.named("bootJar") {

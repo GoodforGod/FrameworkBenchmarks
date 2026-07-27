@@ -15,6 +15,6 @@ public interface JteModule {
     String CONTENT_TYPE = "text/html;charset=UTF-8";
 
     default HttpServerResponseMapper<List<Fortune>> jteListHttpServerResponseMapper() {
-        return(request, result) -> HttpServerResponse.of(200, request.headers(), HttpBody.of(CONTENT_TYPE, JteUtils.serializeStandard(result)));
+        return (request, result) -> HttpServerResponse.of(200, request.headers(), HttpBody.of(CONTENT_TYPE, JteUtils.serializeStandard(result)));
     }
 }

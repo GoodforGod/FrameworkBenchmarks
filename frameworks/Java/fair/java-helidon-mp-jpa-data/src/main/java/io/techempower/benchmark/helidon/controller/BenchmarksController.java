@@ -5,8 +5,6 @@ import io.techempower.benchmark.helidon.model.World;
 import io.techempower.benchmark.helidon.repository.FortuneDataRepository;
 import io.techempower.benchmark.helidon.repository.WorldDataRepository;
 import io.techempower.benchmark.helidon.util.JteUtils;
-import io.helidon.config.Config;
-import io.helidon.service.registry.Services;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -37,10 +35,9 @@ public class BenchmarksController {
     private final FortuneDataRepository fortunes;
 
     @Inject
-    public BenchmarksController(Config config) {
-        Services.set(Config.class, config);
-        this.worlds = Services.get(WorldDataRepository.class);
-        this.fortunes = Services.get(FortuneDataRepository.class);
+    public BenchmarksController(WorldDataRepository worlds, FortuneDataRepository fortunes) {
+        this.worlds = worlds;
+        this.fortunes = fortunes;
     }
 
     @GET

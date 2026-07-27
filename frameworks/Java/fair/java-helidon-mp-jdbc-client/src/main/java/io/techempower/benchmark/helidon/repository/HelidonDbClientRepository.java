@@ -2,6 +2,7 @@ package io.techempower.benchmark.helidon.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.techempower.benchmark.helidon.model.Fortune;
@@ -61,7 +62,7 @@ public final class HelidonDbClientRepository implements DbRepository {
     @Override
     public List<Fortune> getFortunes() {
         try (Stream<DbRow> rows = dbClient.execute().createQuery(SELECT_FORTUNES).execute()) {
-            return rows.map(HelidonDbClientRepository::mapFortune).toList();
+            return rows.map(HelidonDbClientRepository::mapFortune).collect(Collectors.toList());
         }
     }
 

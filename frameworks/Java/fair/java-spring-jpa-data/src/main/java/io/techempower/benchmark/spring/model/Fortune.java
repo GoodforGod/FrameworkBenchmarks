@@ -15,7 +15,8 @@ public class Fortune {
     @Column(name = "message")
     private String message;
 
-    public Fortune() {}
+    public Fortune() {
+    }
 
     public Fortune(int id, String message) {
         this.id = id;

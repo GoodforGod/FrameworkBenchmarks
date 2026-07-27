@@ -15,7 +15,8 @@ public class World {
     @Column(name = "randomnumber")
     private int randomNumber;
 
-    public World() {}
+    public World() {
+    }
 
     public World(int id, int randomNumber) {
         this.id = id;

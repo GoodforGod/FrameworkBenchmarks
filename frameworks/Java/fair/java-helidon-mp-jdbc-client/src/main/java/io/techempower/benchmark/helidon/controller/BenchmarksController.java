@@ -5,6 +5,7 @@ import io.techempower.benchmark.helidon.model.Fortune;
 import io.techempower.benchmark.helidon.model.World;
 import io.techempower.benchmark.helidon.util.JteUtils;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -22,7 +23,7 @@ import static io.techempower.benchmark.helidon.util.QueryUtils.parseCount;
 import static io.techempower.benchmark.helidon.util.QueryUtils.randomWorld;
 
 @Path("/")
-@ApplicationScoped
+@RequestScoped
 public class BenchmarksController {
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
     private static final Message MESSAGE = new Message("Hello, World!");

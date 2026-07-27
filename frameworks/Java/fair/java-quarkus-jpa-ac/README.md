@@ -42,7 +42,8 @@ POSTGRES_PASS=postgres
 ```
 
 Module configuration is in `src/main/resources/application.properties`.
-Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`, `postgresDatabase`, `postgresUser`, `postgresPassword`.
+Local Gradle launch tasks derive these values from root `gradle.properties`: `postgresHost`, `postgresPort`,
+`postgresDatabase`, `postgresUser`, `postgresPassword`.
 
 ## Benchmark Test URLs
 

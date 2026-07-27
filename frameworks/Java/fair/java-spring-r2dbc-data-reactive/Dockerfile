@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY build/libs/java-spring-r2dbc-data-reactive.jar app.jar
 
+# Virtual Threads (по умолчанию выключены)
 ENV VIRTUAL_THREADS_ENABLED=false
 
 EXPOSE 8080

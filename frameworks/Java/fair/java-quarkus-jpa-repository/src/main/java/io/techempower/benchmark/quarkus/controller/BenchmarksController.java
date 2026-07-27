@@ -8,6 +8,7 @@ import io.techempower.benchmark.quarkus.repository.WorldRepository;
 import io.techempower.benchmark.quarkus.util.JteUtils;
 import io.techempower.benchmark.quarkus.util.QueryUtils;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -27,7 +28,7 @@ public class BenchmarksController {
     private static final Message MESSAGE = new Message("Hello, World!");
 
     private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(f -> f.message);
-    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(w -> w.randomNumber);
+    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingLong(w -> w.id);
 
     private final WorldRepository worldRepository;
     private final FortuneRepository fortuneRepository;
@@ -84,15 +85,17 @@ public class BenchmarksController {
     @GET
     @Path("/updates")
     @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
     public List<World> updates(@QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            int id = QueryUtils.randomWorld();
-            World world = worldRepository.findWorld(id);
-            world.randomNumber = QueryUtils.randomWorld();
-            worldRepository.persist(world);
+            World world = worldRepository.findWorld(QueryUtils.randomWorld());
+            // Keep this endpoint in the Panache repository style: load a managed entity,
+            // read the current value required by TechEmpower, mutate it, and let Hibernate
+            // flush dirty entities inside the Quarkus transaction.
+            world.randomNumber = QueryUtils.randomWorld(world.randomNumber);
             worlds.add(world);
         }
 

@@ -6,6 +6,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table("fortune")
 public record Fortune(
-    @Id @Column("id") int id,
-    @Column("message") String message) {
+        @Id @Column("id") int id,
+        @Column("message") String message) {
 }

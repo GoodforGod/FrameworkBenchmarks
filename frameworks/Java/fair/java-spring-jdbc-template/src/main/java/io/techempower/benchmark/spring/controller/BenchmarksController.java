@@ -83,11 +83,11 @@ public class BenchmarksController {
         }
 
         worlds.sort(WORLD_COMPARATOR);
-        
+
         for (World world : worlds) {
             repository.update(world);
         }
-        
+
         return worlds;
     }
 

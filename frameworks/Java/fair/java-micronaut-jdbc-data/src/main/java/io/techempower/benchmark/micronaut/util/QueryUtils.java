@@ -4,7 +4,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class QueryUtils {
 
-    private QueryUtils() { }
+    private QueryUtils() {
+    }
 
     private static final int MIN_QUERIES = 1;
     private static final int MAX_QUERIES = 500;

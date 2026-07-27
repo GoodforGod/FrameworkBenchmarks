@@ -25,9 +25,9 @@ data:
         provider-class-name: "org.hibernate.jpa.HibernatePersistenceProvider"
         properties:
           jakarta.persistence.jdbc.driver: "org.postgresql.Driver"
-          jakarta.persistence.jdbc.url: ${POSTGRES_JDBC_URL:"jdbc:postgresql://localhost:5432/postgres"}
-          jakarta.persistence.jdbc.user: ${POSTGRES_USER:postgres}
-          jakarta.persistence.jdbc.password: ${POSTGRES_PASS:postgres}
+          jakarta.persistence.jdbc.url: jdbc:postgresql://localhost:5432/postgres
+          jakarta.persistence.jdbc.user: postgres
+          jakarta.persistence.jdbc.password: postgres
           hibernate.connection.provider_disables_autocommit: true
           hibernate.hikari.maximumPoolSize: 64
           hibernate.hikari.dataSource.cachePrepStmts: true

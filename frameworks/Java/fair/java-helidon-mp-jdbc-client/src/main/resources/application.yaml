@@ -21,11 +21,13 @@ server:
 db:
   source: jdbc
   connection:
-    url: ${POSTGRES_JDBC_URL:"jdbc:postgresql://localhost:5432/postgres"}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASS:postgres}
-    cachePrepStmts: true
-    prepStmtCacheSize: 250
-    prepStmtCacheSqlLimit: 2048
-    ssl: false
-    tcpKeepAlive: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    maximumPoolSize: 64
+    dataSource:
+      cachePrepStmts: true
+      prepStmtCacheSize: 250
+      prepStmtCacheSqlLimit: 2048
+      ssl: false
+      tcpKeepAlive: true

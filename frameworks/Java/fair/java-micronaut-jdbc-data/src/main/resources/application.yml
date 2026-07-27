@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: benchmark
+    name: micronaut-fair
   server:
     port: 8080
   jvm:
