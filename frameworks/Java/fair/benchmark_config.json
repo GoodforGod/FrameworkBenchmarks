@@ -5,7 +5,7 @@
   ],
   "tests": [
     {
-      "kora-jdbc": {
+      "kora2-jdbc": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -19,17 +19,17 @@
         "framework": "Kora",
         "language": "Java",
         "flavor": "None",
-        "orm": "Micro",
+        "orm": "Full",
         "platform": "Kora",
         "webserver": "Undertow",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-kora-jdbc",
+        "display_name": "fair-kora2-jdbc-repository",
         "notes": "",
         "versus": "undertow",
         "tags": []
       },
-      "helidon-jdbc-nima": {
+      "kora1-jdbc": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -39,21 +39,45 @@
         "port": 8080,
         "approach": "Realistic",
         "classification": "Fullstack",
+        "database": "Postgres",
+        "framework": "Kora",
+        "language": "Java",
+        "flavor": "None",
+        "orm": "Full",
+        "platform": "Kora",
+        "webserver": "Undertow",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "fair-kora1-jdbc-repository",
+        "notes": "",
+        "versus": "undertow",
+        "tags": []
+      },
+      "helidon-mp-jdbc-client": {
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "db_url": "/db",
+        "query_url": "/queries?queries=",
+        "fortune_url": "/fortunes",
+        "update_url": "/updates?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Micro",
         "database": "Postgres",
         "framework": "Helidon",
         "language": "Java",
         "flavor": "NIMA",
         "orm": "Micro",
         "platform": "Helidon",
-        "webserver": "Helidon",
+        "webserver": "Nima",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-helidon-jdbc-nima",
+        "display_name": "fair-helidon-mp-jdbc-client",
         "notes": "",
-        "versus": "undertow",
+        "versus": "nima",
         "tags": []
       },
-      "helidon-jpa-data-nima": {
+      "helidon-mp-jpa-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -62,22 +86,22 @@
         "update_url": "/updates?queries=",
         "port": 8080,
         "approach": "Realistic",
-        "classification": "Fullstack",
+        "classification": "Micro",
         "database": "Postgres",
         "framework": "Helidon",
         "language": "Java",
         "flavor": "NIMA",
         "orm": "Full",
         "platform": "Helidon",
-        "webserver": "Helidon",
+        "webserver": "Nima",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-helidon-jpa-data-nima",
+        "display_name": "fair-helidon-mp-jpa-repository",
         "notes": "",
-        "versus": "undertow",
+        "versus": "nima",
         "tags": []
       },
-      "micronaut-jdbc-data": {
+      "micronaut-jdbc-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -91,17 +115,17 @@
         "framework": "Micronaut",
         "language": "Java",
         "flavor": "None",
-        "orm": "Micro",
+        "orm": "Full",
         "platform": "Micronaut",
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-micronaut-jdbc-data",
+        "display_name": "fair-micronaut-jdbc-repository",
         "notes": "",
         "versus": "undertow",
         "tags": []
       },
-      "micronaut-jpa-data": {
+      "micronaut-jpa-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -120,7 +144,7 @@
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-micronaut-jpa-data",
+        "display_name": "fair-micronaut-jpa-repository",
         "notes": "",
         "versus": "undertow",
         "tags": []
@@ -145,7 +169,7 @@
         "os": "Linux",
         "database_os": "Linux",
         "display_name": "fair-micronaut-jpa-data-reactive",
-        "notes": "Reactive implementation using Micronaut Data Hibernate Reactive",
+        "notes": "Reactive implementation using Micronaut Data Repository Hibernate Reactive",
         "versus": "undertow",
         "tags": [
           "reactive"
@@ -165,13 +189,13 @@
         "framework": "Micronaut",
         "language": "Java",
         "flavor": "Reactive",
-        "orm": "Micro",
+        "orm": "Full",
         "platform": "Micronaut",
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
         "display_name": "fair-micronaut-r2dbc-data-reactive",
-        "notes": "Reactive implementation using Micronaut Data R2DBC",
+        "notes": "Reactive implementation using Micronaut Data Repository R2DBC",
         "versus": "undertow",
         "tags": [
           "reactive"
@@ -277,7 +301,7 @@
           "reactive"
         ]
       },
-      "spring-jdbc-data": {
+      "spring-jdbc-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -291,12 +315,12 @@
         "framework": "Spring",
         "language": "Java",
         "flavor": "Boot",
-        "orm": "Micro",
+        "orm": "Full",
         "platform": "Spring",
         "webserver": "Tomcat",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-spring-jdbc-data",
+        "display_name": "fair-spring-jdbc-repository",
         "notes": "",
         "versus": "undertow",
         "tags": []
@@ -325,7 +349,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "spring-jpa-data": {
+      "spring-jpa-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -344,7 +368,7 @@
         "webserver": "Tomcat",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-spring-jpa-data",
+        "display_name": "fair-spring-jpa-repository",
         "notes": "",
         "versus": "undertow",
         "tags": []
@@ -363,7 +387,7 @@
         "framework": "Spring",
         "language": "Java",
         "flavor": "WebFlux",
-        "orm": "Micro",
+        "orm": "Full",
         "platform": "Spring",
         "webserver": "Netty",
         "os": "Linux",
@@ -374,6 +398,56 @@
         "tags": [
           "reactive"
         ]
+      },
+      "spring-r2dbc-client-reactive": {
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "db_url": "/db",
+        "query_url": "/queries?queries=",
+        "fortune_url": "/fortunes",
+        "update_url": "/updates?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Fullstack",
+        "database": "Postgres",
+        "framework": "Spring",
+        "language": "Java",
+        "flavor": "WebFlux",
+        "orm": "Micro",
+        "platform": "Spring",
+        "webserver": "Netty",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "fair-spring-r2dbc-client-reactive",
+        "notes": "Fully reactive implementation using WebFlux and Spring DatabaseClient over R2DBC",
+        "versus": "undertow",
+        "tags": [
+          "reactive"
+        ]
+      },
+      "vertx-pg-client": {
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "db_url": "/db",
+        "query_url": "/queries?queries=",
+        "fortune_url": "/fortunes",
+        "update_url": "/updates?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Platform",
+        "database": "Postgres",
+        "framework": "Vert.x",
+        "language": "Java",
+        "flavor": "None",
+        "orm": "Raw",
+        "platform": "Vert.x",
+        "webserver": "Vert.x",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "fair-vertx-pg-client",
+        "notes": "Pure Vert.x Web and PgClient implementation with Pg driver pipelining disabled",
+        "versus": "vertx",
+        "tags": []
       }
     }
   ]

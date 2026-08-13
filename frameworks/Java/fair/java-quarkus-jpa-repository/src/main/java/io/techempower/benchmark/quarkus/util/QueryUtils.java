@@ -9,7 +9,7 @@ public final class QueryUtils {
 
     private static final int MIN_QUERIES = 1;
     private static final int MAX_QUERIES = 500;
-    private static final int WORLD_ROWS = 10000;
+    private static final int WORLD_ROWS = 10001;
 
     public static int parseCount(String value) {
         if (value == null) {
@@ -31,11 +31,11 @@ public final class QueryUtils {
     }
 
     public static int randomWorld() {
-        return ThreadLocalRandom.current().nextInt(WORLD_ROWS) + 1;
+        return ThreadLocalRandom.current().nextInt(1, WORLD_ROWS);
     }
 
     public static int randomWorld(int exclusion) {
-        var nextWorldId = ThreadLocalRandom.current().nextInt(WORLD_ROWS) + 1;
+        var nextWorldId = ThreadLocalRandom.current().nextInt(1, WORLD_ROWS);
         if (exclusion == nextWorldId) {
             return randomWorld(exclusion);
         }

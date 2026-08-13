@@ -1,0 +1,74 @@
+plugins {
+    id "java"
+    id "application"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = vertxVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    runtimeOnly "org.slf4j:slf4j-simple:2.0.17"
+
+    implementation "io.vertx:vertx-web:$vertxVersion"
+    implementation "io.vertx:vertx-pg-client:$vertxVersion"
+    implementation "gg.jte:jte-runtime:3.2.3"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.postgresql:postgresql:42.7.11"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.vertx.Application")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+tasks.named("run") {
+    environment([
+            "POSTGRES_REACTIVE_URL"    : "postgresql://$postgresHost:$postgresPort/$postgresDatabase",
+            "POSTGRES_USER"            : "$postgresUser",
+            "POSTGRES_PASS"            : "$postgresPassword",
+            "POSTGRES_PIPELINING_LIMIT": "1",
+    ])
+}
+
+tasks.named("distTar") {
+    archiveFileName = "application.tar"
+}

@@ -12,6 +12,8 @@ java {
 }
 
 dependencies {
+    runtimeOnly "org.slf4j:slf4j-simple:2.0.17"
+
     implementation platform("io.helidon:helidon-dependencies:$helidonVersion")
 
     implementation "io.helidon.config:helidon-config-yaml"
@@ -23,8 +25,6 @@ dependencies {
 
     implementation "org.postgresql:postgresql:42.7.11"
     implementation "gg.jte:jte-runtime:3.2.3"
-
-    runtimeOnly "org.slf4j:slf4j-simple:2.0.17"
 
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"

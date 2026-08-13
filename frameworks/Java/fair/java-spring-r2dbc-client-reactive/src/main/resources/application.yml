@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: spring-r2dbc-client-reactive-benchmark
+  threads:
+    virtual:
+      enabled: ${VIRTUAL_THREADS_ENABLED:false}
+  r2dbc:
+    url: ${POSTGRES_R2DBC_URL:r2dbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    pool:
+      max-size: 512
+      initial-size: 16
+      max-idle-time: 30m
+      validation-query: SELECT 1
+
+server:
+  port: 8080

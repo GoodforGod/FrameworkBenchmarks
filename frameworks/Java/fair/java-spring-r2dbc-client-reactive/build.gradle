@@ -1,0 +1,70 @@
+plugins {
+    id "java"
+    id "org.springframework.boot" version "$springBootVersion"
+    id "io.spring.dependency-management" version "1.1.7"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = springBootVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-r2dbc"
+    implementation "io.r2dbc:r2dbc-pool"
+    implementation "org.postgresql:r2dbc-postgresql:1.0.7.RELEASE"
+    implementation "gg.jte:jte-runtime:3.2.3"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-webflux-test"
+    testImplementation "io.projectreactor:reactor-test"
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.postgresql:postgresql:42.7.11"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("bootJar"))
+}
+
+tasks.named("bootJar") {
+    archiveFileName = "${project.name}.jar"
+}
+
+tasks.named("bootRun") {
+    environment([
+            "POSTGRES_R2DBC_URL": "r2dbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase",
+            "POSTGRES_USER"     : "$postgresUser",
+            "POSTGRES_PASS"     : "$postgresPassword",
+    ])
+}

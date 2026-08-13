@@ -14,7 +14,7 @@ public final class JteUtils {
     }
 
     public static byte[] serializeStandard(List<Fortune> fortunes) {
-        var out = new Utf8ByteOutput(64);
+        var out = new Utf8ByteOutput(256);
         HtmlTemplateOutput template = new OwaspHtmlTemplateOutput(out);
         JtefortunesGenerated.render(template, null, fortunes);
         return out.toByteArray();
