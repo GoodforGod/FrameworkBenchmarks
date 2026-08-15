@@ -1,0 +1,103 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "2.1.21"
+    id "com.google.devtools.ksp" version "2.1.21-2.0.2"
+    id "application"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = kora1Version
+
+configurations {
+    koraBom
+    ksp.extendsFrom(koraBom)
+    compileOnly.extendsFrom(koraBom)
+    implementation.extendsFrom(koraBom)
+    testImplementation.extendsFrom(koraBom)
+    kspTest.extendsFrom(koraBom)
+}
+
+dependencies {
+    koraBom platform("ru.tinkoff.kora:kora-parent:$kora1Version")
+    ksp "ru.tinkoff.kora:symbol-processors"
+
+    implementation "ru.tinkoff.kora:database-jdbc"
+    implementation "ru.tinkoff.kora:config-hocon"
+    implementation "ru.tinkoff.kora:json-module"
+    implementation "ru.tinkoff.kora:http-server-undertow"
+    implementation "ru.tinkoff.kora:logging-logback"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.8.1"
+    implementation "gg.jte:jte:3.2.3"
+    implementation "org.postgresql:postgresql:42.7.11"
+
+    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.postgresql:postgresql:42.7.11"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+}
+
+kotlin {
+    jvmToolchain(21)
+    sourceSets.main.kotlin.srcDir("build/generated/ksp/main/kotlin")
+    sourceSets.test.kotlin.srcDir("build/generated/ksp/test/kotlin")
+}
+
+ksp {
+    arg("kora.app.submodule.enabled", "true")
+    useKsp2 = false
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileKotlin.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 21
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions.jvmTarget = "21"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.kora.ApplicationKt")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+tasks.named("run") {
+    environment([
+            "POSTGRES_JDBC_URL": "jdbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase",
+            "POSTGRES_USER"    : "$postgresUser",
+            "POSTGRES_PASS"    : "$postgresPassword",
+    ])
+}
+
+tasks.named("distTar") {
+    archiveFileName = "application.tar"
+}

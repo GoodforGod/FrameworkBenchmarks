@@ -2,7 +2,7 @@ FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 
-COPY build/libs/java-spring-jpa-data.jar app.jar
+COPY build/libs/java-spring-jpa-repository.jar app.jar
 
 # Virtual Threads (по умолчанию выключены)
 ENV VIRTUAL_THREADS_ENABLED=false

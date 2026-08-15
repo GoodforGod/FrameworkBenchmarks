@@ -1,30 +1,37 @@
-# Fair FrameworkBenchmarks - Java Implementations
+# Fair FrameworkBenchmarks - Java and Kotlin Implementations
 
-This is the Fair portion of the Java [benchmarking test suite](../) comparing a variety of web development platforms.
+This is the Fair portion of the Java and Kotlin [benchmarking test suite](../) comparing a variety of web development platforms.
 
 ## Implementations
 
-There are currently 17 implementations:
+There are currently 24 implementations:
 
-| Framework                              | Data Access                               | Web Server   | Package                              |
-|----------------------------------------|-------------------------------------------|--------------|--------------------------------------|
-| `java-kora-jdbc-repository`            | Kora JDBC Repository                      | Undertow     | `io.techempower.benchmark.kora`      |
-| `java-helidon-mp-jdbc-client`          | Helidon DbClient + HikariCP               | Helidon MP   | `io.techempower.benchmark.helidon`   |
-| `java-helidon-mp-jpa-data`             | Helidon Data Repository + JPA             | Helidon MP   | `io.techempower.benchmark.helidon`   |
-| `java-micronaut-jdbc-data`             | Micronaut Data JDBC                       | Netty        | `io.techempower.benchmark.micronaut` |
-| `java-micronaut-jpa-data`              | Micronaut Data JPA                        | Netty        | `io.techempower.benchmark.micronaut` |
-| `java-micronaut-jpa-data-reactive`     | Micronaut Data Hibernate Reactive         | Netty        | `io.techempower.benchmark.micronaut` |
-| `java-micronaut-r2dbc-data-reactive`   | Micronaut Data R2DBC                      | Netty        | `io.techempower.benchmark.micronaut` |
-| `java-quarkus-jpa-ac`                  | Hibernate ORM Panache Active Record       | Quarkus REST | `io.techempower.benchmark.quarkus`   |
-| `java-quarkus-jpa-ac-reactive`         | Hibernate Panache Active Record Reactive  | Quarkus REST | `io.techempower.benchmark.quarkus`   |
-| `java-quarkus-jpa-repository`          | Hibernate ORM Panache Repository          | Quarkus REST | `io.techempower.benchmark.quarkus`   |
-| `java-quarkus-jpa-repository-reactive` | Hibernate ORM Panache Repository Reactive | Quarkus REST | `io.techempower.benchmark.quarkus`   |
-| `java-spring-jdbc-data`                | Spring Data JDBC                          | Tomcat       | `io.techempower.benchmark.spring`    |
-| `java-spring-jdbc-template`            | Spring JdbcTemplate                       | Tomcat       | `io.techempower.benchmark.spring`    |
-| `java-spring-jpa-data`                 | Spring Data JPA                           | Tomcat       | `io.techempower.benchmark.spring`    |
-| `java-spring-r2dbc-client-reactive`    | Spring DatabaseClient R2DBC               | Netty        | `io.techempower.benchmark.spring`    |
-| `java-spring-r2dbc-data-reactive`      | Spring Data R2DBC                         | Netty        | `io.techempower.benchmark.spring`    |
-| `java-vertx-pg-client`                 | Vert.x PgClient                           | Vert.x Web   | `io.techempower.benchmark.vertx`     |
+| Framework                                  | Data Access                               | Web Server | Package                              |
+|--------------------------------------------|-------------------------------------------|------------|--------------------------------------|
+| `java-kora1-jdbc-repository`               | Kora 1 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
+| `kotlin-kora1-jdbc-repository-suspend`     | Kora 1 JDBC Repository with suspend API   | Undertow   | `io.techempower.benchmark.kora`      |
+| `kotlin-kora1-vertx-repository-suspend`    | Kora 1 Vert.x Repository with suspend API | Undertow   | `io.techempower.benchmark.kora`      |
+| `kotlin-kora2-jdbc-repository`             | Kora 2 JDBC Repository with blocking API  | Undertow   | `io.techempower.benchmark.kora`      |
+| `java-kora2-jdbc-repository`               | Kora 2 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
+| `kotlin-ktor-cio-jdbc`                     | HikariCP + PostgreSQL JDBC                | CIO        | `io.techempower.benchmark.ktor`      |
+| `kotlin-ktor-netty-jdbc`                   | HikariCP + PostgreSQL JDBC                | Netty      | `io.techempower.benchmark.ktor`      |
+| `java-helidon-mp-jdbc-client`              | Helidon DbClient + HikariCP               | Nima       | `io.techempower.benchmark.helidon`   |
+| `java-helidon-mp-jpa-repository`           | Helidon Data Repository + JPA             | Nima       | `io.techempower.benchmark.helidon`   |
+| `java-micronaut-jdbc-repository`           | Micronaut Data JDBC                       | Netty      | `io.techempower.benchmark.micronaut` |
+| `java-micronaut-jpa-repository`            | Micronaut Data JPA                        | Netty      | `io.techempower.benchmark.micronaut` |
+| `java-micronaut-jpa-repository-reactive`   | Micronaut Data Hibernate Reactive         | Netty      | `io.techempower.benchmark.micronaut` |
+| `java-micronaut-r2dbc-repository-reactive` | Micronaut Data R2DBC                      | Netty      | `io.techempower.benchmark.micronaut` |
+| `java-quarkus-jpa-ac`                      | Hibernate ORM Panache Active Record       | Vert.x Web | `io.techempower.benchmark.quarkus`   |
+| `java-quarkus-jpa-ac-reactive`             | Hibernate Panache Active Record Reactive  | Vert.x Web | `io.techempower.benchmark.quarkus`   |
+| `java-quarkus-jooq`                        | jOOQ DSL over Quarkus JDBC                | Vert.x Web | `io.techempower.benchmark.quarkus`   |
+| `java-quarkus-jpa-repository`              | Hibernate ORM Panache Repository          | Vert.x Web | `io.techempower.benchmark.quarkus`   |
+| `java-quarkus-jpa-repository-reactive`     | Hibernate ORM Panache Repository Reactive | Vert.x Web | `io.techempower.benchmark.quarkus`   |
+| `java-spring-jdbc-repository`              | Spring Data JDBC                          | Tomcat     | `io.techempower.benchmark.spring`    |
+| `java-spring-jdbc-template`                | Spring JdbcTemplate                       | Tomcat     | `io.techempower.benchmark.spring`    |
+| `java-spring-jpa-data`                     | Spring Data JPA                           | Tomcat     | `io.techempower.benchmark.spring`    |
+| `java-spring-r2dbc-client-reactive`        | Spring DatabaseClient R2DBC               | Netty      | `io.techempower.benchmark.spring`    |
+| `java-spring-r2dbc-data-reactive`          | Spring Data R2DBC                         | Netty      | `io.techempower.benchmark.spring`    |
+| `java-vertx-pg-client`                     | Vert.x PgClient                           | Vert.x Web | `io.techempower.benchmark.vertx`     |
 
 ## Versions
 

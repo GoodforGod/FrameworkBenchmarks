@@ -1,0 +1,120 @@
+package io.techempower.benchmark.quarkus.controller;
+
+import io.techempower.benchmark.quarkus.model.Fortune;
+import io.techempower.benchmark.quarkus.model.Message;
+import io.techempower.benchmark.quarkus.model.World;
+import io.techempower.benchmark.quarkus.repository.WorldRepository;
+import io.techempower.benchmark.quarkus.util.JteUtils;
+import io.techempower.benchmark.quarkus.util.QueryUtils;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+@Path("/")
+public class BenchmarksController {
+
+    private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
+    private static final Message MESSAGE = new Message("Hello, World!");
+
+    private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(f -> f.message);
+    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(w -> w.id);
+
+    private final WorldRepository worldRepository;
+
+    @Inject
+    public BenchmarksController(WorldRepository worldRepository) {
+        this.worldRepository = worldRepository;
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#plaintext
+    @GET
+    @Path("/plaintext")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response plaintext() {
+        return Response.ok(PLAINTEXT_RESPONSE)
+                .type(MediaType.TEXT_PLAIN_TYPE)
+                .build();
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#json-serialization
+    @GET
+    @Path("/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Message json() {
+        return MESSAGE;
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#single-database-query
+    @GET
+    @Path("/db")
+    @Produces(MediaType.APPLICATION_JSON)
+    public World db() {
+        return worldRepository.findWorld(QueryUtils.randomWorld());
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#multiple-database-queries
+    @GET
+    @Path("/queries")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<World> queries(@QueryParam("queries") String queries) {
+        int count = QueryUtils.parseCount(queries);
+        List<World> worlds = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            int id = QueryUtils.randomWorld();
+            World world = worldRepository.findWorld(id);
+            worlds.add(world);
+        }
+
+        return worlds;
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#database-updates
+    @GET
+    @Path("/updates")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public List<World> updates(@QueryParam("queries") String queries) {
+        int count = QueryUtils.parseCount(queries);
+        List<World> worlds = new ArrayList<>(count);
+
+        for (int i = 0; i < count; i++) {
+            World world = worldRepository.findWorld(QueryUtils.randomWorld());
+            // Keep this endpoint in the jOOQ style: read the current value required by
+            // TechEmpower, mutate the DTO, then write it explicitly with the DSL.
+            world.randomNumber = QueryUtils.randomWorld(world.randomNumber);
+            worlds.add(world);
+        }
+
+        worlds.sort(WORLD_COMPARATOR);
+        for (World world : worlds) {
+            worldRepository.updateRandomNumber(world.id, world.randomNumber);
+        }
+
+        return worlds;
+    }
+
+    // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes
+    @GET
+    @Path("/fortunes")
+    @Produces(MediaType.TEXT_HTML)
+    public Response fortunes() {
+        List<Fortune> fortunes = worldRepository.findAllFortunes();
+        fortunes.add(new Fortune(0, "Additional fortune added at request time."));
+
+        fortunes.sort(FORTUNE_COMPARATOR);
+
+        return Response.ok(JteUtils.serializeStandard(fortunes))
+                .type(MediaType.TEXT_HTML_TYPE.withCharset("UTF-8"))
+                .build();
+    }
+}

@@ -1,0 +1,85 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "2.4.10"
+    id "org.jetbrains.kotlin.plugin.serialization" version "2.4.10"
+    id "application"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = "3.3.3"
+
+dependencies {
+    implementation "io.ktor:ktor-server-cio-jvm:3.3.3"
+    implementation "io.ktor:ktor-server-default-headers-jvm:3.3.3"
+    implementation "io.ktor:ktor-server-content-negotiation-jvm:3.3.3"
+    implementation "io.ktor:ktor-serialization-kotlinx-json-jvm:3.3.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
+    implementation "org.postgresql:postgresql:42.7.11"
+    implementation "com.zaxxer:HikariCP:7.0.2"
+    implementation "gg.jte:jte:3.2.3"
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.postgresql:postgresql:42.7.11"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+}
+
+kotlin {
+    jvmToolchain(25)
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileKotlin.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 25
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
+    }
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.ktor.ApplicationKt")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+tasks.named("run") {
+    environment([
+            "POSTGRES_JDBC_URL": "jdbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase",
+            "POSTGRES_USER"    : "$postgresUser",
+            "POSTGRES_PASS"    : "$postgresPassword",
+    ])
+}
+
+tasks.named("distTar") {
+    archiveFileName = "application.tar"
+}

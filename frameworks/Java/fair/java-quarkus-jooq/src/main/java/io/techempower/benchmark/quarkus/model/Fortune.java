@@ -1,0 +1,19 @@
+package io.techempower.benchmark.quarkus.model;
+
+public class Fortune {
+
+    public int id;
+    public String message;
+
+    public Fortune() {
+    }
+
+    public Fortune(int id, String message) {
+        this.id = id;
+        this.message = message;
+    }
+
+    public int getIdInt() {
+        return id;
+    }
+}

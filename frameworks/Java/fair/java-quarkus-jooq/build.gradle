@@ -1,0 +1,56 @@
+plugins {
+    id "java"
+    id "io.quarkus" version "$quarkusVersion"
+    id "gg.jte.gradle" version "3.2.3"
+}
+
+version = quarkusVersion
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    implementation platform("io.quarkus:quarkus-bom:$quarkusVersion")
+
+    implementation "io.quarkus:quarkus-arc"
+    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "io.quarkus:quarkus-jdbc-postgresql"
+    implementation "org.jooq:jooq:3.21.7"
+    implementation "gg.jte:jte-runtime:3.2.3"
+
+    testImplementation "org.testcontainers:testcontainers:1.21.4"
+    testImplementation "org.testcontainers:postgresql:1.21.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn(tasks.named("generateJte"))
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("quarkusBuild"))
+}
