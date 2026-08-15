@@ -28,8 +28,6 @@
         <module>resteasy-reactive-hibernate-reactive</module>
         <module>vertx</module>
         <module>reactive-routes-pgclient</module>
-        <module>resteasy-panache-repository-fair</module>
-        <module>resteasy-reactive-hibernate-reactive-fair</module>
     </modules>
 
     <dependencyManagement>
