@@ -25,6 +25,7 @@ dependencies {
     implementation "org.postgresql:r2dbc-postgresql:1.0.7.RELEASE"
     implementation "gg.jte:jte-runtime:3.2.3"
 
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-webflux-test"
     testImplementation "io.projectreactor:reactor-test"

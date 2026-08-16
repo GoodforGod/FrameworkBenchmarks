@@ -5,12 +5,12 @@
   --test \
   quarkus \
   quarkus-vertx \
-  fair-kora2-jdbc \
   fair-kora1-jdbc \
   fair-kora1-jdbc-vt \
-  fair-kotlin-kora1-vertx-repository-suspend \
-  fair-kotlin-kora1-jdbc-repository-suspend \
-  fair-kotlin-kora2-jdbc-repository \
+  fair-kora1-vertx-repository-suspend \
+  fair-kora1-jdbc-repository-suspend \
+  fair-kora2-jdbc \
+  fair-kora2-jdbc-repository-kotlin \
   fair-ktor-netty-jdbc \
   fair-ktor-cio-jdbc \
   fair-helidon-mp-jdbc-client \
@@ -19,10 +19,10 @@
   fair-micronaut-jpa-repository \
   fair-micronaut-jpa-data-reactive \
   fair-micronaut-r2dbc-data-reactive \
-  fair-quarkus-jpa-ac \
-  fair-quarkus-jpa-repository \
   fair-quarkus-jooq \
+  fair-quarkus-jpa-ac \
   fair-quarkus-jpa-ac-reactive \
+  fair-quarkus-jpa-repository \
   fair-quarkus-jpa-repository-reactive \
   fair-spring-jdbc-repository \
   fair-spring-jdbc-template \

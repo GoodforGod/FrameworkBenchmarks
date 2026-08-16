@@ -45,6 +45,7 @@ dependencies {
     implementation "org.postgresql:r2dbc-postgresql"
     implementation "gg.jte:jte-runtime:3.2.3"
 
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"

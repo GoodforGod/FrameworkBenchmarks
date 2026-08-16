@@ -20,6 +20,8 @@ dependencies {
     koraBom platform("io.koraframework:kora-bom:$kora2Version")
     ksp "io.koraframework:symbol-processors"
 
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+
     implementation "io.koraframework:database-jdbc"
     implementation "io.koraframework:config-hocon"
     implementation "io.koraframework:json-common"
@@ -27,8 +29,7 @@ dependencies {
     implementation "gg.jte:jte:3.2.3"
     implementation "org.postgresql:postgresql:42.7.11"
 
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
-
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
@@ -40,10 +41,6 @@ kotlin {
     jvmToolchain(25)
     sourceSets.main.kotlin.srcDir("build/generated/ksp/main/kotlin")
     sourceSets.test.kotlin.srcDir("build/generated/ksp/test/kotlin")
-}
-
-ksp {
-    arg("kora.app.submodule.enabled", "true")
 }
 
 jte {

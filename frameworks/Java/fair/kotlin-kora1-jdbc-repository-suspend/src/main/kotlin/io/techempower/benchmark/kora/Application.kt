@@ -9,13 +9,11 @@ import ru.tinkoff.kora.database.jdbc.JdbcDatabase
 import ru.tinkoff.kora.database.jdbc.JdbcDatabaseModule
 import ru.tinkoff.kora.http.server.undertow.UndertowHttpServerModule
 import ru.tinkoff.kora.json.module.JsonModule
-import ru.tinkoff.kora.logging.logback.LogbackModule
 import java.util.concurrent.Executor
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 @KoraApp
 interface Application : HoconConfigModule,
-    LogbackModule,
     JsonModule,
     JdbcDatabaseModule,
     UndertowHttpServerModule {

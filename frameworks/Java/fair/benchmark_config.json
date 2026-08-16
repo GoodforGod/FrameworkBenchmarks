@@ -5,7 +5,7 @@
   ],
   "tests": [
     {
-      "kora2-jdbc": {
+      "kora2-jdbc-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -29,7 +29,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "kora1-jdbc": {
+      "kora1-jdbcc-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -53,7 +53,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "kora1-jdbc-vt": {
+      "kora1-jdbc-repository-vt": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -77,7 +77,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "kotlin-kora1-vertx-repository-suspend": {
+      "kora1-vertx-repository-suspend": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -96,14 +96,14 @@
         "webserver": "Undertow",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-kotlin-kora1-vertx-repository-suspend",
+        "display_name": "fair-kora1-vertx-repository-suspend",
         "notes": "Kora 1 Kotlin implementation using database-vertx with suspend controller and repository APIs",
         "versus": "undertow",
         "tags": [
           "kotlin"
         ]
       },
-      "kotlin-kora1-jdbc-repository-suspend": {
+      "kora1-jdbc-repository-suspend": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -122,14 +122,14 @@
         "webserver": "Undertow",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-kotlin-kora1-jdbc-repository-suspend",
+        "display_name": "fair-kora1-jdbc-repository-suspend",
         "notes": "Kora 1 Kotlin implementation using database-jdbc with suspend controller and repository APIs",
         "versus": "undertow",
         "tags": [
           "kotlin"
         ]
       },
-      "kotlin-kora2-jdbc-repository": {
+      "kora2-jdbc-repository-kotlin": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -148,7 +148,7 @@
         "webserver": "Undertow",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-kotlin-kora2-jdbc-repository",
+        "display_name": "fair-kora2-jdbc-repository-kotlin",
         "notes": "Kora 2 Kotlin implementation using database-jdbc with blocking controller and repository APIs",
         "versus": "undertow",
         "tags": [

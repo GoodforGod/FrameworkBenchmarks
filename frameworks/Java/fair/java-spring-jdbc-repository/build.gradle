@@ -24,6 +24,7 @@ dependencies {
     implementation "org.postgresql:postgresql:42.7.11"
     implementation "gg.jte:jte-runtime:3.2.3"
 
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-webmvc-test"
     testImplementation "org.testcontainers:testcontainers:1.21.4"
