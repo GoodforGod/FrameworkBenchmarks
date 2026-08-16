@@ -31,6 +31,8 @@ public final class HelidonDataConfig {
                 Map.entry("data.persistence-units.jakarta.0.properties.jakarta.persistence.jdbc.url", url),
                 Map.entry("data.persistence-units.jakarta.0.properties.jakarta.persistence.jdbc.user", username),
                 Map.entry("data.persistence-units.jakarta.0.properties.jakarta.persistence.jdbc.password", password),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.autoCommit", "false"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.connection.provider_disables_autocommit", "true"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.maximumPoolSize", "64"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.cachePrepStmts", "true"),

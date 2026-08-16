@@ -30,7 +30,7 @@ dependencies {
     annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
     annotationProcessor "io.micronaut.data:micronaut-data-processor"
 
-    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
     runtimeOnly "org.yaml:snakeyaml"
 
     implementation "io.micronaut:micronaut-http-server-netty"
@@ -41,6 +41,7 @@ dependencies {
     implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-runtime"
 
+    implementation "io.netty:netty-transport-native-epoll:linux-x86_64"
     implementation "org.postgresql:postgresql:42.7.11"
     implementation "gg.jte:jte:3.2.3"
     implementation "gg.jte:jte-runtime:3.2.3"

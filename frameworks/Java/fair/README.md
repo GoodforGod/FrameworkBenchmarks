@@ -8,10 +8,10 @@ There are currently 24 implementations:
 
 | Framework                                  | Data Access                               | Web Server | Package                              |
 |--------------------------------------------|-------------------------------------------|------------|--------------------------------------|
-| `java-kora1-jdbc-repository`               | Kora 1 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
 | `kotlin-kora1-jdbc-repository-suspend`     | Kora 1 JDBC Repository with suspend API   | Undertow   | `io.techempower.benchmark.kora`      |
 | `kotlin-kora1-vertx-repository-suspend`    | Kora 1 Vert.x Repository with suspend API | Undertow   | `io.techempower.benchmark.kora`      |
 | `kotlin-kora2-jdbc-repository`             | Kora 2 JDBC Repository with blocking API  | Undertow   | `io.techempower.benchmark.kora`      |
+| `java-kora1-jdbc-repository`               | Kora 1 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
 | `java-kora2-jdbc-repository`               | Kora 2 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
 | `kotlin-ktor-cio-jdbc`                     | HikariCP + PostgreSQL JDBC                | CIO        | `io.techempower.benchmark.ktor`      |
 | `kotlin-ktor-netty-jdbc`                   | HikariCP + PostgreSQL JDBC                | Netty      | `io.techempower.benchmark.ktor`      |
@@ -30,7 +30,7 @@ There are currently 24 implementations:
 | `java-spring-jdbc-template`                | Spring JdbcTemplate                       | Tomcat     | `io.techempower.benchmark.spring`    |
 | `java-spring-jpa-data`                     | Spring Data JPA                           | Tomcat     | `io.techempower.benchmark.spring`    |
 | `java-spring-r2dbc-client-reactive`        | Spring DatabaseClient R2DBC               | Netty      | `io.techempower.benchmark.spring`    |
-| `java-spring-r2dbc-data-reactive`          | Spring Data R2DBC                         | Netty      | `io.techempower.benchmark.spring`    |
+| `java-spring-r2dbc-repository-reactive`    | Spring Data R2DBC                         | Netty      | `io.techempower.benchmark.spring`    |
 | `java-vertx-pg-client`                     | Vert.x PgClient                           | Vert.x Web | `io.techempower.benchmark.vertx`     |
 
 ## Versions

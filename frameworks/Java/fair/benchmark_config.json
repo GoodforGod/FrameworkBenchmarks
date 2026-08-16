@@ -551,7 +551,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "spring-r2dbc-data-reactive": {
+      "spring-r2dbc-repository-reactive": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -570,7 +570,7 @@
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-spring-r2dbc-reactive",
+        "display_name": "fair-spring-r2dbc-repository-reactive",
         "notes": "Fully reactive implementation using WebFlux and R2DBC",
         "versus": "undertow",
         "tags": [

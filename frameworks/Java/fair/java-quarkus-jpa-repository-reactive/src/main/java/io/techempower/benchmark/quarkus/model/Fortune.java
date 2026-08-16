@@ -15,15 +15,18 @@ public class Fortune {
     @Column(name = "message")
     public String message;
 
-    public Fortune() {
-    }
+    public Fortune() { }
 
     public Fortune(int id, String message) {
         this.id = id;
         this.message = message;
     }
 
-    public int getIdInt() {
+    public int getId() {
         return id;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

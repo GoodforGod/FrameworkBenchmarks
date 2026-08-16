@@ -65,3 +65,25 @@ subprojects {
         }
     }
 }
+
+tasks.register("resolveFairDependencies") {
+    description = "Resolves dependency configurations for Docker builder cache warmup."
+    group = "build setup"
+
+    doLast {
+        def failures = []
+        allprojects.each { project ->
+            project.configurations.matching { it.canBeResolved }.each { configuration ->
+                try {
+                    configuration.resolve()
+                } catch (Exception e) {
+                    failures += "${project.path}:${configuration.name} - ${e.message}"
+                }
+            }
+        }
+
+        if (!failures.isEmpty()) {
+            throw new GradleException("Failed to resolve dependency configurations:\n" + failures.join("\n"))
+        }
+    }
+}

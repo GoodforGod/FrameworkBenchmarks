@@ -28,6 +28,7 @@ public final class BenchmarksController {
 
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
     private static final Message MESSAGE = new Message("Hello, World!");
+    private static final String TEXT_HTML_UTF_8 = "text/html; charset=utf-8";
 
     private final WorldRepository worldRepository;
     private final FortuneRepository fortuneRepository;
@@ -86,7 +87,7 @@ public final class BenchmarksController {
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes
-    @Get(value = "/fortunes", produces = MediaType.TEXT_HTML)
+    @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)
     public Mono<HttpResponse<byte[]>> fortunes() {
         return fortuneRepository.findAll()
                 .collectList()
@@ -94,7 +95,7 @@ public final class BenchmarksController {
                     fortunes.add(new Fortune(0, "Additional fortune added at request time."));
                     Collections.sort(fortunes);
                     return HttpResponse.ok(JteUtils.serializeStandard(fortunes))
-                            .contentType(MediaType.TEXT_HTML_TYPE);
+                            .header(HttpHeaders.CONTENT_TYPE, TEXT_HTML_UTF_8);
                 });
     }
 }

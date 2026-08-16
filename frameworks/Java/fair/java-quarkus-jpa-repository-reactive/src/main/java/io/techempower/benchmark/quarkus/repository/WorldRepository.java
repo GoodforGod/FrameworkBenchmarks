@@ -11,8 +11,4 @@ public class WorldRepository implements PanacheRepositoryBase<World, Integer> {
     public Uni<World> findWorld(int id) {
         return findById(id);
     }
-
-    public Uni<Integer> updateRandomNumber(int id, int randomNumber) {
-        return update("randomNumber = ?1 WHERE id = ?2", randomNumber, id);
-    }
 }

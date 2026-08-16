@@ -15,6 +15,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 import java.sql.DriverManager;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +40,7 @@ class BenchmarkIntegrationTest {
                 .withStartupTimeout(Duration.ofSeconds(30))
                 .waitingFor(Wait.forLogMessage(".*ready.*", 2));
 
-        app = new GenericContainer<>(new ImageFromDockerfile("fair-spring-r2dbc-data-reactive").withDockerfile(Paths.get("Dockerfile").toAbsolutePath()))
+        app = new GenericContainer<>(new ImageFromDockerfile("fair-spring-r2dbc-repository-reactive").withDockerfile(Paths.get("Dockerfile").toAbsolutePath()))
                 .withNetwork(NETWORK).withExposedPorts(8080)
                 .withStartupTimeout(Duration.ofSeconds(30))
                 .withLogConsumer(frame -> System.err.print(frame.getUtf8String()))
@@ -87,6 +90,51 @@ class BenchmarkIntegrationTest {
     void testFortunes() throws Exception {
         var r = sendGet("/fortunes");
         assertEquals(200, r.statusCode());
+    }
+
+    @Test
+    void testRequiredHeaders() throws Exception {
+        assertBenchmarkHeaders(sendGet("/plaintext"), "plaintext");
+        assertBenchmarkHeaders(sendGet("/json"), "json");
+        assertBenchmarkHeaders(sendGet("/db"), "json");
+        assertBenchmarkHeaders(sendGet("/queries?queries=5"), "json");
+        assertBenchmarkHeaders(sendGet("/updates?queries=5"), "json");
+        assertBenchmarkHeaders(sendGet("/fortunes"), "html");
+    }
+
+    @Test
+    void testDateHeaderChanges() throws Exception {
+        var firstDate = requiredHeader(sendGet("/plaintext"), "Date");
+        Thread.sleep(3000);
+        var secondDate = requiredHeader(sendGet("/plaintext"), "Date");
+        assertNotEquals(firstDate, secondDate, "Date header must not be cached across separate requests");
+    }
+
+    private static void assertBenchmarkHeaders(HttpResponse<String> response, String shouldBe) {
+        requiredHeader(response, "Server");
+        var date = requiredHeader(response, "Date");
+        assertDoesNotThrow(() -> ZonedDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME), "Date header must be RFC1123: " + date);
+
+        var contentType = requiredHeader(response, "Content-Type");
+        assertTrue(Pattern.compile(contentTypePattern(shouldBe), Pattern.CASE_INSENSITIVE).matcher(contentType).matches(),
+                "Invalid Content-Type header: " + contentType);
+
+        assertTrue(response.headers().firstValue("Content-Length").isPresent()
+                        || response.headers().firstValue("Transfer-Encoding").isPresent(),
+                "Required response size header missing: Content-Length or Transfer-Encoding");
+    }
+
+    private static String requiredHeader(HttpResponse<String> response, String name) {
+        return response.headers().firstValue(name).orElseThrow(() -> new AssertionError("Required response header missing: " + name));
+    }
+
+    private static String contentTypePattern(String shouldBe) {
+        return switch (shouldBe) {
+            case "json" -> "^application/json(; ?charset=(UTF|utf)-8)?$";
+            case "html" -> "^text/html; ?charset=(UTF|utf)-8$";
+            case "plaintext" -> "^text/plain(; ?charset=(UTF|utf)-8)?$";
+            default -> throw new IllegalArgumentException("Unknown content type expectation: " + shouldBe);
+        };
     }
 
     private static void initDatabase() throws Exception {

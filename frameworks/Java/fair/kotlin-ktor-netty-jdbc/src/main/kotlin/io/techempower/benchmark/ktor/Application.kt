@@ -62,7 +62,7 @@ fun Application.benchmarks() {
             val fortunes = repository.findFortunes().toMutableList()
             fortunes.add(Fortune(0, "Additional fortune added at request time."))
             fortunes.sortWith(compareBy(Fortune::message))
-            call.respondBytes(JteUtils.serializeStandard(fortunes), ContentType.Text.Html)
+            call.respondBytes(JteUtils.serializeStandard(fortunes), ContentType.parse("text/html; charset=utf-8"))
         }
     }
 }

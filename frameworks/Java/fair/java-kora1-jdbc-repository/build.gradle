@@ -15,7 +15,7 @@ dependencies {
     annotationProcessor "ru.tinkoff.kora:annotation-processors:$kora1Version"
     implementation platform("ru.tinkoff.kora:kora-parent:$kora1Version")
 
-    runtimeOnly "ch.qos.logback:logback-classic:1.5.18"
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
 
     implementation "ru.tinkoff.kora:database-jdbc"
     implementation "ru.tinkoff.kora:config-hocon"

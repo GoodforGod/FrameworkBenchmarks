@@ -4,7 +4,7 @@ TechEmpower `fair-ktor-netty-jdbc` implementation.
 
 ## Stack
 
-- Framework: Ktor `3.3.3`
+- Framework: Ktor `3.5.2`
 - HTTP: Ktor Netty
 - Database: HikariCP over PostgreSQL JDBC driver
 - Templates: JTE `3.2.3`

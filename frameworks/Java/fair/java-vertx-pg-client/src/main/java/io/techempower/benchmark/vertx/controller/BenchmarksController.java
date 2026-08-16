@@ -23,6 +23,7 @@ public final class BenchmarksController {
     private static final CharSequence HELLO_WORLD_LENGTH = HttpHeaders.createOptimized("" + PLAINTEXT_RESPONSE.length);
     private static final CharSequence CONTENT_TEXT = HttpHeaders.createOptimized("text/plain");
     private static final CharSequence CONTENT_JSON = HttpHeaders.createOptimized("application/json");
+    private static final CharSequence CONTENT_HTML = HttpHeaders.createOptimized("text/html; charset=utf-8");
 
     private static final JsonObject MESSAGE_JSON = new JsonObject().put("message", "Hello, World!");
 
@@ -82,7 +83,7 @@ public final class BenchmarksController {
                     fortunes.add(new Fortune(0, "Additional fortune added at request time."));
                     fortunes.sort(FORTUNE_COMPARATOR);
                     context.response()
-                            .putHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TEXT)
+                            .putHeader(HttpHeaders.CONTENT_TYPE, CONTENT_HTML)
                             .end(Buffer.buffer(JteUtils.serializeStandard(fortunes)));
                 })
                 .onFailure(error -> fail(context, error));

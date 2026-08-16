@@ -31,3 +31,6 @@ db:
       prepStmtCacheSqlLimit: 2048
       ssl: false
       tcpKeepAlive: true
+
+logging:
+  level: WARNING

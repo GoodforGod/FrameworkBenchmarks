@@ -1,6 +1,6 @@
 # Spring R2DBC Data Reactive Benchmark
 
-TechEmpower `fair-spring-r2dbc-data-reactive` implementation.
+TechEmpower `fair-spring-r2dbc-repository-reactive` implementation.
 
 ## Stack
 
@@ -14,17 +14,17 @@ TechEmpower `fair-spring-r2dbc-data-reactive` implementation.
 ## Commands
 
 ```bash
-./gradlew :java-spring-r2dbc-data-reactive:compileJava
-./gradlew :java-spring-r2dbc-data-reactive:testClasses
-./gradlew :java-spring-r2dbc-data-reactive:bootJar
-./gradlew :java-spring-r2dbc-data-reactive:bootRun
+./gradlew :java-spring-r2dbc-repository-reactive:compileJava
+./gradlew :java-spring-r2dbc-repository-reactive:testClasses
+./gradlew :java-spring-r2dbc-repository-reactive:bootJar
+./gradlew :java-spring-r2dbc-repository-reactive:bootRun
 ```
 
 Docker image used by the BlackBox test:
 
 ```bash
-./gradlew :java-spring-r2dbc-data-reactive:bootJar
-docker build -t fair-spring-r2dbc-data-reactive java-spring-r2dbc-data-reactive
+./gradlew :java-spring-r2dbc-repository-reactive:bootJar
+docker build -t fair-spring-r2dbc-repository-reactive java-spring-r2dbc-repository-reactive
 ```
 
 ## Configuration

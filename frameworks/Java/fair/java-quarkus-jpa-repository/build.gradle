@@ -15,10 +15,12 @@ dependencies {
     implementation platform("io.quarkus:quarkus-bom:$quarkusVersion")
 
     implementation "io.quarkus:quarkus-arc"
-    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "io.quarkus:quarkus-rest-jackson"
     implementation "io.quarkus:quarkus-hibernate-orm-panache"
     implementation "io.quarkus:quarkus-jdbc-postgresql"
+    implementation "io.quarkus:quarkus-scheduler"
     implementation "gg.jte:jte-runtime:3.2.3"
+    implementation "io.netty:netty-transport-native-epoll:linux-x86_64"
 
     testImplementation "org.testcontainers:testcontainers:1.21.4"
     testImplementation "org.testcontainers:postgresql:1.21.4"

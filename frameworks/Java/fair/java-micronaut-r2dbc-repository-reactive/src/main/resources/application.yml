@@ -3,6 +3,7 @@ micronaut:
     name: benchmark
   server:
     port: 8080
+    server-header: Micronaut
   jvm:
     virtual:
       threads:
@@ -22,3 +23,7 @@ r2dbc:
 
 jackson:
   serialization-inclusion: ALWAYS
+
+logger:
+  levels:
+    root: WARN

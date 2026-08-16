@@ -12,7 +12,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+configurations.all {
+    exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+}
+
 dependencies {
+    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+
     implementation "org.springframework.boot:spring-boot-starter-webflux"
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc"
     implementation "org.postgresql:r2dbc-postgresql:1.0.7.RELEASE"

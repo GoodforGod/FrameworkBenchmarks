@@ -11,6 +11,10 @@ import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public final class Application {
 
     private static final int HTTP_PORT = 8080;
@@ -20,6 +24,12 @@ public final class Application {
         Pool pool = createPgPool(vertx);
         Router router = Router.router(vertx);
 
+        router.route().handler(context -> {
+            context.response()
+                    .putHeader("Server", "Vert.x")
+                    .putHeader("Date", DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now(ZoneOffset.UTC)));
+            context.next();
+        });
         new BenchmarksController(new WorldRepository(pool)).mount(router);
 
         vertx.createHttpServer(new HttpServerOptions()

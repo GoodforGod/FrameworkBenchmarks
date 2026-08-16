@@ -35,13 +35,18 @@ class DockerHelper:
         with open(build_log_file, 'w') as build_log:
             try:
                 client = docker.APIClient(base_url=base_url)
+                dockerfile_path = os.path.join(path, dockerfile)
+                pull_base_images = True
+                if os.path.exists(dockerfile_path):
+                    with open(dockerfile_path, 'r', encoding='utf-8') as df:
+                        pull_base_images = 'fair-gradle-cache-' not in df.read()
                 output = client.build(
                     path=path,
                     dockerfile=dockerfile,
                     tag=tag,
                     forcerm=self.benchmarker.config.force_rm_intermediate_docker_layers,
                     timeout=3600,
-                    pull=True,
+                    pull=pull_base_images,
                     buildargs=buildargs,
                     decode=True
                 )

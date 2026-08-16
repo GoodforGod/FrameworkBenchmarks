@@ -27,6 +27,7 @@ public class BenchmarksController {
 
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
     private static final Message MESSAGE = new Message("Hello, World!");
+    private static final String TEXT_HTML_UTF_8 = "text/html; charset=utf-8";
 
     private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(Fortune::message);
     private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(World::id);
@@ -78,7 +79,7 @@ public class BenchmarksController {
                 .collectList();
     }
 
-    @Get(value = "/fortunes", produces = MediaType.TEXT_HTML)
+    @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)
     public Mono<HttpResponse<byte[]>> fortunes() {
         return fortuneRepository.findAll()
                 .collectList()
@@ -86,7 +87,7 @@ public class BenchmarksController {
                     fortunes.add(new Fortune(0, "Additional fortune added at request time."));
                     fortunes.sort(FORTUNE_COMPARATOR);
                     return HttpResponse.ok(JteUtils.serializeStandard(fortunes))
-                            .contentType(MediaType.TEXT_HTML_TYPE);
+                            .header("Content-Type", TEXT_HTML_UTF_8);
                 });
     }
 }

@@ -3,6 +3,7 @@ micronaut:
     name: micronaut-jpa-benchmark
   server:
     port: 8080
+    server-header: Micronaut
   jvm:
     virtual:
       threads:
@@ -47,3 +48,7 @@ jpa:
             create-source: metadata
             database:
               action: none
+
+logger:
+  levels:
+    root: WARN

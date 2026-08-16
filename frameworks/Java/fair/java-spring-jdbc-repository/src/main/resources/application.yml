@@ -25,3 +25,7 @@ server:
       worker: 256
     buffer-size: 1024
     direct-buffers: true
+
+logging:
+  level:
+    root: WARN

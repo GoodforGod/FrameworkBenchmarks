@@ -12,15 +12,18 @@ public class World extends PanacheEntity {
     @Column(name = "randomnumber")
     public int randomNumber;
 
-    public World() {
-    }
+    public World() { }
 
     public World(int id, int randomNumber) {
         this.id = Long.valueOf(id);
         this.randomNumber = randomNumber;
     }
 
-    public int getIdInt() {
+    public int getId() {
         return id.intValue();
+    }
+
+    public int getRandomNumber() {
+        return randomNumber;
     }
 }
