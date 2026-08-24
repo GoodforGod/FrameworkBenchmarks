@@ -29,7 +29,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "kora1-jdbcc-repository": {
+      "kora1-jdbc-repository": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",

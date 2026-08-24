@@ -16,11 +16,11 @@ cd "$SCRIPT_DIR"
   --test \
   quarkus \
   quarkus-vertx \
-  fair-kora1-jdbc \
-  fair-kora1-jdbc-vt \
+  fair-kora1-jdbc-repository \
+  fair-kora1-jdbc-repository-vt \
   fair-kora1-vertx-repository-suspend \
   fair-kora1-jdbc-repository-suspend \
-  fair-kora2-jdbc \
+  fair-kora2-jdbc-repository \
   fair-kora2-jdbc-repository-kotlin \
   fair-ktor-netty-jdbc \
   fair-ktor-cio-jdbc \
@@ -44,6 +44,6 @@ cd "$SCRIPT_DIR"
   ntex-db \
   ntex-db-neon \
   --type db \
-  --concurrency-levels 16 32 64 128 \
+  --concurrency-levels 4 8 16 32 64 \
   --pipeline-concurrency-levels 256 1024 4096 \
   -m benchmark

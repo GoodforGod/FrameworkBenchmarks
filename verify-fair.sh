@@ -16,11 +16,11 @@ cd "$SCRIPT_DIR"
   --test \
   quarkus \
   quarkus-vertx \
-  fair-kora1-jdbc \
-  fair-kora1-jdbc-vt \
+  fair-kora1-jdbc-repository \
+  fair-kora1-jdbc-repository-vt \
   fair-kora1-vertx-repository-suspend \
   fair-kora1-jdbc-repository-suspend \
-  fair-kora2-jdbc \
+  fair-kora2-jdbc-repository \
   fair-kora2-jdbc-repository-kotlin \
   fair-ktor-netty-jdbc \
   fair-ktor-cio-jdbc \
