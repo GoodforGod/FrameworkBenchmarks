@@ -5,7 +5,7 @@ WORKDIR /app
 COPY build/distributions/application.tar app.tar
 RUN tar -xf app.tar && rm app.tar
 
-ENV VIRTUAL_THREADS_ENABLED=false
+ENV VIRTUAL_THREADS_ENABLED=true
 
 EXPOSE 8080
 

@@ -12,6 +12,8 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import org.jspecify.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
@@ -20,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Introspected
+@ExecuteOn(TaskExecutors.BLOCKING)
 @Controller
 public class BenchmarksController {
 

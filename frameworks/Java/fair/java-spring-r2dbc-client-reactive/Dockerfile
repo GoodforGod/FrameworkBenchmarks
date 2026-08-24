@@ -4,9 +4,10 @@ WORKDIR /app
 
 COPY build/libs/java-spring-r2dbc-client-reactive.jar app.jar
 
-# Virtual Threads (по умолчанию выключены)
+ENV JAVA_OPTS="-XX:+UseParallelGC -XX:+UseNUMA -Djava.net.preferIPv4Stack=true -Djdk.trackAllThreads=false -XX:AutoBoxCacheMax=11000 -XX:InitialCodeCacheSize=256m -XX:ReservedCodeCacheSize=256m -XX:MaxInlineLevel=20 -XX:-StackTraceInThrowable -XX:+UseCompactObjectHeaders -XX:+UseCompressedClassPointers"
+# Virtual Threads (disabled for reactive stack)
 ENV VIRTUAL_THREADS_ENABLED=false
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

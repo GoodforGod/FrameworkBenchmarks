@@ -7,14 +7,12 @@ server:
   write-queue-length: 8192
   smart-async-writes: true
   connection-options:
-    read-timeout: PT0S
-    connect-timeout: PT0S
     tcp-no-delay: true
   protocols:
     "http_1_1":
-      validate-request-headers: false
-      validate-response-headers: false
-      validate-path: false
+      validate-request-headers: true
+      validate-response-headers: true
+      validate-path: true
       recv-log: false
       send-log: false
 
@@ -31,14 +29,20 @@ data:
           hibernate.connection.provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
           hibernate.hikari.autoCommit: false
           hibernate.connection.provider_disables_autocommit: true
-          hibernate.hikari.maximumPoolSize: 64
-          hibernate.hikari.dataSource.cachePrepStmts: true
-          hibernate.hikari.dataSource.prepStmtCacheSize: 250
-          hibernate.hikari.dataSource.prepStmtCacheSqlLimit: 2048
-          hibernate.hikari.dataSource.ssl: false
+          hibernate.hikari.maximumPoolSize: 512
+          hibernate.hikari.dataSource.prepareThreshold: 1
+          hibernate.hikari.dataSource.preparedStatementCacheQueries: 512
+          hibernate.hikari.dataSource.preparedStatementCacheSizeMiB: 16
+          hibernate.hikari.dataSource.loggerLevel: OFF
+          hibernate.hikari.dataSource.sslmode: disable
           hibernate.hikari.dataSource.tcpKeepAlive: true
+          hibernate.hikari.dataSource.disableColumnSanitiser: true
           hibernate.show_sql: false
           hibernate.format_sql: false
+          hibernate.generate_statistics: false
+          hibernate.cache.use_second_level_cache: false
+          hibernate.cache.use_query_cache: false
+          jakarta.persistence.sharedCache.mode: NONE
 
 logging:
   level: WARNING

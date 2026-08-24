@@ -22,7 +22,7 @@ class BenchmarksController(private val repository: WorldRepository) {
 
     @HttpRoute(method = HttpMethod.GET, path = "/plaintext")
     fun plaintext(): HttpServerResponse {
-        return HttpServerResponse.of(200, HttpBody.of("text/plain", PLAINTEXT_RESPONSE.duplicate()))
+        return HttpServerResponse.of(200, HttpBody.of("text/plain", PLAINTEXT_RESPONSE))
     }
 
     @Json

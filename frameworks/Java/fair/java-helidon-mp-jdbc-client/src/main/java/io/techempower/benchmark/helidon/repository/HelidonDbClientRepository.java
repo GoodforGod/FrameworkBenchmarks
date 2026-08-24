@@ -1,6 +1,7 @@
 package io.techempower.benchmark.helidon.repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,6 +18,7 @@ public final class HelidonDbClientRepository implements DbRepository {
     private static final String SELECT_WORLD = "SELECT id, randomnumber FROM world WHERE id = ?";
     private static final String SELECT_FORTUNES = "SELECT id, message FROM fortune";
     private static final String UPDATE_WORLD = "UPDATE world SET randomnumber = ? WHERE id = ?";
+    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(world -> world.id);
 
     private final DbClient dbClient;
 
@@ -48,13 +50,16 @@ public final class HelidonDbClientRepository implements DbRepository {
         List<World> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             World world = getWorld(randomWorld());
-            world.randomNumber = randomWorld(world.id);
+            world.randomNumber = randomWorld(world.randomNumber);
+            result.add(world);
+        }
+        result.sort(WORLD_COMPARATOR);
+        for (World world : result) {
             dbClient.execute()
                     .createUpdate(UPDATE_WORLD)
                     .addParam(world.randomNumber)
                     .addParam(world.id)
                     .execute();
-            result.add(world);
         }
         return result;
     }

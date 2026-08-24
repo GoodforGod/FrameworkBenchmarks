@@ -14,6 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Path("/")
+@RunOnVirtualThread
 public class BenchmarksController {
 
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);

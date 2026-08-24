@@ -1,7 +1,7 @@
 spring:
   threads:
     virtual:
-      enabled: ${VIRTUAL_THREADS_ENABLED:false}
+      enabled: ${VIRTUAL_THREADS_ENABLED:true}
   datasource:
     url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${POSTGRES_USER:postgres}
@@ -19,6 +19,17 @@ spring:
       ddl-auto: none
     show-sql: false
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        generate_statistics: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: NONE
 
 server:
   port: 8080

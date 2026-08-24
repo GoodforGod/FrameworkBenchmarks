@@ -155,7 +155,7 @@
           "kotlin"
         ]
       },
-      "ktor-netty-jdbc": {
+      "ktor-netty-jdbc-driver": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -174,14 +174,14 @@
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-ktor-netty-jdbc",
+        "display_name": "fair-ktor-netty-jdbc-driver",
         "notes": "Ktor Netty implementation using HikariCP over PostgreSQL JDBC",
         "versus": "netty",
         "tags": [
           "kotlin"
         ]
       },
-      "ktor-cio-jdbc": {
+      "ktor-cio-jdbc-driver": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -200,7 +200,7 @@
         "webserver": "CIO",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-ktor-cio-jdbc",
+        "display_name": "fair-ktor-cio-jdbc-driver",
         "notes": "Ktor CIO implementation using HikariCP over PostgreSQL JDBC",
         "versus": "cio",
         "tags": [
@@ -626,6 +626,32 @@
         "notes": "Pure Vert.x Web and PgClient implementation with Pg driver pipelining disabled",
         "versus": "vertx",
         "tags": []
+      },
+      "ntex-db-tokio": {
+        "json_url": "/json",
+        "plaintext_url": "/plaintext",
+        "db_url": "/db",
+        "query_url": "/queries?queries=",
+        "fortune_url": "/fortunes",
+        "update_url": "/updates?queries=",
+        "port": 8080,
+        "approach": "Realistic",
+        "classification": "Micro",
+        "database": "Postgres",
+        "framework": "ntex",
+        "language": "Rust",
+        "flavor": "Tokio",
+        "orm": "Raw",
+        "platform": "ntex",
+        "webserver": "ntex",
+        "os": "Linux",
+        "database_os": "Linux",
+        "display_name": "fair-ntex-db-tokio",
+        "notes": "Fair ntex Web implementation using async PostgreSQL connections, sequential query/update behavior, and environment based database configuration",
+        "versus": "ntex",
+        "tags": [
+          "rust"
+        ]
       }
     }
   ]

@@ -91,6 +91,14 @@ application {
     applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
 }
 
+tasks.named("run") {
+    environment([
+            "POSTGRES_R2DBC_URL": "r2dbc:postgresql://$postgresHost:$postgresPort/$postgresDatabase",
+            "POSTGRES_USER"     : "$postgresUser",
+            "POSTGRES_PASS"     : "$postgresPassword",
+    ])
+}
+
 tasks.named("distTar") {
     archiveFileName = "application.tar"
 }

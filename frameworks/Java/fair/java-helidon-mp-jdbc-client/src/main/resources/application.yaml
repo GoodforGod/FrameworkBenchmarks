@@ -7,14 +7,12 @@ server:
   write-queue-length: 8192
   smart-async-writes: true
   connection-options:
-    read-timeout: PT0S
-    connect-timeout: PT0S
     tcp-no-delay: true
   protocols:
     "http_1_1":
-      validate-request-headers: false
-      validate-response-headers: false
-      validate-path: false
+      validate-request-headers: true
+      validate-response-headers: true
+      validate-path: true
       recv-log: false
       send-log: false
 
@@ -24,13 +22,15 @@ db:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
-    maximumPoolSize: 64
+    maximumPoolSize: 512
     dataSource:
-      cachePrepStmts: true
-      prepStmtCacheSize: 250
-      prepStmtCacheSqlLimit: 2048
-      ssl: false
+      prepareThreshold: 1
+      preparedStatementCacheQueries: 512
+      preparedStatementCacheSizeMiB: 16
+      loggerLevel: OFF
+      sslmode: disable
       tcpKeepAlive: true
+      disableColumnSanitiser: true
 
 logging:
   level: WARNING

@@ -14,8 +14,6 @@ cd "$SCRIPT_DIR"
 
 ./tfb \
   --test \
-  quarkus \
-  quarkus-vertx \
   fair-kora1-jdbc-repository \
   fair-kora1-jdbc-repository-vt \
   fair-kora1-vertx-repository-suspend \
@@ -41,7 +39,6 @@ cd "$SCRIPT_DIR"
   fair-spring-r2dbc-repository-reactive \
   fair-spring-r2dbc-client-reactive \
   fair-vertx-pg-client \
-  ntex-db \
-  ntex-db-neon \
+  fair-ntex-db-tokio \
   --type db \
   -m verify

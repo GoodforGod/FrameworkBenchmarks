@@ -30,6 +30,7 @@ public class BenchmarksController {
     private static final Message MESSAGE = new Message("Hello, World!");
     private static final Fortune ADDITIONAL_FORTUNE = new Fortune(0, "Additional fortune added at request time.");
     private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(Fortune::getMessage);
+    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(world -> world.id);
 
     private final WorldDataRepository worlds;
     private final FortuneDataRepository fortunes;
@@ -84,9 +85,10 @@ public class BenchmarksController {
         List<World> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             World world = getWorld(randomWorld());
-            world.randomNumber = randomWorld(world.id);
+            world.randomNumber = randomWorld(world.randomNumber);
             result.add(world);
         }
+        result.sort(WORLD_COMPARATOR);
         worlds.updateAll(result);
         return result;
     }

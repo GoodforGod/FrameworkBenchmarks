@@ -44,7 +44,7 @@ class BenchmarkIntegrationTest {
                 .withNetwork(NETWORK).withExposedPorts(8080)
                 .withStartupTimeout(Duration.ofSeconds(30))
                 .withLogConsumer(frame -> System.err.print(frame.getUtf8String()))
-                .withEnv("POSTGRES_R2DBC_URL", "r2dbc:pool:postgresql://postgres:5432/postgres")
+                .withEnv("POSTGRES_R2DBC_URL", "r2dbc:postgresql://postgres:5432/postgres")
                 .withEnv("POSTGRES_USER", "postgres").withEnv("POSTGRES_PASS", "postgres")
                 .dependsOn(postgres)
                 .waitingFor(Wait.forHttp("/plaintext").forPort(8080).forStatusCode(200));

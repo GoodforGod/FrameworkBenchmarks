@@ -7,7 +7,7 @@ micronaut:
   jvm:
     virtual:
       threads:
-        enabled: ${VIRTUAL_THREADS_ENABLED:false}
+        enabled: ${VIRTUAL_THREADS_ENABLED:true}
 
 datasources:
   default:
@@ -42,8 +42,14 @@ jpa:
           auto: none
         show_sql: false
         format_sql: false
+        generate_statistics: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
       jakarta:
         persistence:
+          sharedCache:
+            mode: NONE
           schema-generation:
             create-source: metadata
             database:

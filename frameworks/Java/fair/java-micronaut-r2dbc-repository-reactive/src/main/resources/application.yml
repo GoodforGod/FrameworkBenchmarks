@@ -12,19 +12,12 @@ micronaut:
 r2dbc:
   datasources:
     default:
-      url: ${POSTGRES_R2DBC_URL:r2dbc:pool:postgresql://localhost:5432/postgres}
+      url: ${POSTGRES_R2DBC_URL:r2dbc:postgresql://localhost:5432/postgres}
       username: ${POSTGRES_USER:postgres}
       password: ${POSTGRES_PASS:postgres}
       dialect: POSTGRES
       connect-timeout: 20s
       options:
-        max-size: 512
-        initial-size: 16
-        min-idle: 16
-        max-acquire-time: 20s
-        max-create-connection-time: 20s
-        max-idle-time: 0s
-        max-life-time: 0s
         preparedStatementCacheQueries: 512
         preparedStatementCacheSizeMiB: 16
         sslmode: disable

@@ -1,11 +1,11 @@
-# Ktor Netty JDBC Benchmark
+# Ktor CIO JDBC Benchmark
 
-TechEmpower `fair-ktor-netty-jdbc` implementation.
+TechEmpower `fair-ktor-cio-jdbc-driver` implementation.
 
 ## Stack
 
 - Framework: Ktor `3.5.2`
-- HTTP: Ktor Netty
+- HTTP: Ktor CIO
 - Database: HikariCP over PostgreSQL JDBC driver
 - Templates: JTE `3.2.3`
 - Runtime: Java 25
@@ -13,10 +13,10 @@ TechEmpower `fair-ktor-netty-jdbc` implementation.
 ## Commands
 
 ```bash
-./gradlew :kotlin-ktor-netty-jdbc:compileKotlin
-./gradlew :kotlin-ktor-netty-jdbc:testClasses
-./gradlew :kotlin-ktor-netty-jdbc:assemble
-./gradlew :kotlin-ktor-netty-jdbc:run
+./gradlew :kotlin-ktor-cio-jdbc-driver:compileKotlin
+./gradlew :kotlin-ktor-cio-jdbc-driver:testClasses
+./gradlew :kotlin-ktor-cio-jdbc-driver:assemble
+./gradlew :kotlin-ktor-cio-jdbc-driver:run
 ```
 
 ## Configuration
