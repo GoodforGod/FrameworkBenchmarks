@@ -303,7 +303,7 @@
         "versus": "undertow",
         "tags": []
       },
-      "micronaut-jpa-data-reactive": {
+      "micronaut-jpa-repository-reactive": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -322,14 +322,14 @@
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-micronaut-jpa-data-reactive",
+        "display_name": "fair-micronaut-jpa-repository-reactive",
         "notes": "Reactive implementation using Micronaut Data Repository Hibernate Reactive",
         "versus": "undertow",
         "tags": [
           "reactive"
         ]
       },
-      "micronaut-r2dbc-data-reactive": {
+      "micronaut-r2dbc-repository-reactive": {
         "json_url": "/json",
         "plaintext_url": "/plaintext",
         "db_url": "/db",
@@ -348,7 +348,7 @@
         "webserver": "Netty",
         "os": "Linux",
         "database_os": "Linux",
-        "display_name": "fair-micronaut-r2dbc-data-reactive",
+        "display_name": "fair-micronaut-r2dbc-repository-reactive",
         "notes": "Reactive implementation using Micronaut Data Repository R2DBC",
         "versus": "undertow",
         "tags": [

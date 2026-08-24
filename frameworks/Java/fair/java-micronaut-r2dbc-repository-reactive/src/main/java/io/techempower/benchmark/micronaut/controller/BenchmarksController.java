@@ -61,7 +61,7 @@ public class BenchmarksController {
     public Mono<List<World>> queries(@Nullable @QueryValue("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         return Flux.range(0, count)
-                .flatMap(i -> worldRepository.findById(QueryUtils.randomWorld()))
+                .concatMap(i -> worldRepository.findById(QueryUtils.randomWorld()))
                 .collectList();
     }
 
@@ -69,13 +69,18 @@ public class BenchmarksController {
     public Mono<List<World>> updates(@Nullable @QueryValue("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         return Flux.range(0, count)
-                .flatMap(i -> {
+                .concatMap(i -> {
                     int id = QueryUtils.randomWorld();
                     return worldRepository.findRandomNumberById(id)
                             .map(oldRandomNumber -> new World(id, QueryUtils.randomWorld(oldRandomNumber)));
                 })
-                .sort(WORLD_COMPARATOR)
-                .flatMap(world -> worldRepository.updateRandomNumber(world.id(), world.randomNumber()).thenReturn(world))
+                .collectList()
+                .flatMapMany(worlds -> {
+                    worlds.sort(WORLD_COMPARATOR);
+                    return Flux.fromIterable(worlds)
+                            .concatMap(world -> worldRepository.updateRandomNumber(world.id(), world.randomNumber())
+                                    .thenReturn(world));
+                })
                 .collectList();
     }
 

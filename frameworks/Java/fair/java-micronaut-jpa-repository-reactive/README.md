@@ -1,6 +1,6 @@
 # Micronaut JPA Data Reactive Benchmark
 
-TechEmpower `fair-micronaut-jpa-data-reactive` implementation.
+TechEmpower `fair-micronaut-jpa-repository-reactive` implementation.
 
 ## Stack
 
@@ -14,17 +14,17 @@ TechEmpower `fair-micronaut-jpa-data-reactive` implementation.
 ## Commands
 
 ```bash
-./gradlew :java-micronaut-jpa-data-reactive:compileJava
-./gradlew :java-micronaut-jpa-data-reactive:testClasses
-./gradlew :java-micronaut-jpa-data-reactive:distTar
-./gradlew :java-micronaut-jpa-data-reactive:run
+./gradlew :java-micronaut-jpa-repository-reactive:compileJava
+./gradlew :java-micronaut-jpa-repository-reactive:testClasses
+./gradlew :java-micronaut-jpa-repository-reactive:distTar
+./gradlew :java-micronaut-jpa-repository-reactive:run
 ```
 
 Docker image used by the BlackBox test:
 
 ```bash
-./gradlew :java-micronaut-jpa-data-reactive:distTar
-docker build -t fair-micronaut-jpa-data-reactive java-micronaut-jpa-data-reactive
+./gradlew :java-micronaut-jpa-repository-reactive:distTar
+docker build -t fair-micronaut-jpa-repository-reactive java-micronaut-jpa-repository-reactive
 ```
 
 ## Configuration

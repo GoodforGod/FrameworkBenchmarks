@@ -23,5 +23,6 @@ interface Application : HoconConfigModule,
 }
 
 fun main() {
+    println("AVAILABLE CORES: ${Runtime.getRuntime().availableProcessors()}")
     KoraApplication.run { ApplicationGraph.graph() }
 }

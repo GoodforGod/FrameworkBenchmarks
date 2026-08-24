@@ -27,6 +27,7 @@ private val MESSAGE = Message("Hello, World!")
 private val repository = WorldRepository()
 
 fun main() {
+    println("AVAILABLE CORES: ${Runtime.getRuntime().availableProcessors()}")
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         benchmarks()
     }.start(wait = true)

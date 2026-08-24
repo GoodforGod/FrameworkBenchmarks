@@ -1,6 +1,6 @@
 # Micronaut R2DBC Data Reactive Benchmark
 
-TechEmpower `fair-micronaut-r2dbc-data-reactive` implementation.
+TechEmpower `fair-micronaut-r2dbc-repository-reactive` implementation.
 
 ## Stack
 
@@ -14,17 +14,17 @@ TechEmpower `fair-micronaut-r2dbc-data-reactive` implementation.
 ## Commands
 
 ```bash
-./gradlew :java-micronaut-r2dbc-data-reactive:compileJava
-./gradlew :java-micronaut-r2dbc-data-reactive:testClasses
-./gradlew :java-micronaut-r2dbc-data-reactive:distTar
-./gradlew :java-micronaut-r2dbc-data-reactive:run
+./gradlew :java-micronaut-r2dbc-repository-reactive:compileJava
+./gradlew :java-micronaut-r2dbc-repository-reactive:testClasses
+./gradlew :java-micronaut-r2dbc-repository-reactive:distTar
+./gradlew :java-micronaut-r2dbc-repository-reactive:run
 ```
 
 Docker image used by the BlackBox test:
 
 ```bash
-./gradlew :java-micronaut-r2dbc-data-reactive:distTar
-docker build -t fair-micronaut-r2dbc-data-reactive java-micronaut-r2dbc-data-reactive
+./gradlew :java-micronaut-r2dbc-repository-reactive:distTar
+docker build -t fair-micronaut-r2dbc-repository-reactive java-micronaut-r2dbc-repository-reactive
 ```
 
 ## Configuration

@@ -28,8 +28,8 @@ cd "$SCRIPT_DIR"
   fair-helidon-mp-jpa-repository \
   fair-micronaut-jdbc-repository \
   fair-micronaut-jpa-repository \
-  fair-micronaut-jpa-data-reactive \
-  fair-micronaut-r2dbc-data-reactive \
+  fair-micronaut-jpa-repository-reactive \
+  fair-micronaut-r2dbc-repository-reactive \
   fair-quarkus-jooq \
   fair-quarkus-jpa-ac \
   fair-quarkus-jpa-ac-reactive \
@@ -44,6 +44,6 @@ cd "$SCRIPT_DIR"
   ntex-db \
   ntex-db-neon \
   --type db \
-  --concurrency-levels 4 8 16 32 64 \
+  --concurrency-levels 4 8 16 32 64 128 \
   --pipeline-concurrency-levels 256 1024 4096 \
   -m benchmark

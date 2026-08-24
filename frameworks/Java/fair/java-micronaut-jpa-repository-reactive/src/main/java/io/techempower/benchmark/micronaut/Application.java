@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 public final class Application {
 
     public static void main(String[] args) {
+        System.out.println("AVAILABLE CORES: " + Runtime.getRuntime().availableProcessors());
         Micronaut.run(Application.class, args);
     }
 }

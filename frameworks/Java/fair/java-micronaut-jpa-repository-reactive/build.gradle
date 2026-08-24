@@ -25,6 +25,10 @@ micronaut {
     }
 }
 
+configurations.named("runtimeClasspath") {
+    exclude group: "ch.qos.logback", module: "logback-classic"
+}
+
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.serde:micronaut-serde-processor"

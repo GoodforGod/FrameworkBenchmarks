@@ -40,7 +40,7 @@ class BenchmarkIntegrationTest {
                 .withStartupTimeout(Duration.ofSeconds(30))
                 .waitingFor(Wait.forLogMessage(".*ready.*", 2));
 
-        app = new GenericContainer<>(new ImageFromDockerfile("fair-micronaut-jpa-data-reactive").withDockerfile(Paths.get("Dockerfile").toAbsolutePath()))
+        app = new GenericContainer<>(new ImageFromDockerfile("fair-micronaut-jpa-repository-reactive").withDockerfile(Paths.get("Dockerfile").toAbsolutePath()))
                 .withNetwork(NETWORK).withExposedPorts(8080)
                 .withStartupTimeout(Duration.ofSeconds(30))
                 .withLogConsumer(frame -> System.err.print(frame.getUtf8String()))

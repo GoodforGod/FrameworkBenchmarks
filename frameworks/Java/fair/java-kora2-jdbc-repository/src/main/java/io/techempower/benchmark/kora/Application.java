@@ -14,6 +14,7 @@ public interface Application extends HoconConfigModule,
         UndertowPublicHttpServerModule {
 
     static void main(String[] args) {
+        System.out.println("AVAILABLE CORES: " + Runtime.getRuntime().availableProcessors());
         KoraApplication.run(ApplicationGraph::graph);
     }
 }
