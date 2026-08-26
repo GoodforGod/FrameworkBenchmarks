@@ -14,6 +14,13 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       pool-name: SpringJpaHikari
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
   jpa:
     hibernate:
       ddl-auto: none

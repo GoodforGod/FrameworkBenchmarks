@@ -21,17 +21,19 @@ public class RepositoryProducer {
     }
 
     private static Config dbConfig(String url, String username, String password) {
-        var config = Map.of(
-                "source", "jdbc",
-                "connection.url", url,
-                "connection.username", username,
-                "connection.password", password,
-                "connection.maximumPoolSize", "64",
-                "connection.dataSource.cachePrepStmts", "true",
-                "connection.dataSource.prepStmtCacheSize", "250",
-                "connection.dataSource.prepStmtCacheSqlLimit", "2048",
-                "connection.dataSource.ssl", "false",
-                "connection.dataSource.tcpKeepAlive", "true"
+        var config = Map.ofEntries(
+                Map.entry("source", "jdbc"),
+                Map.entry("connection.url", url),
+                Map.entry("connection.username", username),
+                Map.entry("connection.password", password),
+                Map.entry("connection.maximumPoolSize", "64"),
+                Map.entry("connection.dataSource.preparedStatementCacheQueries", "512"),
+                Map.entry("connection.dataSource.preparedStatementCacheSizeMiB", "16"),
+                Map.entry("connection.dataSource.prepareThreshold", "1"),
+                Map.entry("connection.dataSource.loggerLevel", "OFF"),
+                Map.entry("connection.dataSource.sslmode", "disable"),
+                Map.entry("connection.dataSource.tcpKeepAlive", "true"),
+                Map.entry("connection.dataSource.disableColumnSanitiser", "true")
         );
         return Config.just(() -> ConfigSources.create(config).build());
     }

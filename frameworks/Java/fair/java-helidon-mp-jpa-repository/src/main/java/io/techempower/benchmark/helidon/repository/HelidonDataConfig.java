@@ -35,11 +35,13 @@ public final class HelidonDataConfig {
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.autoCommit", "false"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.connection.provider_disables_autocommit", "true"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.maximumPoolSize", "64"),
-                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.cachePrepStmts", "true"),
-                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.prepStmtCacheSize", "250"),
-                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.prepStmtCacheSqlLimit", "2048"),
-                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.ssl", "false"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.preparedStatementCacheQueries", "512"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.preparedStatementCacheSizeMiB", "16"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.prepareThreshold", "1"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.loggerLevel", "OFF"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.sslmode", "disable"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.tcpKeepAlive", "true"),
+                Map.entry("data.persistence-units.jakarta.0.properties.hibernate.hikari.dataSource.disableColumnSanitiser", "true"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.show_sql", "false"),
                 Map.entry("data.persistence-units.jakarta.0.properties.hibernate.format_sql", "false")
         );

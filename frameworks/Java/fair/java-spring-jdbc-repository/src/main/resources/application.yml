@@ -10,6 +10,13 @@ spring:
       connection-timeout: 10000
       idle-timeout: 600000
       max-lifetime: 1800000
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
   jdbc:
     template:
       max-rows: 500
