@@ -30,7 +30,7 @@ public final class BenchmarksController {
 
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
     private static final Message MESSAGE = new Message("Hello, World!");
-    private static final String TEXT_HTML_UTF_8 = "text/html; charset=utf-8";
+    private static final String TEXT_HTML_UTF_8 = "text/html;charset=utf-8";
 
     private final WorldRepository worldRepository;
     private final FortuneRepository fortuneRepository;

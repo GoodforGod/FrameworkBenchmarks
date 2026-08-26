@@ -27,6 +27,7 @@ public class BenchmarksController {
 
     private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(Fortune::message);
     private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(World::id);
+    public static final MediaType CONTENT_TYPE = MediaType.valueOf("text/html;charset=utf-8");
 
     private final WorldRepository worldRepository;
     private final FortuneRepository fortuneRepository;
@@ -97,7 +98,7 @@ public class BenchmarksController {
         fortunes.sort(FORTUNE_COMPARATOR);
 
         return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("text/html; charset=UTF-8"))
+                .contentType(CONTENT_TYPE)
                 .body(JteUtils.serializeStandard(fortunes));
     }
 }

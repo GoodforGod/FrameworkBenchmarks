@@ -11,6 +11,4 @@ import reactor.core.publisher.Mono;
 public interface WorldRepository extends ReactorCrudRepository<World, Integer> {
 
     Mono<World> findById(int id);
-
-    Mono<Integer> findRandomNumberById(int id);
 }

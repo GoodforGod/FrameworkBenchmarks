@@ -166,7 +166,7 @@ def main(argv=None):
     # Benchmark options
     parser.add_argument(
         '--duration',
-        default=15,
+        default=30,
         help='Time in seconds that each test should run for.')
     parser.add_argument(
         '--server-host',

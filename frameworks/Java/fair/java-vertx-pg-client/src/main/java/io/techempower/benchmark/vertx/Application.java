@@ -72,7 +72,7 @@ public final class Application extends AbstractVerticle {
                 .setPassword(env("POSTGRES_PASS", "postgres"))
                 .setPipeliningLimit(envInt("POSTGRES_PIPELINING_LIMIT", 1))
                 .setCachePreparedStatements(true)
-                .setPreparedStatementCacheMaxSize(256)
+                .setPreparedStatementCacheMaxSize(512)
                 .setPreparedStatementCacheSqlLimit(2048);
         PoolOptions poolOptions = new PoolOptions()
                 .setMaxSize(512)

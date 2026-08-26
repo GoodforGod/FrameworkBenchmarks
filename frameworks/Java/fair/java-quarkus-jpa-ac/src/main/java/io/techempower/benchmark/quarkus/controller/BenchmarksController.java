@@ -20,7 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 
 @Path("/")
-@RunOnVirtualThread
 public class BenchmarksController {
 
     private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
@@ -32,6 +31,7 @@ public class BenchmarksController {
     @GET
     @Path("/plaintext")
     @Produces(MediaType.TEXT_PLAIN)
+    @RunOnVirtualThread
     public byte[] plaintext() {
         return PLAINTEXT_RESPONSE;
     }
@@ -39,6 +39,7 @@ public class BenchmarksController {
     @GET
     @Path("/json")
     @Produces(MediaType.APPLICATION_JSON)
+    @RunOnVirtualThread
     public Message json() {
         return MESSAGE;
     }
@@ -46,6 +47,7 @@ public class BenchmarksController {
     @GET
     @Path("/db")
     @Produces(MediaType.APPLICATION_JSON)
+    @RunOnVirtualThread
     public World db() {
         return World.findWorld(QueryUtils.randomWorld());
     }
@@ -53,6 +55,7 @@ public class BenchmarksController {
     @GET
     @Path("/queries")
     @Produces(MediaType.APPLICATION_JSON)
+    @RunOnVirtualThread
     public List<World> queries(@Nullable @QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
@@ -68,6 +71,7 @@ public class BenchmarksController {
     @Path("/updates")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
+    @RunOnVirtualThread
     public List<World> updates(@Nullable @QueryParam("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
         List<World> worlds = new ArrayList<>(count);
@@ -88,6 +92,7 @@ public class BenchmarksController {
     @GET
     @Path("/fortunes")
     @Produces(MediaType.TEXT_HTML)
+    @RunOnVirtualThread
     public Response fortunes() {
         List<Fortune> fortunes = Fortune.findAllFortunes();
         fortunes.add(new Fortune(0, "Additional fortune added at request time."));

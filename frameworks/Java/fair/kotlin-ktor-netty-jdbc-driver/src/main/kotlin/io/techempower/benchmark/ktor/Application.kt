@@ -34,6 +34,7 @@ fun main() {
 }
 
 fun Application.benchmarks() {
+    val contentType = ContentType.parse("text/html;charset=utf-8")
     install(DefaultHeaders)
     install(ContentNegotiation) {
         json(Json {
@@ -63,7 +64,7 @@ fun Application.benchmarks() {
             val fortunes = repository.findFortunes().toMutableList()
             fortunes.add(Fortune(0, "Additional fortune added at request time."))
             fortunes.sortWith(compareBy(Fortune::message))
-            call.respondBytes(JteUtils.serializeStandard(fortunes), ContentType.parse("text/html; charset=utf-8"))
+            call.respondBytes(JteUtils.serializeStandard(fortunes), contentType)
         }
     }
 }

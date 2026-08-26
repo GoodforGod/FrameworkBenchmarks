@@ -45,6 +45,8 @@ php-kohana/application/logs/
 php-fuel/fuel/app/logs/
 results/
 benchmark.cfg
+frameworks/Java/fair/java-kora2-jdbc-repository/application.tar
+frameworks/Java/fair/kotlin-kora2-jdbc-repository/application.tar
 
 # Mac filesystem dust
 .DS_Store
