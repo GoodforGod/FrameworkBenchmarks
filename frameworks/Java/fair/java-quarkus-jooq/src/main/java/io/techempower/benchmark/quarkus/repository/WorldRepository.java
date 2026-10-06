@@ -27,11 +27,15 @@ public class WorldRepository {
                 .fetchOne(record -> new World(record.value1(), record.value2()));
     }
 
-    public void updateRandomNumber(int id, int randomNumber) {
-        context().update(DSL.table("world"))
-                .set(DSL.field("randomnumber", Integer.class), randomNumber)
-                .where(DSL.field("id", Integer.class).eq(id))
-                .execute();
+    public void updateRandomNumbers(List<World> worlds) {
+        var context = context();
+        var batch = context.batch(context.update(DSL.table("world"))
+                .set(DSL.field("randomnumber", Integer.class), (Integer) null)
+                .where(DSL.field("id", Integer.class).eq((Integer) null)));
+        for (World world : worlds) {
+            batch = batch.bind(world.randomNumber, world.id);
+        }
+        batch.execute();
     }
 
     public List<Fortune> findAllFortunes() {

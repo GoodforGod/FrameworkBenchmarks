@@ -82,9 +82,7 @@ public class BenchmarksController {
         }
 
         worlds.sort(WORLD_COMPARATOR);
-        for (World world : worlds) {
-            repository.updateRandomNumber(world.id(), world.randomNumber());
-        }
+        repository.updateAll(worlds);
         return worlds;
     }
 

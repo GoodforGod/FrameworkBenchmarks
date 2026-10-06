@@ -10,16 +10,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface WorldRepository extends ReactiveCrudRepository<World, Integer> {
+public interface WorldRepository extends ReactiveCrudRepository<World, Integer>, WorldBatchRepository {
 
     @Query("SELECT id, randomnumber FROM world WHERE id = :id")
     Mono<World> findById(@Param("id") int id);
 
     @Query("SELECT randomnumber FROM world WHERE id = :id")
     Mono<Integer> findRandomNumberById(@Param("id") int id);
-
-    @Query("UPDATE world SET randomnumber = :randomNumber WHERE id = :id")
-    Mono<Void> updateRandomNumber(@Param("id") int id, @Param("randomNumber") int randomNumber);
 
     @Query("SELECT id, message FROM fortune")
     Flux<Fortune> findAllFortunes();

@@ -82,8 +82,8 @@ public final class BenchmarksController {
                             });
                 })
                 .sort((w1, w2) -> Integer.compare(w1.getId(), w2.getId()))
-                .flatMap(world -> worldRepository.update(world))
-                .collectList();
+                .collectList()
+                .flatMap(worlds -> worldRepository.updateAll(worlds).collectList());
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes

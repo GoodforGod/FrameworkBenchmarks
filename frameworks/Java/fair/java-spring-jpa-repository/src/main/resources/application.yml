@@ -30,6 +30,10 @@ spring:
       hibernate:
         format_sql: false
         generate_statistics: false
+        # /updates writes up to 500 entities: send them as one JDBC batch
+        jdbc:
+          batch_size: 500
+        order_updates: true
         cache:
           use_second_level_cache: false
           use_query_cache: false

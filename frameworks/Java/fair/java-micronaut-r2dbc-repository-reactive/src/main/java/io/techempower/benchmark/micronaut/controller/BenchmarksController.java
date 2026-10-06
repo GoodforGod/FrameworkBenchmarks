@@ -75,13 +75,10 @@ public class BenchmarksController {
                             .map(oldRandomNumber -> new World(id, QueryUtils.randomWorld(oldRandomNumber)));
                 })
                 .collectList()
-                .flatMapMany(worlds -> {
+                .flatMap(worlds -> {
                     worlds.sort(WORLD_COMPARATOR);
-                    return Flux.fromIterable(worlds)
-                            .concatMap(world -> worldRepository.updateRandomNumber(world.id(), world.randomNumber())
-                                    .thenReturn(world));
-                })
-                .collectList();
+                    return worldRepository.updateAll(worlds).then(Mono.just(worlds));
+                });
     }
 
     @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)

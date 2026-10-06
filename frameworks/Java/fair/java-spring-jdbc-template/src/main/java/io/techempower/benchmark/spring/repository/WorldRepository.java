@@ -39,11 +39,15 @@ public class WorldRepository {
         );
     }
 
-    public void update(World world) {
-        jdbcTemplate.update(
+    public void updateAll(List<World> worlds) {
+        jdbcTemplate.batchUpdate(
                 "UPDATE world SET randomnumber = ? WHERE id = ?",
-                world.randomNumber(),
-                world.id()
+                worlds,
+                worlds.size(),
+                (statement, world) -> {
+                    statement.setInt(1, world.randomNumber());
+                    statement.setInt(2, world.id());
+                }
         );
     }
 

@@ -55,9 +55,7 @@ class BenchmarksController(private val repository: WorldRepository) {
             worlds.add(World(id, QueryUtils.randomWorld(oldRandomNumber)))
         }
         worlds.sortBy(World::id)
-        for (world in worlds) {
-            repository.updateRandomNumber(world.id, world.randomNumber)
-        }
+        repository.update(worlds)
         return worlds
     }
 

@@ -18,6 +18,8 @@ TechEmpower `fair-ntex-db-tokio` implementation. A non-JVM reference point for t
 - `POSTGRES_POOL_SIZE` is **per worker thread** (default 8): 24 workers open 192 connections.
 - Connections are handed out round-robin. `tokio-postgres` can send several queries on one connection
   without waiting for the replies, so under high concurrency queries may be pipelined.
+- `/updates` sends all `UPDATE` statements of one request together on one connection, the
+  `tokio-postgres` counterpart of a JDBC batch.
 - A failed query answers `500 Internal Server Error` and is logged; a closed connection is replaced on its
   next use. The process only exits if the database is unreachable at startup.
 - ntex sizes its worker pool from the host CPU count and ignores container CPU limits.

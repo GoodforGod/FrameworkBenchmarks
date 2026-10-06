@@ -81,11 +81,11 @@ public class BenchmarksController {
             int id = QueryUtils.randomWorld();
             World oldWorld = worldRepository.findById(id);
             int newRandomNumber = QueryUtils.randomWorld(oldWorld.randomNumber());
-            worldRepository.updateRandomNumber(id, newRandomNumber);
             worlds.add(new World(id, newRandomNumber));
         }
 
         worlds.sort(WORLD_COMPARATOR);
+        worldRepository.updateRandomNumbers(worlds);
         return worlds;
     }
 

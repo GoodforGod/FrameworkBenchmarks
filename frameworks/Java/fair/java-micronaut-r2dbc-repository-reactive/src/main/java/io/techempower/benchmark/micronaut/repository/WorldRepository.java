@@ -17,7 +17,4 @@ public interface WorldRepository extends ReactorCrudRepository<World, Integer> {
 
     @Query("SELECT randomnumber FROM world WHERE id = :id")
     Mono<Integer> findRandomNumberById(int id);
-
-    @Query("UPDATE world SET randomnumber = :randomNumber WHERE id = :id")
-    Mono<Integer> updateRandomNumber(int id, int randomNumber);
 }

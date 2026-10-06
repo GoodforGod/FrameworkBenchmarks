@@ -100,9 +100,7 @@ public class BenchmarksController {
         }
 
         worlds.sort(WORLD_COMPARATOR);
-        for (World world : worlds) {
-            worldRepository.updateRandomNumber(world.id, world.randomNumber);
-        }
+        worldRepository.updateRandomNumbers(worlds);
 
         return worlds;
     }

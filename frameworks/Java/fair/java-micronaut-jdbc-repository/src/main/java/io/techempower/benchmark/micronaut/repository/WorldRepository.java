@@ -20,9 +20,6 @@ public interface WorldRepository extends CrudRepository<World, Integer> {
     @Query("SELECT randomnumber FROM world WHERE id = :id")
     int findRandomNumberById(int id);
 
-    @Query("UPDATE world SET randomnumber = :randomNumber WHERE id = :id")
-    void updateRandomNumber(int id, int randomNumber);
-
     @Query("SELECT id, message FROM fortune")
     List<Fortune> fortunes();
 }

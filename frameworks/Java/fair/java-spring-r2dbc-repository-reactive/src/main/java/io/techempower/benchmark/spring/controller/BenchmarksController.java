@@ -72,9 +72,7 @@ public class BenchmarksController {
                 .collectList()
                 .flatMapMany(worlds -> {
                     worlds.sort(WORLD_COMPARATOR);
-                    return Flux.fromIterable(worlds)
-                            .concatMap(world -> repository.updateRandomNumber(world.id(), world.randomNumber())
-                                    .thenReturn(world));
+                    return repository.updateRandomNumbers(worlds).thenMany(Flux.fromIterable(worlds));
                 });
     }
 

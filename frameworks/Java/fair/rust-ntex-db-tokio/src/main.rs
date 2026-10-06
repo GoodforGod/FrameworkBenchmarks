@@ -246,11 +246,18 @@ async fn update_worlds(count: usize) -> AppResult<Vec<World>> {
     }
     worlds.sort_by_key(|world| world.id);
 
-    for world in &worlds {
-        let pg = pg_client().await?;
-        pg.client
-            .execute(&pg.update_world, &[&world.random_number, &world.id])
-            .await?;
+    // all updates of the request go out together on one connection (the tokio-postgres equivalent of a JDBC batch)
+    let pg = pg_client().await?;
+    let pending = worlds.iter().map(|world| {
+        let pg = pg.clone();
+        async move {
+            pg.client
+                .execute(&pg.update_world, &[&world.random_number, &world.id])
+                .await
+        }
+    });
+    for result in ntex::util::join_all(pending).await {
+        result?;
     }
 
     Ok(worlds)

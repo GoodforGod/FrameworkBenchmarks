@@ -79,12 +79,12 @@ public final class WorldRepository {
     }
 
     private static Future<List<World>> updateWorlds(SqlConnection connection, List<World> worlds) {
-        Future<List<World>> chain = Future.succeededFuture(worlds);
+        List<Tuple> batch = new ArrayList<>(worlds.size());
         for (World world : worlds) {
-            chain = chain.compose(current -> connection.preparedQuery(UPDATE_WORLD)
-                    .execute(Tuple.of(world.getRandomNumber(), world.getId()))
-                    .map(current));
+            batch.add(Tuple.of(world.getRandomNumber(), world.getId()));
         }
-        return chain;
+        return connection.preparedQuery(UPDATE_WORLD)
+                .executeBatch(batch)
+                .map(worlds);
     }
 }
