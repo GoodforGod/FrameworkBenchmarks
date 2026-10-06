@@ -1,0 +1,34 @@
+micronaut:
+  application:
+    name: benchmark
+  server:
+    port: 8080
+    server-header: Micronaut
+  jvm:
+    virtual:
+      threads:
+        enabled: ${VIRTUAL_THREADS_ENABLED:false}
+
+r2dbc:
+  datasources:
+    default:
+      url: ${POSTGRES_R2DBC_URL:r2dbc:pool:postgresql://localhost:5432/postgres}
+      username: ${POSTGRES_USER:postgres}
+      password: ${POSTGRES_PASS:postgres}
+      dialect: POSTGRES
+      connect-timeout: 20s
+      options:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        sslmode: disable
+        initialSize: 16
+        maxSize: 256
+        maxIdleTime: PT30M
+        validationQuery: SELECT 1
+
+jackson:
+  serialization-inclusion: ALWAYS
+
+logger:
+  levels:
+    root: WARN

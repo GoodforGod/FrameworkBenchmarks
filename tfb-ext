@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Run TFB against an external Postgres (e.g. another machine on the LAN)
+# instead of the throw-away tfb-database container that ./tfb starts.
+#
+#   ./tfb     <tfb args>        unchanged, default behaviour (local tfb-database container)
+#   ./tfb-ext <tfb args>        same, but tests use the Postgres from .tfb-external-db.env
+#
+#   ./tfb-ext check             admin login + warnings about missing tuning
+#   ./tfb-ext provision         create benchmarkdbuser / hello_world / TFB schema (idempotent)
+#   ./tfb-ext provision --force drop and recreate hello_world
+#   ./tfb-ext tune [--apply]    print / apply the toolset's postgresql.conf as ALTER SYSTEM
+#                               (needs a Postgres restart; TFB needs max_connections=2000
+#                               and shared_preload_libraries=pg_stat_statements)
+#
+# Config: .tfb-external-db.env (git-ignored, see .tfb-external-db.env.example).
+# Inside the test containers the hostname tfb-database is mapped to
+# TFB_EXTERNAL_DB_HOST, so no framework needs to change.
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+ENV_FILE="${TFB_EXTERNAL_DB_ENV:-$ROOT/.tfb-external-db.env}"
+
+if [ -f "$ENV_FILE" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "$ENV_FILE"
+  set +a
+fi
+
+: "${TFB_EXTERNAL_DB_HOST:?set TFB_EXTERNAL_DB_HOST (IP of the external Postgres) in $ENV_FILE}"
+
+case "${1:-}" in
+  check|provision|tune)
+    : "${TFB_EXTERNAL_DB_ADMIN_URL:?set TFB_EXTERNAL_DB_ADMIN_URL (superuser URL) in $ENV_FILE}"
+    if ! docker image inspect techempower/tfb >/dev/null 2>&1; then
+      docker build -t techempower/tfb --build-arg USER_ID="$(id -u)" --build-arg GROUP_ID="$(id -g)" - < "$ROOT/Dockerfile"
+    fi
+    # the tfb image already ships psycopg2
+    exec docker run --rm -i --entrypoint python3 \
+      -e TFB_EXTERNAL_DB_ADMIN_URL \
+      -v "$ROOT":/FrameworkBenchmarks -w /FrameworkBenchmarks \
+      techempower/tfb scripts/external-db/provision.py "$@"
+    ;;
+  *)
+    exec "$ROOT/tfb" --external-database "$TFB_EXTERNAL_DB_HOST" "$@"
+    ;;
+esac

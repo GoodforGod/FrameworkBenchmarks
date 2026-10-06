@@ -1,0 +1,64 @@
+micronaut:
+  application:
+    name: micronaut-jpa-benchmark
+  server:
+    port: 8080
+    server-header: Micronaut
+  jvm:
+    virtual:
+      threads:
+        enabled: ${VIRTUAL_THREADS_ENABLED:true}
+
+datasources:
+  default:
+    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    driverClassName: org.postgresql.Driver
+    dialect: POSTGRES
+    hikari:
+      maximum-pool-size: 256
+      minimum-idle: 16
+      connection-timeout: 10000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: micronaut-jpa-pool
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
+
+jpa:
+  default:
+    entity-scan:
+      packages:
+        - io.techempower.benchmark.micronaut.model
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: false
+        format_sql: false
+        generate_statistics: false
+        # /updates writes up to 500 entities: send them as one JDBC batch
+        jdbc:
+          batch_size: 500
+        order_updates: true
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: NONE
+          schema-generation:
+            create-source: metadata
+            database:
+              action: none
+
+logger:
+  levels:
+    root: WARN

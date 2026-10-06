@@ -1,0 +1,34 @@
+apply plugin: 'application'
+
+dependencies {
+    annotationProcessor platform("ru.tinkoff.kora:kora-parent:$koraVersion")
+    annotationProcessor 'ru.tinkoff.kora:annotation-processors'
+    implementation project(':common')
+    implementation project(':jte:jte-common')
+    annotationProcessor project(':jte:jte-annotation-processor')
+    implementation 'ru.tinkoff.kora:http-server-undertow'
+    implementation 'ru.tinkoff.kora:database-jdbc'
+    implementation 'ru.tinkoff.kora:json-module'
+    implementation 'org.postgresql:postgresql:42.7.1'
+    implementation 'ru.tinkoff.kora:logging-logback'
+    implementation 'ru.tinkoff.kora:config-hocon'
+    runtimeOnly project(":agent")
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.17.1'
+}
+
+run {
+    environment([
+        "POSTGRES_JDBC_URL": "jdbc:postgresql://localhost:5432/postgres",
+        "POSTGRES_USER"    : "postgres",
+        "POSTGRES_PASS"    : "postgres",
+    ])
+}
+
+application {
+    mainClass = 'ru.tinkoff.kora.techempower.loom.undertow.Application'
+    applicationName = 'app'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '--add-exports' << 'java.base/jdk.internal.misc=ALL-UNNAMED'
+}

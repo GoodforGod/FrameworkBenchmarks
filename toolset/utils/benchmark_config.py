@@ -1,6 +1,7 @@
 from toolset.utils.output_helper import QuietOutputStream
 from toolset.test_types import test_types
 
+import ipaddress
 import os
 import time
 
@@ -30,6 +31,11 @@ class BenchmarkConfig:
         self.reverse_order = args.reverse_order
         self.server_host = args.server_host
         self.database_host = args.database_host
+        self.external_database = args.external_database
+        if self.external_database:
+            # docker's --add-host only accepts IP addresses
+            ipaddress.ip_address(self.external_database)
+            self.database_host = self.external_database
         self.client_host = args.client_host
         self.audit = args.audit
         self.new = args.new

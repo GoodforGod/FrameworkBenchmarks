@@ -1,0 +1,75 @@
+plugins {
+    id "java"
+    id "application"
+    alias(libs.plugins.jte)
+}
+
+version = libs.versions.kora1.get()
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+dependencies {
+    annotationProcessor(libs.kora1AnnotationProcessors)
+    implementation(platform(libs.kora1KoraParent))
+
+    runtimeOnly(libs.slf4jNop)
+
+    implementation(libs.kora1DatabaseJdbc)
+    implementation(libs.kora1ConfigHocon)
+    implementation(libs.kora1JsonModule)
+    implementation(libs.kora1HttpServerUndertow)
+    implementation(libs.jte)
+    implementation(libs.postgresql)
+    implementation(libs.undertowCore)
+    implementation(libs.jbossThreads)
+    implementation(libs.xnioNio)
+
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+    testImplementation(libs.junitJupiter)
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "src", "main", "jte")
+    targetDirectory = java.nio.file.Paths.get(projectDir.absolutePath, "build", "generated", "jte")
+    sourceSets.main.java.srcDirs += "build/generated/jte"
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass = "io.techempower.benchmark.kora.Application"
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+distTar {
+    archiveFileName = "application.tar"
+}

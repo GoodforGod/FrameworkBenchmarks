@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'fair-benchmark-jdk21-cache'
+
+include 'kotlin-kora1-jdbc-repository-suspend'
+include 'kotlin-kora1-vertx-repository-suspend'

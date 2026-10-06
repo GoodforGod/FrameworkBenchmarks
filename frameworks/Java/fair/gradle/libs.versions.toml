@@ -1,0 +1,151 @@
+# Framework versions verified against Maven Central on 2026-10-05.
+# Helidon 4 is the latest line supporting Java 25; Helidon 27 requires Java 27.
+# Kora 1 retains the legacy Kotlin/KSP toolchain.
+# Kora 1.2.22 requires Vert.x 4.3.8 internal Transport API; 4.5.x fails at startup.
+# Empty library versions are supplied by the corresponding framework BOM.
+[versions]
+kora1 = "1.2.22"
+kora2 = "2.0.0.RC2"
+micronaut = "5.2.1"
+quarkus = "3.40.1"
+springBoot = "4.1.1"
+helidon = "4.5.5"
+vertx = "5.2.0"
+vertxLegacy = "4.3.8"
+ktor = "3.6.0"
+postgresql = { strictly = "42.7.13" }
+r2dbcPostgresql = { strictly = "1.1.3.RELEASE" }
+jte = "3.2.3"
+slf4j = "2.0.20"
+logback = "1.6.5"
+testcontainers = "1.21.4"
+junit = "5.14.4"
+hibernate = "7.4.5.Final"
+jooq = "3.21.9"
+hikari = "7.1.0"
+scram = "2.1"
+coroutines = "1.11.0"
+coroutinesLegacy = "1.8.1"
+serialization = "1.11.0"
+undertow = { strictly = "2.4.4.Final" }
+jbossThreads = { strictly = "3.10.1" }
+xnio = { strictly = "3.8.17.Final" }
+kotlin = "2.4.20"
+kotlinLegacy = "2.1.21"
+ksp = "2.3.12"
+kspLegacy = "2.1.21-2.0.2"
+micronautPlugin = "5.0.2"
+springDependencyManagement = "1.1.7"
+benchmark = "1.0.0"
+
+[libraries]
+hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+scramClient = { module = "com.ongres.scram:client", version.ref = "scram" }
+helidonBundlesApt = { module = "io.helidon.bundles:helidon-bundles-apt", version.ref = "helidon" }
+helidonConfigYaml = { module = "io.helidon.config:helidon-config-yaml", version = "" }
+helidonData = { module = "io.helidon.data:helidon-data", version = "" }
+helidonDataJakartaPersistence = { module = "io.helidon.data.jakarta.persistence:helidon-data-jakarta-persistence", version = "" }
+helidonDataJakartaPersistenceCodegen = { module = "io.helidon.data.jakarta.persistence:helidon-data-jakarta-persistence-codegen", version.ref = "helidon" }
+helidonDbclient = { module = "io.helidon.dbclient:helidon-dbclient", version = "" }
+helidonDbclientHikari = { module = "io.helidon.dbclient:helidon-dbclient-hikari", version = "" }
+helidonDbclientJdbc = { module = "io.helidon.dbclient:helidon-dbclient-jdbc", version = "" }
+helidonDependencies = { module = "io.helidon:helidon-dependencies", version.ref = "helidon" }
+helidonMicroprofileCore = { module = "io.helidon.microprofile.bundles:helidon-microprofile-core", version = "" }
+hibernateCore = { module = "org.hibernate.orm:hibernate-core", version = "" }
+hibernateHikaricp = { module = "org.hibernate.orm:hibernate-hikaricp", version.ref = "hibernate" }
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version = "" }
+jbossThreads = { module = "org.jboss.threads:jboss-threads", version.ref = "jbossThreads" }
+jerseyMediaJsonBinding = { module = "org.glassfish.jersey.media:jersey-media-json-binding", version = "" }
+jooq = { module = "org.jooq:jooq", version.ref = "jooq" }
+jte = { module = "gg.jte:jte", version.ref = "jte" }
+jteRuntime = { module = "gg.jte:jte-runtime", version.ref = "jte" }
+junitBom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junitPlatformLauncher = { module = "org.junit.platform:junit-platform-launcher", version = "" }
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version = "" }
+kora1AnnotationProcessors = { module = "ru.tinkoff.kora:annotation-processors", version.ref = "kora1" }
+kora1ConfigHocon = { module = "ru.tinkoff.kora:config-hocon", version = "" }
+kora1DatabaseJdbc = { module = "ru.tinkoff.kora:database-jdbc", version = "" }
+kora1DatabaseVertx = { module = "ru.tinkoff.kora:database-vertx", version = "" }
+kora1HttpServerUndertow = { module = "ru.tinkoff.kora:http-server-undertow", version = "" }
+kora1JsonModule = { module = "ru.tinkoff.kora:json-module", version = "" }
+kora1KoraParent = { module = "ru.tinkoff.kora:kora-parent", version.ref = "kora1" }
+kora1SymbolProcessors = { module = "ru.tinkoff.kora:symbol-processors", version = "" }
+kora2AnnotationProcessors = { module = "io.koraframework:annotation-processors", version.ref = "kora2" }
+kora2ConfigHocon = { module = "io.koraframework:config-hocon", version = "" }
+kora2DatabaseJdbc = { module = "io.koraframework:database-jdbc", version = "" }
+kora2HttpServerUndertow = { module = "io.koraframework:http-server-undertow", version = "" }
+kora2JsonCommon = { module = "io.koraframework:json-common", version = "" }
+kora2KoraBom = { module = "io.koraframework:kora-bom", version.ref = "kora2" }
+kora2SymbolProcessors = { module = "io.koraframework:symbol-processors", version = "" }
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinxCoroutinesCoreLegacy = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesLegacy" }
+kotlinxCoroutinesJdk8Legacy = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutinesLegacy" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+ktorSerializationKotlinxJsonJvm = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+ktorServerCioJvm = { module = "io.ktor:ktor-server-cio-jvm", version.ref = "ktor" }
+ktorServerContentNegotiationJvm = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktorServerDefaultHeadersJvm = { module = "io.ktor:ktor-server-default-headers-jvm", version.ref = "ktor" }
+ktorServerNettyJvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+micronautDataHibernateJpa = { module = "io.micronaut.data:micronaut-data-hibernate-jpa", version = "" }
+micronautDataHibernateReactive = { module = "io.micronaut.data:micronaut-data-hibernate-reactive", version = "" }
+micronautDataJdbc = { module = "io.micronaut.data:micronaut-data-jdbc", version = "" }
+micronautDataProcessor = { module = "io.micronaut.data:micronaut-data-processor", version = "" }
+micronautDataR2dbc = { module = "io.micronaut.data:micronaut-data-r2dbc", version = "" }
+micronautHibernateJpa = { module = "io.micronaut.sql:micronaut-hibernate-jpa", version = "" }
+micronautHttpServerNetty = { module = "io.micronaut:micronaut-http-server-netty", version = "" }
+micronautInject = { module = "io.micronaut:micronaut-inject", version = "" }
+micronautInjectJava = { module = "io.micronaut:micronaut-inject-java", version = "" }
+micronautJdbcHikari = { module = "io.micronaut.sql:micronaut-jdbc-hikari", version = "" }
+micronautR2dbcCore = { module = "io.micronaut.r2dbc:micronaut-r2dbc-core", version = "" }
+micronautReactor = { module = "io.micronaut.reactor:micronaut-reactor", version = "" }
+micronautRuntime = { module = "io.micronaut:micronaut-runtime", version = "" }
+micronautSerdeJackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version = "" }
+micronautSerdeProcessor = { module = "io.micronaut.serde:micronaut-serde-processor", version = "" }
+nettyTransportNativeEpoll = { module = "io.netty:netty-transport-native-epoll", version = "" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+quarkusArc = { module = "io.quarkus:quarkus-arc", version = "" }
+quarkusBom = { module = "io.quarkus:quarkus-bom", version.ref = "quarkus" }
+quarkusHibernateOrmPanache = { module = "io.quarkus:quarkus-hibernate-orm-panache", version = "" }
+quarkusHibernateReactivePanache = { module = "io.quarkus:quarkus-hibernate-reactive-panache", version = "" }
+quarkusJdbcPostgresql = { module = "io.quarkus:quarkus-jdbc-postgresql", version = "" }
+quarkusReactivePgClient = { module = "io.quarkus:quarkus-reactive-pg-client", version = "" }
+quarkusRestJackson = { module = "io.quarkus:quarkus-rest-jackson", version = "" }
+quarkusScheduler = { module = "io.quarkus:quarkus-scheduler", version = "" }
+r2dbcPool = { module = "io.r2dbc:r2dbc-pool", version = "" }
+r2dbcPostgresql = { module = "org.postgresql:r2dbc-postgresql", version.ref = "r2dbcPostgresql" }
+reactorTest = { module = "io.projectreactor:reactor-test", version = "" }
+slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+snakeyaml = { module = "org.yaml:snakeyaml", version = "" }
+springBootStarterDataJdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc", version = "" }
+springBootStarterDataJpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version = "" }
+springBootStarterDataR2dbc = { module = "org.springframework.boot:spring-boot-starter-data-r2dbc", version = "" }
+springBootStarterJdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc", version = "" }
+springBootStarterR2dbc = { module = "org.springframework.boot:spring-boot-starter-r2dbc", version = "" }
+springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test", version = "" }
+springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web", version = "" }
+springBootStarterWebflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version = "" }
+springBootWebfluxTest = { module = "org.springframework.boot:spring-boot-webflux-test", version = "" }
+springBootWebmvcTest = { module = "org.springframework.boot:spring-boot-webmvc-test", version = "" }
+testcontainersJunitJupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainersPostgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
+testcontainersTestcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+undertowCore = { module = "io.undertow:undertow-core", version.ref = "undertow" }
+vertxLegacyPgClient = { module = "io.vertx:vertx-pg-client", version.ref = "vertxLegacy" }
+vertxPgClientManaged = { module = "io.vertx:vertx-pg-client", version = "" }
+vertxPgClient = { module = "io.vertx:vertx-pg-client", version.ref = "vertx" }
+vertxWeb = { module = "io.vertx:vertx-web", version.ref = "vertx" }
+xnioNio = { module = "org.jboss.xnio:xnio-nio", version.ref = "xnio" }
+
+[plugins]
+jte = { id = "gg.jte.gradle", version.ref = "jte" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+micronautApplication = { id = "io.micronaut.application", version.ref = "micronautPlugin" }
+micronautAot = { id = "io.micronaut.aot", version.ref = "micronautPlugin" }
+quarkus = { id = "io.quarkus", version.ref = "quarkus" }
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+kotlinJvmLegacy = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinLegacy" }
+kspLegacy = { id = "com.google.devtools.ksp", version.ref = "kspLegacy" }
