@@ -4,7 +4,7 @@ TechEmpower `fair-quarkus-jpa-ac` implementation.
 
 ## Stack
 
-- Framework: Quarkus `3.37.2`
+- Framework: Quarkus `3.40.1`
 - HTTP: Quarkus REST / JAX-RS on Vert.x
 - Database: Hibernate ORM Panache Active Record with PostgreSQL JDBC
 - Templates: JTE `3.2.3`

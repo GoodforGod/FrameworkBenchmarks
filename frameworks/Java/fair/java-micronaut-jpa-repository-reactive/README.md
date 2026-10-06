@@ -4,7 +4,7 @@ TechEmpower `fair-micronaut-jpa-repository-reactive` implementation.
 
 ## Stack
 
-- Framework: Micronaut `5.0.4`
+- Framework: Micronaut `5.2.1`
 - HTTP: Micronaut HTTP Server Netty
 - Database: Micronaut Data Hibernate Reactive with Vert.x PostgreSQL client
 - Reactive type: Reactor `Mono` / `Flux`

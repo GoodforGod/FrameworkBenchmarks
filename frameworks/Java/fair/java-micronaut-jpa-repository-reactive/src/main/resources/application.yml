@@ -29,7 +29,7 @@ jpa:
           url: ${POSTGRES_REACTIVE_URL:postgresql://localhost:5432/postgres}
           username: ${POSTGRES_USER:postgres}
           password: ${POSTGRES_PASS:postgres}
-          pool_size: 512
+          pool_size: 256
       jakarta:
         persistence:
           sharedCache:

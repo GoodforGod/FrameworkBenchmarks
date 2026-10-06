@@ -4,7 +4,7 @@ TechEmpower `fair-spring-jpa-data` implementation.
 
 ## Stack
 
-- Framework: Spring Boot `4.1.0`
+- Framework: Spring Boot `4.1.1`
 - HTTP: Spring MVC on Tomcat
 - Database: Spring Data JPA with Hibernate ORM and PostgreSQL JDBC
 - Templates: JTE `3.2.3`

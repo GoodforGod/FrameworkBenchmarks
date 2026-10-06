@@ -22,7 +22,7 @@ r2dbc:
         preparedStatementCacheSizeMiB: 16
         sslmode: disable
         initialSize: 16
-        maxSize: 512
+        maxSize: 256
         maxIdleTime: PT30M
         validationQuery: SELECT 1
 

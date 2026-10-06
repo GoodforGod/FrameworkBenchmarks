@@ -75,7 +75,7 @@ public final class Application extends AbstractVerticle {
                 .setPreparedStatementCacheMaxSize(512)
                 .setPreparedStatementCacheSqlLimit(2048);
         PoolOptions poolOptions = new PoolOptions()
-                .setMaxSize(512)
+                .setMaxSize(256)
                 .setMaxWaitQueueSize(-1)
                 .setConnectionTimeout(20_000)
                 .setIdleTimeout(0)

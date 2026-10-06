@@ -5,7 +5,7 @@ spring:
     password: ${POSTGRES_PASS:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 512
+      maximum-pool-size: 256
       minimum-idle: 16
       connection-timeout: 10000
       idle-timeout: 600000

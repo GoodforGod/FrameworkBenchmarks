@@ -4,7 +4,7 @@ TechEmpower `fair-kora-jdbc` implementation.
 
 ## Stack
 
-- Framework: Kora `2.0.0.RC1`
+- Framework: Kora `2.0.0.RC2`
 - HTTP: Kora HTTP Server on Undertow
 - Database: Kora JDBC repository API with PostgreSQL JDBC
 - Templates: JTE `3.2.3`

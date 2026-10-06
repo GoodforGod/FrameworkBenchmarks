@@ -4,7 +4,7 @@ TechEmpower `fair-kotlin-kora2-jdbc-repository` implementation.
 
 ## Stack
 
-- Framework: Kora `2.0.0.RC1`
+- Framework: Kora `2.0.0.RC2`
 - HTTP: Kora HTTP Server on Undertow
 - Database: Kora `database-jdbc` with PostgreSQL JDBC driver
 - Controller/repository style: Kotlin blocking methods

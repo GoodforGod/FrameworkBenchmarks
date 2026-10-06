@@ -4,7 +4,7 @@ TechEmpower `fair-micronaut-r2dbc-repository-reactive` implementation.
 
 ## Stack
 
-- Framework: Micronaut `5.0.4`
+- Framework: Micronaut `5.2.1`
 - HTTP: Micronaut HTTP Server Netty
 - Database: Micronaut Data R2DBC with PostgreSQL R2DBC driver
 - Reactive type: Reactor `Mono` / `Flux`

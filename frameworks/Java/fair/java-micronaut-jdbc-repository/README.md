@@ -4,7 +4,7 @@ TechEmpower `fair-micronaut-jdbc-data` implementation.
 
 ## Stack
 
-- Framework: Micronaut `5.0.4`
+- Framework: Micronaut `5.2.1`
 - HTTP: Micronaut HTTP Server Netty
 - Database: Micronaut Data JDBC with PostgreSQL JDBC and HikariCP
 - Templates: JTE `3.2.3`

@@ -17,7 +17,7 @@ class WorldRepository {
         driverClassName = "org.postgresql.Driver"
         poolName = "ktor-jdbc"
         minimumIdle = 16
-        maximumPoolSize = 512
+        maximumPoolSize = 256
         connectionTimeout = 10_000
         validationTimeout = 5_000
         idleTimeout = 0

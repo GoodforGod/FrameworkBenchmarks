@@ -4,7 +4,7 @@ TechEmpower `fair-helidon-jpa-data-nima` implementation.
 
 ## Stack
 
-- Framework: Helidon MP `4.5.0`
+- Framework: Helidon MP `4.5.5`
 - HTTP: Helidon MicroProfile JAX-RS
 - Database: Helidon Data Repository with Jakarta Persistence, Hibernate ORM, and PostgreSQL JDBC
 - Templates: JTE `3.2.3`

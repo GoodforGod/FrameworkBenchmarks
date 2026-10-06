@@ -22,7 +22,7 @@ db:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
-    maximumPoolSize: 512
+    maximumPoolSize: 256
     dataSource:
       prepareThreshold: 1
       preparedStatementCacheQueries: 512

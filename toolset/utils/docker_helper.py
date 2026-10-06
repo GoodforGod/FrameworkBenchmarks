@@ -177,6 +177,13 @@ class DockerHelper:
                     str(self.benchmarker.config.database_host)
                 }
                 name = None
+            elif self.benchmarker.config.external_database:
+                # No tfb-database container on the network: point the
+                # hostname the frameworks use at the external Postgres.
+                extra_hosts = {
+                    'tfb-database':
+                    str(self.benchmarker.config.external_database)
+                }
 
             if self.benchmarker.config.network_mode is None:
                 sysctl = {'net.core.somaxconn': 65535}
@@ -320,6 +327,8 @@ class DockerHelper:
         Builds all the databases necessary to run the list of benchmarker tests
         '''
         built = []
+        if self.benchmarker.config.external_database:
+            return built
         for test in self.benchmarker.tests:
             db = test.database.lower()
             if db not in built and db != "none":
@@ -346,6 +355,23 @@ class DockerHelper:
         '''
         image_name = "techempower/%s:latest" % database
         log_prefix = image_name + ": "
+
+        if self.benchmarker.config.external_database:
+            host = self.benchmarker.config.external_database
+            if database != "postgres":
+                log("--external-database only supports postgres, but this test needs %s"
+                    % database,
+                    prefix=log_prefix,
+                    color=Fore.RED)
+                return None
+            if not databases[database].test_connection(self.benchmarker.config):
+                log("External database %s is not accepting connections as benchmarkdbuser (run: ./tfb-ext provision)"
+                    % host,
+                    prefix=log_prefix,
+                    color=Fore.RED)
+                return None
+            log("Using external database %s" % host, prefix=log_prefix)
+            return True
 
         if self.benchmarker.config.network_mode is None:
             sysctl = {

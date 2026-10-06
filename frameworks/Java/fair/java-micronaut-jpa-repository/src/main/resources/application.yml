@@ -17,7 +17,7 @@ datasources:
     driverClassName: org.postgresql.Driver
     dialect: POSTGRES
     hikari:
-      maximum-pool-size: 512
+      maximum-pool-size: 256
       minimum-idle: 16
       connection-timeout: 10000
       idle-timeout: 600000

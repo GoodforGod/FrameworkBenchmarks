@@ -4,7 +4,7 @@ TechEmpower `fair-helidon-jdbc-nima` implementation.
 
 ## Stack
 
-- Framework: Helidon MP `4.5.0`
+- Framework: Helidon MP `4.5.5`
 - HTTP: Helidon MicroProfile JAX-RS
 - Database: Helidon DbClient JDBC with PostgreSQL JDBC and Hikari integration
 - Templates: JTE `3.2.3`

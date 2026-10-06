@@ -4,7 +4,7 @@ TechEmpower `fair-kotlin-kora1-jdbc-repository-suspend` implementation.
 
 ## Stack
 
-- Framework: Kora `1.2.18`
+- Framework: Kora `1.2.22`
 - HTTP: Kora HTTP Server on Undertow
 - Database: Kora `database-jdbc` with PostgreSQL JDBC driver
 - Controller/repository style: Kotlin `suspend`

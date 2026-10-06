@@ -4,7 +4,7 @@ TechEmpower `fair-quarkus-jpa-repository-reactive` implementation.
 
 ## Stack
 
-- Framework: Quarkus `3.37.2`
+- Framework: Quarkus `3.40.1`
 - HTTP: Quarkus REST / JAX-RS on Vert.x
 - Database: Hibernate Reactive Panache Repository with Reactive PostgreSQL client
 - Reactive type: Mutiny `Uni`

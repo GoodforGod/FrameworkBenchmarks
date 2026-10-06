@@ -4,7 +4,7 @@ TechEmpower `fair-vertx-pg-client` implementation.
 
 ## Stack
 
-- Framework: Vert.x `5.0.5`
+- Framework: Vert.x `5.2.0`
 - HTTP: Vert.x Web
 - Database: Vert.x PgClient
 - Templates: JTE `3.2.3`

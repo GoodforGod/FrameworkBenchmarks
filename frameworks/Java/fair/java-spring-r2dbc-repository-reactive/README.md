@@ -4,7 +4,7 @@ TechEmpower `fair-spring-r2dbc-repository-reactive` implementation.
 
 ## Stack
 
-- Framework: Spring Boot `4.1.0`
+- Framework: Spring Boot `4.1.1`
 - HTTP: Spring WebFlux on Netty
 - Database: Spring Data R2DBC with PostgreSQL R2DBC driver
 - Reactive type: Reactor `Mono` / `Flux`

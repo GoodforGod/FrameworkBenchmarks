@@ -4,12 +4,12 @@ TechEmpower `fair-kotlin-kora1-vertx-repository-suspend` implementation.
 
 ## Stack
 
-- Framework: Kora `1.2.18`
+- Framework: Kora `1.2.22`
 - HTTP: Kora HTTP Server on Undertow
 - Database: Kora `database-vertx` with PostgreSQL Vert.x client
 - Controller/repository style: Kotlin `suspend`
 - Templates: JTE `3.2.3`
-- Runtime: Java 21 container image, Java 25 Gradle runtime
+- Runtime: Java 25 container image (built with a JDK 21 Gradle image)
 
 ## Commands
 

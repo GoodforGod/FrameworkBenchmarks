@@ -31,7 +31,6 @@ public class BenchmarksController {
     @GET
     @Path("/plaintext")
     @Produces(MediaType.TEXT_PLAIN)
-    @RunOnVirtualThread
     public byte[] plaintext() {
         return PLAINTEXT_RESPONSE;
     }
@@ -39,7 +38,6 @@ public class BenchmarksController {
     @GET
     @Path("/json")
     @Produces(MediaType.APPLICATION_JSON)
-    @RunOnVirtualThread
     public Message json() {
         return MESSAGE;
     }

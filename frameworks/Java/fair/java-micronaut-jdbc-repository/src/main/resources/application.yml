@@ -16,7 +16,7 @@ datasources:
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASS:postgres}
     dialect: POSTGRES
-    maximum-pool-size: 512
+    maximum-pool-size: 256
     minimum-idle: 16
     connection-timeout: 10000
     idle-timeout: 600000

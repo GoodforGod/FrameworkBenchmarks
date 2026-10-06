@@ -1,8 +1,8 @@
-#FROM fair-gradle-cache-jdk25:latest AS builder
-#
-#COPY --chown=gradle:gradle . /home/gradle/src
-#WORKDIR /home/gradle/src
-#RUN gradle kotlin-kora2-jdbc-repository:distTar --no-daemon
+FROM fair-gradle-cache-jdk25:latest AS builder
+
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle kotlin-kora2-jdbc-repository:distTar --no-daemon
 
 FROM eclipse-temurin:25-jre-jammy AS runner
 
@@ -14,8 +14,7 @@ ENV POSTGRES_USER="benchmarkdbuser"
 ENV POSTGRES_PASS="benchmarkdbpass"
 ENV KORA_CONFIG_WATCHER_ENABLED="false"
 
-#COPY --from=builder /home/gradle/src/kotlin-kora2-jdbc-repository/build/distributions/application.tar /app/application.tar
-COPY ./kotlin-kora2-jdbc-repository/application.tar /app/application.tar
+COPY --from=builder /home/gradle/src/kotlin-kora2-jdbc-repository/build/distributions/application.tar /app/application.tar
 RUN tar -xf /app/application.tar -C /app && rm /app/application.tar
 
 EXPOSE 8080

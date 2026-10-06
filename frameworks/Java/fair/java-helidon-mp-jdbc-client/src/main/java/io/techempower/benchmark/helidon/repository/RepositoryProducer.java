@@ -26,7 +26,7 @@ public class RepositoryProducer {
                 Map.entry("connection.url", url),
                 Map.entry("connection.username", username),
                 Map.entry("connection.password", password),
-                Map.entry("connection.maximumPoolSize", "64"),
+                Map.entry("connection.maximumPoolSize", "256"),
                 Map.entry("connection.dataSource.preparedStatementCacheQueries", "512"),
                 Map.entry("connection.dataSource.preparedStatementCacheSizeMiB", "16"),
                 Map.entry("connection.dataSource.prepareThreshold", "1"),

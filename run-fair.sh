@@ -8,7 +8,7 @@ JAVA_KORA2_DIR="$FAIR_DIR/java-kora2-jdbc-repository"
 KOTLIN_KORA2_DIR="$FAIR_DIR/kotlin-kora2-jdbc-repository"
 
 echo "Building local Kora 2 snapshot distributions"
-"$FAIR_DIR/gradlew" -p "$FAIR_DIR" --refresh-dependencies --rerun-tasks \
+"$FAIR_DIR/gradlew" -p "$FAIR_DIR" --refresh-dependencies \
   :java-kora2-jdbc-repository:distTar \
   :kotlin-kora2-jdbc-repository:distTar
 
@@ -62,6 +62,5 @@ cd "$SCRIPT_DIR"
   fair-vertx-pg-client \
   fair-ntex-db-tokio \
   --type db \
-  --concurrency-levels 64 128 \
-  --pipeline-concurrency-levels 256 1024 4096 \
+  --concurrency-levels 256 \
   -m benchmark

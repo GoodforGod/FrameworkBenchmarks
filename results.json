@@ -1,9 +1,9 @@
 {
-  "uuid": "6ae9dd9c-401b-422a-97f4-a2ba7181cfe9",
-  "name": "(unspecified, datetime = 2026-10-05 17:48:21)",
-  "environmentDescription": "(unspecified, hostname = 222eb5f409c4)",
+  "uuid": "5f97e2f9-84e9-4b95-baa5-92cbaa8c936b",
+  "name": "(unspecified, datetime = 2026-10-06 10:01:13)",
+  "environmentDescription": "(unspecified, hostname = fd3eb8ec13d4)",
   "git": {
-    "commitId": "e432df0897fd3f46b0233366ff0c3d7adf2e4714",
+    "commitId": "7ae97745188c5f0ffbb639e6337b5e0decec9c7d",
     "repositoryUrl": "https://github.com/GoodforGod/FrameworkBenchmarks",
     "branchName": "feature/kora-and-others"
   },
@@ -11,8 +11,8 @@
     "name": "Linux",
     "version": "6.18.40.1-microsoft-standard-WSL2"
   },
-  "startTime": 1791222501562,
-  "completionTime": 1791228063828,
+  "startTime": 1791280873550,
+  "completionTime": 1791286381898,
   "concurrencyLevels": [
     256
   ],
@@ -70,262 +70,262 @@
     "db": {
       "fair-helidon-mp-jdbc-client": [
         {
-          "latencyAvg": "2.92ms",
-          "latencyStdev": "2.78ms",
-          "latencyMax": "38.03ms",
-          "totalRequests": 2937001,
-          "startTime": 1791222696,
-          "endTime": 1791222727
+          "latencyAvg": "11.14ms",
+          "latencyStdev": "66.90ms",
+          "latencyMax": "840.04ms",
+          "totalRequests": 3077403,
+          "startTime": 1791281080,
+          "endTime": 1791281111
         }
       ],
       "fair-helidon-mp-jpa-repository": [
         {
-          "latencyAvg": "5.56ms",
-          "latencyStdev": "3.75ms",
-          "latencyMax": "46.66ms",
-          "totalRequests": 1361948,
-          "startTime": 1791222902,
-          "endTime": 1791222932
+          "latencyAvg": "13.13ms",
+          "latencyStdev": "61.65ms",
+          "latencyMax": "765.62ms",
+          "totalRequests": 1397130,
+          "startTime": 1791281290,
+          "endTime": 1791281321
         }
       ],
       "fair-kora1-jdbc-repository": [
         {
-          "latencyAvg": "2.45ms",
-          "latencyStdev": "2.47ms",
-          "latencyMax": "50.72ms",
-          "totalRequests": 3622254,
-          "startTime": 1791223102,
-          "endTime": 1791223132
+          "latencyAvg": "5.63ms",
+          "latencyStdev": "32.25ms",
+          "latencyMax": "515.70ms",
+          "totalRequests": 3672382,
+          "startTime": 1791281496,
+          "endTime": 1791281527
         }
       ],
       "fair-kora1-jdbc-repository-suspend": [
         {
-          "latencyAvg": "2.42ms",
-          "latencyStdev": "1.75ms",
-          "latencyMax": "113.78ms",
-          "totalRequests": 3092649,
-          "startTime": 1791223298,
-          "endTime": 1791223329
+          "latencyAvg": "5.29ms",
+          "latencyStdev": "30.04ms",
+          "latencyMax": "457.11ms",
+          "totalRequests": 3244218,
+          "startTime": 1791281696,
+          "endTime": 1791281727
         }
       ],
       "fair-kora1-jdbc-repository-vt": [
         {
-          "latencyAvg": "2.92ms",
-          "latencyStdev": "2.35ms",
-          "latencyMax": "28.72ms",
-          "totalRequests": 2711490,
-          "startTime": 1791223501,
-          "endTime": 1791223531
+          "latencyAvg": "5.53ms",
+          "latencyStdev": "28.22ms",
+          "latencyMax": "456.80ms",
+          "totalRequests": 2765855,
+          "startTime": 1791281896,
+          "endTime": 1791281927
         }
       ],
       "fair-kora1-vertx-repository-suspend": [
         {
-          "latencyAvg": "2.55ms",
-          "latencyStdev": "2.20ms",
-          "latencyMax": "62.97ms",
-          "totalRequests": 3208808,
-          "startTime": 1791223695,
-          "endTime": 1791223725
+          "latencyAvg": "5.68ms",
+          "latencyStdev": "32.41ms",
+          "latencyMax": "504.91ms",
+          "totalRequests": 3314580,
+          "startTime": 1791282088,
+          "endTime": 1791282118
         }
       ],
       "fair-kora2-jdbc-repository": [
         {
-          "latencyAvg": "1.98ms",
-          "latencyStdev": "1.42ms",
-          "latencyMax": "66.06ms",
-          "totalRequests": 3956507,
-          "startTime": 1791223854,
-          "endTime": 1791223884
+          "latencyAvg": "7.20ms",
+          "latencyStdev": "46.02ms",
+          "latencyMax": "609.87ms",
+          "totalRequests": 4029379,
+          "startTime": 1791282243,
+          "endTime": 1791282274
         }
       ],
       "fair-kora2-jdbc-repository-kotlin": [
         {
-          "latencyAvg": "1.98ms",
-          "latencyStdev": "1.39ms",
-          "latencyMax": "60.28ms",
-          "totalRequests": 3829169,
-          "startTime": 1791224014,
-          "endTime": 1791224044
+          "latencyAvg": "8.14ms",
+          "latencyStdev": "52.22ms",
+          "latencyMax": "674.86ms",
+          "totalRequests": 3974471,
+          "startTime": 1791282404,
+          "endTime": 1791282434
         }
       ],
       "fair-ktor-cio-jdbc-driver": [
         {
-          "latencyAvg": "2.81ms",
-          "latencyStdev": "1.23ms",
-          "latencyMax": "33.41ms",
-          "totalRequests": 2629171,
-          "startTime": 1791224221,
-          "endTime": 1791224251
+          "latencyAvg": "2.72ms",
+          "latencyStdev": "1.13ms",
+          "latencyMax": "29.10ms",
+          "totalRequests": 2709325,
+          "startTime": 1791282609,
+          "endTime": 1791282639
         }
       ],
       "fair-ktor-netty-jdbc-driver": [
         {
-          "latencyAvg": "2.29ms",
-          "latencyStdev": "1.58ms",
-          "latencyMax": "64.58ms",
-          "totalRequests": 3328653,
-          "startTime": 1791224427,
-          "endTime": 1791224457
+          "latencyAvg": "5.21ms",
+          "latencyStdev": "29.68ms",
+          "latencyMax": "459.73ms",
+          "totalRequests": 3370915,
+          "startTime": 1791282812,
+          "endTime": 1791282843
         }
       ],
       "fair-micronaut-jdbc-repository": [
         {
-          "latencyAvg": "2.08ms",
-          "latencyStdev": "1.54ms",
-          "latencyMax": "57.24ms",
-          "totalRequests": 3699496,
-          "startTime": 1791224627,
-          "endTime": 1791224657
+          "latencyAvg": "4.78ms",
+          "latencyStdev": "28.29ms",
+          "latencyMax": "444.94ms",
+          "totalRequests": 3789832,
+          "startTime": 1791283013,
+          "endTime": 1791283043
         }
       ],
       "fair-micronaut-jpa-repository": [
         {
-          "latencyAvg": "13.06ms",
-          "latencyStdev": "7.15ms",
-          "latencyMax": "98.76ms",
-          "totalRequests": 562109,
-          "startTime": 1791224829,
-          "endTime": 1791224859
+          "latencyAvg": "16.05ms",
+          "latencyStdev": "30.38ms",
+          "latencyMax": "483.73ms",
+          "totalRequests": 560150,
+          "startTime": 1791283215,
+          "endTime": 1791283245
         }
       ],
       "fair-micronaut-jpa-repository-reactive": [
         {
-          "latencyAvg": "5.59ms",
-          "latencyStdev": "4.42ms",
-          "latencyMax": "234.66ms",
-          "totalRequests": 1363608,
-          "startTime": 1791225033,
-          "endTime": 1791225063
+          "latencyAvg": "8.77ms",
+          "latencyStdev": "32.12ms",
+          "latencyMax": "481.46ms",
+          "totalRequests": 1404002,
+          "startTime": 1791283418,
+          "endTime": 1791283448
         }
       ],
       "fair-micronaut-r2dbc-repository-reactive": [
         {
-          "latencyAvg": "4.20ms",
-          "latencyStdev": "3.13ms",
-          "latencyMax": "138.00ms",
-          "totalRequests": 1860219,
-          "startTime": 1791225234,
-          "endTime": 1791225264
+          "latencyAvg": "8.97ms",
+          "latencyStdev": "43.43ms",
+          "latencyMax": "618.98ms",
+          "totalRequests": 1946414,
+          "startTime": 1791283617,
+          "endTime": 1791283647
         }
       ],
       "fair-ntex-db-tokio": [
         {
-          "latencyAvg": "2.51ms",
-          "latencyStdev": "2.39ms",
-          "latencyMax": "63.66ms",
-          "totalRequests": 3390721,
-          "startTime": 1791225482,
-          "endTime": 1791225512
+          "latencyAvg": "7.33ms",
+          "latencyStdev": "46.80ms",
+          "latencyMax": "648.97ms",
+          "totalRequests": 3935757,
+          "startTime": 1791283831,
+          "endTime": 1791283861
         }
       ],
       "fair-quarkus-jooq": [
         {
-          "latencyAvg": "2.08ms",
-          "latencyStdev": "1.81ms",
-          "latencyMax": "79.25ms",
-          "totalRequests": 3770186,
-          "startTime": 1791225696,
-          "endTime": 1791225726
+          "latencyAvg": "2.03ms",
+          "latencyStdev": "1.53ms",
+          "latencyMax": "66.41ms",
+          "totalRequests": 3787028,
+          "startTime": 1791284035,
+          "endTime": 1791284065
         }
       ],
       "fair-quarkus-jpa-ac": [
         {
-          "latencyAvg": "2.05ms",
-          "latencyStdev": "1.58ms",
-          "latencyMax": "71.79ms",
-          "totalRequests": 3771211,
-          "startTime": 1791225902,
-          "endTime": 1791225933
+          "latencyAvg": "7.53ms",
+          "latencyStdev": "47.66ms",
+          "latencyMax": "636.20ms",
+          "totalRequests": 3897383,
+          "startTime": 1791284240,
+          "endTime": 1791284271
         }
       ],
       "fair-quarkus-jpa-ac-reactive": [
         {
-          "latencyAvg": "2.22ms",
-          "latencyStdev": "2.72ms",
-          "latencyMax": "143.17ms",
-          "totalRequests": 3761497,
-          "startTime": 1791226109,
-          "endTime": 1791226139
+          "latencyAvg": "6.32ms",
+          "latencyStdev": "38.38ms",
+          "latencyMax": "549.80ms",
+          "totalRequests": 3905673,
+          "startTime": 1791284445,
+          "endTime": 1791284475
         }
       ],
       "fair-quarkus-jpa-repository": [
         {
-          "latencyAvg": "2.06ms",
-          "latencyStdev": "1.66ms",
-          "latencyMax": "77.85ms",
-          "totalRequests": 3761516,
-          "startTime": 1791226317,
-          "endTime": 1791226347
+          "latencyAvg": "6.14ms",
+          "latencyStdev": "38.61ms",
+          "latencyMax": "550.97ms",
+          "totalRequests": 3966522,
+          "startTime": 1791284652,
+          "endTime": 1791284682
         }
       ],
       "fair-quarkus-jpa-repository-reactive": [
         {
-          "latencyAvg": "2.21ms",
-          "latencyStdev": "2.56ms",
-          "latencyMax": "119.30ms",
-          "totalRequests": 3797768,
-          "startTime": 1791226524,
-          "endTime": 1791226554
+          "latencyAvg": "6.74ms",
+          "latencyStdev": "41.69ms",
+          "latencyMax": "586.20ms",
+          "totalRequests": 3888841,
+          "startTime": 1791284855,
+          "endTime": 1791284886
         }
       ],
       "fair-spring-jdbc-repository": [
         {
-          "latencyAvg": "4.89ms",
-          "latencyStdev": "3.02ms",
-          "latencyMax": "179.85ms",
-          "totalRequests": 1503985,
-          "startTime": 1791226728,
-          "endTime": 1791226759
+          "latencyAvg": "11.28ms",
+          "latencyStdev": "52.56ms",
+          "latencyMax": "661.68ms",
+          "totalRequests": 1555789,
+          "startTime": 1791285054,
+          "endTime": 1791285084
         }
       ],
       "fair-spring-jdbc-template": [
         {
-          "latencyAvg": "2.12ms",
-          "latencyStdev": "1.25ms",
-          "latencyMax": "34.27ms",
-          "totalRequests": 3519184,
-          "startTime": 1791226929,
-          "endTime": 1791226959
+          "latencyAvg": "6.10ms",
+          "latencyStdev": "37.73ms",
+          "latencyMax": "537.06ms",
+          "totalRequests": 3617809,
+          "startTime": 1791285252,
+          "endTime": 1791285283
         }
       ],
       "fair-spring-jpa-repository": [
         {
-          "latencyAvg": "4.96ms",
-          "latencyStdev": "3.24ms",
-          "latencyMax": "221.66ms",
-          "totalRequests": 1482828,
-          "startTime": 1791227133,
-          "endTime": 1791227164
+          "latencyAvg": "10.81ms",
+          "latencyStdev": "50.13ms",
+          "latencyMax": "641.49ms",
+          "totalRequests": 1548486,
+          "startTime": 1791285455,
+          "endTime": 1791285486
         }
       ],
       "fair-spring-r2dbc-client-reactive": [
         {
-          "latencyAvg": "4.28ms",
-          "latencyStdev": "3.42ms",
-          "latencyMax": "135.82ms",
-          "totalRequests": 1846877,
-          "startTime": 1791227334,
-          "endTime": 1791227364
+          "latencyAvg": "11.22ms",
+          "latencyStdev": "57.62ms",
+          "latencyMax": "850.33ms",
+          "totalRequests": 1908173,
+          "startTime": 1791285654,
+          "endTime": 1791285685
         }
       ],
       "fair-spring-r2dbc-repository-reactive": [
         {
-          "latencyAvg": "4.28ms",
-          "latencyStdev": "3.68ms",
-          "latencyMax": "108.68ms",
-          "totalRequests": 1879215,
-          "startTime": 1791227536,
-          "endTime": 1791227566
+          "latencyAvg": "10.15ms",
+          "latencyStdev": "50.79ms",
+          "latencyMax": "677.52ms",
+          "totalRequests": 1913966,
+          "startTime": 1791285856,
+          "endTime": 1791285886
         }
       ],
       "fair-vertx-pg-client": [
         {
-          "latencyAvg": "2.09ms",
-          "latencyStdev": "2.33ms",
-          "latencyMax": "109.55ms",
-          "totalRequests": 3904176,
-          "startTime": 1791227736,
-          "endTime": 1791227766
+          "latencyAvg": "8.00ms",
+          "latencyStdev": "50.85ms",
+          "latencyMax": "660.33ms",
+          "totalRequests": 4013649,
+          "startTime": 1791286054,
+          "endTime": 1791286085
         }
       ]
     },
@@ -336,46 +336,47 @@
     "update": {},
     "commitCounts": {
       "micronaut": 0,
+      "ntex": 0,
       "vert.x": 0
     },
     "slocCounts": {
-      "helidon": 302706,
-      "kora": 302706,
-      "ktor": 302706,
-      "micronaut": 302706,
-      "ntex": 302706,
-      "quarkus": 302706,
-      "spring": 302706,
-      "vert.x": 302706
+      "helidon": 304919,
+      "kora": 304919,
+      "ktor": 304919,
+      "micronaut": 304919,
+      "ntex": 304919,
+      "quarkus": 304919,
+      "spring": 304919,
+      "vert.x": 304919
     }
   },
   "completed": {
-    "fair-helidon-mp-jdbc-client": "20261005175209",
-    "fair-helidon-mp-jpa-repository": "20261005175534",
-    "fair-kora1-jdbc-repository": "20261005175854",
-    "fair-kora1-jdbc-repository-suspend": "20261005180211",
-    "fair-kora1-jdbc-repository-vt": "20261005180533",
-    "fair-kora1-vertx-repository-suspend": "20261005180847",
-    "fair-kora2-jdbc-repository": "20261005181126",
-    "fair-kora2-jdbc-repository-kotlin": "20261005181406",
-    "fair-ktor-cio-jdbc-driver": "20261005181734",
-    "fair-ktor-netty-jdbc-driver": "20261005182059",
-    "fair-micronaut-jdbc-repository": "20261005182419",
-    "fair-micronaut-jpa-repository": "20261005182741",
-    "fair-micronaut-jpa-repository-reactive": "20261005183105",
-    "fair-micronaut-r2dbc-repository-reactive": "20261005183427",
-    "fair-ntex-db-tokio": "20261005183834",
-    "fair-quarkus-jooq": "20261005184208",
-    "fair-quarkus-jpa-ac": "20261005184535",
-    "fair-quarkus-jpa-ac-reactive": "20261005184901",
-    "fair-quarkus-jpa-repository": "20261005185229",
-    "fair-quarkus-jpa-repository-reactive": "20261005185556",
-    "fair-spring-jdbc-repository": "20261005185921",
-    "fair-spring-jdbc-template": "20261005190241",
-    "fair-spring-jpa-repository": "20261005190606",
-    "fair-spring-r2dbc-client-reactive": "20261005190926",
-    "fair-spring-r2dbc-repository-reactive": "20261005191248",
-    "fair-vertx-pg-client": "20261005191608"
+    "fair-helidon-mp-jdbc-client": "20261006100513",
+    "fair-helidon-mp-jpa-repository": "20261006100843",
+    "fair-kora1-jdbc-repository": "20261006101209",
+    "fair-kora1-jdbc-repository-suspend": "20261006101529",
+    "fair-kora1-jdbc-repository-vt": "20261006101849",
+    "fair-kora1-vertx-repository-suspend": "20261006102200",
+    "fair-kora2-jdbc-repository": "20261006102436",
+    "fair-kora2-jdbc-repository-kotlin": "20261006102717",
+    "fair-ktor-cio-jdbc-driver": "20261006103042",
+    "fair-ktor-netty-jdbc-driver": "20261006103405",
+    "fair-micronaut-jdbc-repository": "20261006103726",
+    "fair-micronaut-jpa-repository": "20261006104048",
+    "fair-micronaut-jpa-repository-reactive": "20261006104410",
+    "fair-micronaut-r2dbc-repository-reactive": "20261006104729",
+    "fair-ntex-db-tokio": "20261006105103",
+    "fair-quarkus-jooq": "20261006105427",
+    "fair-quarkus-jpa-ac": "20261006105753",
+    "fair-quarkus-jpa-ac-reactive": "20261006110117",
+    "fair-quarkus-jpa-repository": "20261006110444",
+    "fair-quarkus-jpa-repository-reactive": "20261006110808",
+    "fair-spring-jdbc-repository": "20261006111127",
+    "fair-spring-jdbc-template": "20261006111445",
+    "fair-spring-jpa-repository": "20261006111808",
+    "fair-spring-r2dbc-client-reactive": "20261006112127",
+    "fair-spring-r2dbc-repository-reactive": "20261006112448",
+    "fair-vertx-pg-client": "20261006112807"
   },
   "succeeded": {
     "cached-query": [],

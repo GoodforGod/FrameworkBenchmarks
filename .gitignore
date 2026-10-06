@@ -72,3 +72,6 @@ frameworks/Java/fair/kotlin-kora2-jdbc-repository/application.tar
 # python
 .venv/
 frameworks/CSharp/akazawayun.pro/Dockerfile
+
+# external postgres credentials for ./tfb-ext
+.tfb-external-db.env

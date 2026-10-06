@@ -5,17 +5,23 @@ static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 use std::cell::{Cell, RefCell};
 use std::cmp;
 use std::env;
+use std::error::Error;
 use std::rc::Rc;
 
 use atoi::FromRadix10;
 use nanorand::Rng;
 use ntex::http::header::{CONTENT_LENGTH, CONTENT_TYPE, SERVER};
+use ntex::util::Bytes;
 use ntex::{http, web};
 use serde::Serialize;
 use tokio_postgres::{connect, Client, NoTls, Statement};
 
+type AppResult<T> = Result<T, Box<dyn Error>>;
+
+const PLAINTEXT_BODY: &[u8] = b"Hello, World!";
+
 thread_local! {
-    static POOL: RefCell<Option<PgPool>> = const { RefCell::new(None) };
+    static POOL: RefCell<Option<Rc<PgPool>>> = const { RefCell::new(None) };
 }
 
 #[derive(Serialize)]
@@ -42,62 +48,75 @@ struct PgClient {
     update_world: Statement,
 }
 
+impl PgClient {
+    async fn connect(database_url: &str) -> Result<Self, tokio_postgres::Error> {
+        let (client, connection) = connect(database_url, NoTls).await?;
+        ntex::rt::spawn(async move {
+            if let Err(error) = connection.await {
+                eprintln!("postgres connection closed: {error}");
+            }
+        });
+
+        let select_world = client
+            .prepare("SELECT id, randomnumber FROM world WHERE id = $1")
+            .await?;
+        let select_fortunes = client.prepare("SELECT id, message FROM fortune").await?;
+        let update_world = client
+            .prepare("UPDATE world SET randomnumber = $1 WHERE id = $2")
+            .await?;
+
+        Ok(Self {
+            client,
+            select_world,
+            select_fortunes,
+            update_world,
+        })
+    }
+}
+
 struct PgPool {
-    clients: Vec<Rc<PgClient>>,
+    database_url: String,
+    clients: RefCell<Vec<Rc<PgClient>>>,
     next: Cell<usize>,
 }
 
 impl PgPool {
-    async fn connect(database_url: &str, size: usize) -> Self {
+    async fn connect(database_url: String, size: usize) -> Result<Self, tokio_postgres::Error> {
         let mut clients = Vec::with_capacity(size);
         for _ in 0..size {
-            let (client, connection) = connect(database_url, NoTls)
-                .await
-                .expect("failed to connect to postgres");
-            ntex::rt::spawn(async move {
-                let _ = connection.await;
-            });
-
-            let select_world = client
-                .prepare("SELECT id, randomnumber FROM world WHERE id = $1")
-                .await
-                .expect("failed to prepare world query");
-            let select_fortunes = client
-                .prepare("SELECT id, message FROM fortune")
-                .await
-                .expect("failed to prepare fortune query");
-            let update_world = client
-                .prepare("UPDATE world SET randomnumber = $1 WHERE id = $2")
-                .await
-                .expect("failed to prepare world update");
-
-            clients.push(Rc::new(PgClient {
-                client,
-                select_world,
-                select_fortunes,
-                update_world,
-            }));
+            clients.push(Rc::new(PgClient::connect(&database_url).await?));
         }
 
-        Self {
-            clients,
+        Ok(Self {
+            database_url,
+            clients: RefCell::new(clients),
             next: Cell::new(0),
-        }
+        })
     }
 
-    fn get(&self) -> Rc<PgClient> {
-        let index = self.next.get() % self.clients.len();
-        self.next.set(index.wrapping_add(1));
-        self.clients[index].clone()
+    /// Round-robin client; a connection closed by the server or the network is replaced on first use.
+    async fn get(&self) -> Result<Rc<PgClient>, tokio_postgres::Error> {
+        let (index, client) = {
+            let clients = self.clients.borrow();
+            let index = self.next.get() % clients.len();
+            self.next.set(index.wrapping_add(1));
+            (index, clients[index].clone())
+        };
+        if !client.client.is_closed() {
+            return Ok(client);
+        }
+
+        let replacement = Rc::new(PgClient::connect(&self.database_url).await?);
+        self.clients.borrow_mut()[index] = replacement.clone();
+        Ok(replacement)
     }
 }
 
 #[web::get("/plaintext")]
 async fn plaintext() -> web::HttpResponse {
-    let body = "Hello, World!";
     let mut response = web::HttpResponse::with_body(
         http::StatusCode::OK,
-        http::body::Body::Bytes(body.as_bytes().to_vec().into()),
+        http::body::Body::Bytes(Bytes::from_static(PLAINTEXT_BODY)),
     );
     response
         .headers_mut()
@@ -115,43 +134,48 @@ async fn plaintext() -> web::HttpResponse {
 
 #[web::get("/json")]
 async fn json() -> web::HttpResponse {
-    json_response(&Message {
+    respond(json_response(&Message {
         message: "Hello, World!",
-    })
+    }))
 }
 
 #[web::get("/db")]
 async fn db() -> web::HttpResponse {
-    let world = find_random_world().await;
-    json_response(&world)
+    respond(async { json_response(&find_random_world().await?) }.await)
 }
 
 #[web::get("/queries")]
 async fn queries(req: web::HttpRequest) -> web::HttpResponse {
-    let worlds = find_random_worlds(query_count(req.query_string())).await;
-    json_response(&worlds)
+    let count = query_count(req.query_string());
+    respond(async { json_response(&find_random_worlds(count).await?) }.await)
 }
 
 #[web::get("/updates")]
 async fn updates(req: web::HttpRequest) -> web::HttpResponse {
-    let worlds = update_worlds(query_count(req.query_string())).await;
-    json_response(&worlds)
+    let count = query_count(req.query_string());
+    respond(async { json_response(&update_worlds(count).await?) }.await)
 }
 
 #[web::get("/fortunes")]
 async fn fortunes_handler() -> web::HttpResponse {
-    let items = fortunes().await;
-    let body = render_fortunes(&items);
+    respond(
+        async {
+            let items = fortunes().await?;
+            let body = render_fortunes(&items);
 
-    let mut response = web::HttpResponse::with_body(http::StatusCode::OK, body.into());
-    response
-        .headers_mut()
-        .insert(SERVER, http::header::HeaderValue::from_static("ntex"));
-    response.headers_mut().insert(
-        CONTENT_TYPE,
-        http::header::HeaderValue::from_static("text/html;charset=utf-8"),
-    );
-    response
+            let mut response =
+                web::HttpResponse::with_body(http::StatusCode::OK, body.into());
+            response
+                .headers_mut()
+                .insert(SERVER, http::header::HeaderValue::from_static("ntex"));
+            response.headers_mut().insert(
+                CONTENT_TYPE,
+                http::header::HeaderValue::from_static("text/html;charset=utf-8"),
+            );
+            Ok(response)
+        }
+        .await,
+    )
 }
 
 #[ntex::main]
@@ -159,7 +183,8 @@ async fn main() -> std::io::Result<()> {
     println!("AVAILABLE CORES: {}", std::thread::available_parallelism().map_or(1, usize::from));
 
     let database_url = database_url();
-    let pool_size = env_usize("POSTGRES_POOL_SIZE", 32);
+    // connections per worker thread; ntex starts one worker per CPU
+    let pool_size = env_usize("POSTGRES_POOL_SIZE", 8);
 
     ntex::server::build()
         .backlog(1024)
@@ -168,9 +193,12 @@ async fn main() -> std::io::Result<()> {
             async move {
                 let initialized = POOL.with(|cell| cell.borrow().is_some());
                 if !initialized {
-                    let pool = PgPool::connect(&database_url, pool_size).await;
+                    // without a database at startup there is nothing to serve
+                    let pool = PgPool::connect(database_url, pool_size)
+                        .await
+                        .expect("failed to connect to postgres at startup");
                     POOL.with(|cell| {
-                        *cell.borrow_mut() = Some(pool);
+                        *cell.borrow_mut() = Some(Rc::new(pool));
                     });
                 }
 
@@ -190,56 +218,47 @@ async fn main() -> std::io::Result<()> {
         .await
 }
 
-async fn find_world(id: i32) -> World {
-    let pg = pg_client();
-    let row = pg
-        .client
-        .query_one(&pg.select_world, &[&id])
-        .await
-        .expect("failed to query world");
-    World {
-        id: row.get(0),
-        random_number: row.get(1),
-    }
+async fn find_world(id: i32) -> AppResult<World> {
+    let pg = pg_client().await?;
+    let row = pg.client.query_one(&pg.select_world, &[&id]).await?;
+    Ok(World {
+        id: row.try_get(0)?,
+        random_number: row.try_get(1)?,
+    })
 }
 
-async fn find_random_world() -> World {
+async fn find_random_world() -> AppResult<World> {
     find_world(random_world()).await
 }
 
-async fn find_random_worlds(count: usize) -> Vec<World> {
+async fn find_random_worlds(count: usize) -> AppResult<Vec<World>> {
     let mut worlds = Vec::with_capacity(count);
     for _ in 0..count {
-        worlds.push(find_random_world().await);
+        worlds.push(find_random_world().await?);
     }
-    worlds
+    Ok(worlds)
 }
 
-async fn update_worlds(count: usize) -> Vec<World> {
-    let mut worlds = find_random_worlds(count).await;
+async fn update_worlds(count: usize) -> AppResult<Vec<World>> {
+    let mut worlds = find_random_worlds(count).await?;
     for world in &mut worlds {
         world.random_number = random_world_excluding(world.random_number);
     }
     worlds.sort_by_key(|world| world.id);
 
     for world in &worlds {
-        let pg = pg_client();
+        let pg = pg_client().await?;
         pg.client
             .execute(&pg.update_world, &[&world.random_number, &world.id])
-            .await
-            .expect("failed to update world");
+            .await?;
     }
 
-    worlds
+    Ok(worlds)
 }
 
-async fn fortunes() -> Vec<Fortune> {
-    let pg = pg_client();
-    let rows = pg
-        .client
-        .query(&pg.select_fortunes, &[])
-        .await
-        .expect("failed to query fortunes");
+async fn fortunes() -> AppResult<Vec<Fortune>> {
+    let pg = pg_client().await?;
+    let rows = pg.client.query(&pg.select_fortunes, &[]).await?;
     let mut items = Vec::with_capacity(rows.len() + 1);
     items.push(Fortune {
         id: 0,
@@ -247,25 +266,45 @@ async fn fortunes() -> Vec<Fortune> {
     });
     for row in rows {
         items.push(Fortune {
-            id: row.get(0),
-            message: row.get(1),
+            id: row.try_get(0)?,
+            message: row.try_get(1)?,
         });
     }
     items.sort_by(|a, b| a.message.cmp(&b.message));
-    items
+    Ok(items)
 }
 
-fn pg_client() -> Rc<PgClient> {
-    POOL.with(|cell| {
-        cell.borrow()
-            .as_ref()
-            .expect("postgres pool is not initialized")
-            .get()
-    })
+async fn pg_client() -> AppResult<Rc<PgClient>> {
+    let pool = POOL
+        .with(|cell| cell.borrow().clone())
+        .ok_or("postgres pool is not initialized")?;
+    Ok(pool.get().await?)
 }
 
-fn json_response<T: Serialize>(value: &T) -> web::HttpResponse {
-    let body = serde_json::to_vec(value).expect("failed to serialize json");
+/// A failed request answers 500 and is logged; it never takes the worker or the process down.
+fn respond(result: AppResult<web::HttpResponse>) -> web::HttpResponse {
+    match result {
+        Ok(response) => response,
+        Err(error) => {
+            eprintln!("request failed: {error}");
+            let mut response = web::HttpResponse::with_body(
+                http::StatusCode::INTERNAL_SERVER_ERROR,
+                http::body::Body::Bytes(Bytes::from_static(b"Internal Server Error")),
+            );
+            response
+                .headers_mut()
+                .insert(SERVER, http::header::HeaderValue::from_static("ntex"));
+            response.headers_mut().insert(
+                CONTENT_TYPE,
+                http::header::HeaderValue::from_static("text/plain"),
+            );
+            response
+        }
+    }
+}
+
+fn json_response<T: Serialize>(value: &T) -> AppResult<web::HttpResponse> {
+    let body = serde_json::to_vec(value)?;
     let mut response = web::HttpResponse::with_body(http::StatusCode::OK, body.into());
     response
         .headers_mut()
@@ -274,7 +313,7 @@ fn json_response<T: Serialize>(value: &T) -> web::HttpResponse {
         CONTENT_TYPE,
         http::header::HeaderValue::from_static("application/json"),
     );
-    response
+    Ok(response)
 }
 
 fn render_fortunes(items: &[Fortune]) -> Vec<u8> {
