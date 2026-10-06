@@ -1,6 +1,7 @@
 # Fair FrameworkBenchmarks - Java and Kotlin Implementations
 
-This is the Fair portion of the Java and Kotlin [benchmarking test suite](../) comparing a variety of web development platforms.
+This is the Fair portion of the Java and Kotlin [benchmarking test suite](../) comparing a variety of web development
+platforms.
 
 ## Implementations
 
@@ -13,8 +14,8 @@ There are currently 24 implementations:
 | `kotlin-kora2-jdbc-repository`             | Kora 2 JDBC Repository with blocking API  | Undertow   | `io.techempower.benchmark.kora`      |
 | `java-kora1-jdbc-repository`               | Kora 1 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
 | `java-kora2-jdbc-repository`               | Kora 2 JDBC Repository                    | Undertow   | `io.techempower.benchmark.kora`      |
-| `kotlin-ktor-cio-jdbc-driver`                     | HikariCP + PostgreSQL JDBC                | CIO        | `io.techempower.benchmark.ktor`      |
-| `kotlin-ktor-netty-jdbc-driver`                   | HikariCP + PostgreSQL JDBC                | Netty      | `io.techempower.benchmark.ktor`      |
+| `kotlin-ktor-cio-jdbc-driver`              | HikariCP + PostgreSQL JDBC                | CIO        | `io.techempower.benchmark.ktor`      |
+| `kotlin-ktor-netty-jdbc-driver`            | HikariCP + PostgreSQL JDBC                | Netty      | `io.techempower.benchmark.ktor`      |
 | `java-helidon-mp-jdbc-client`              | Helidon DbClient + HikariCP               | Nima       | `io.techempower.benchmark.helidon`   |
 | `java-helidon-mp-jpa-repository`           | Helidon Data Repository + JPA             | Nima       | `io.techempower.benchmark.helidon`   |
 | `java-micronaut-jdbc-repository`           | Micronaut Data JDBC                       | Netty      | `io.techempower.benchmark.micronaut` |
@@ -36,7 +37,7 @@ There are currently 24 implementations:
 ## Versions
 
 - [Java 25 (Temurin)](https://adoptium.net/temurin/releases/?version=25)
-- [Gradle 9.5.1](https://gradle.org/releases/)
+- [Gradle 9.8.0](https://gradle.org/releases/)
 - Framework versions vary by implementation
 
 ## Test URLs

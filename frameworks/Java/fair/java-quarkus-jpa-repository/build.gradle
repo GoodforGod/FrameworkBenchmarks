@@ -1,10 +1,10 @@
 plugins {
     id "java"
-    id "io.quarkus" version "$quarkusVersion"
-    id "gg.jte.gradle" version "3.2.3"
+    alias(libs.plugins.quarkus)
+    alias(libs.plugins.jte)
 }
 
-version = quarkusVersion
+version = libs.versions.quarkus.get()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -12,21 +12,22 @@ java {
 }
 
 dependencies {
-    implementation platform("io.quarkus:quarkus-bom:$quarkusVersion")
+    implementation(platform(libs.quarkusBom))
 
-    implementation "io.quarkus:quarkus-arc"
-    implementation "io.quarkus:quarkus-rest-jackson"
-    implementation "io.quarkus:quarkus-hibernate-orm-panache"
-    implementation "io.quarkus:quarkus-jdbc-postgresql"
-    implementation "io.quarkus:quarkus-scheduler"
-    implementation "gg.jte:jte-runtime:3.2.3"
-    implementation "io.netty:netty-transport-native-epoll:linux-x86_64"
+    implementation(libs.quarkusArc)
+    implementation(libs.quarkusRestJackson)
+    implementation(libs.quarkusHibernateOrmPanache)
+    implementation(libs.quarkusJdbcPostgresql)
+    implementation(libs.postgresql)
+    implementation(libs.quarkusScheduler)
+    implementation(libs.jteRuntime)
+    implementation(variantOf(libs.nettyTransportNativeEpoll) { classifier("linux-x86_64") })
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
-    testImplementation "org.testcontainers:testcontainers:1.21.4"
-    testImplementation "org.testcontainers:postgresql:1.21.4"
-    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+    testImplementation(libs.junitJupiter)
 }
 
 tasks.withType(JavaCompile).configureEach {

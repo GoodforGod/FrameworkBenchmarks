@@ -1,4 +1,4 @@
-FROM gradle:9.5.1-jdk25
+FROM gradle:9.8.0-jdk25
 
 WORKDIR /home/gradle/src
 

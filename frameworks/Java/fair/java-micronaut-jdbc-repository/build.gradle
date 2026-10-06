@@ -1,12 +1,12 @@
 plugins {
     id "java"
     id "application"
-    id "io.micronaut.application" version "5.0.2"
-    id "io.micronaut.aot" version "5.0.2"
-    id "gg.jte.gradle" version "3.2.3"
+    alias(libs.plugins.micronautApplication)
+    alias(libs.plugins.micronautAot)
+    alias(libs.plugins.jte)
 }
 
-version = micronautVersion
+version = libs.versions.micronaut.get()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -14,7 +14,7 @@ java {
 }
 
 micronaut {
-    version("$micronautVersion")
+    version(libs.versions.micronaut.get())
     runtime("netty")
     testRuntime("junit5")
     processing {
@@ -30,28 +30,28 @@ configurations.named("runtimeClasspath") {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.serde:micronaut-serde-processor"
-    annotationProcessor "io.micronaut.data:micronaut-data-processor"
+    annotationProcessor(libs.micronautInjectJava)
+    annotationProcessor(libs.micronautSerdeProcessor)
+    annotationProcessor(libs.micronautDataProcessor)
 
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
-    runtimeOnly "org.yaml:snakeyaml"
+    runtimeOnly(libs.slf4jNop)
+    runtimeOnly(libs.snakeyaml)
 
-    implementation "io.micronaut:micronaut-http-server-netty"
-    implementation "io.micronaut.data:micronaut-data-jdbc"
-    implementation "io.micronaut.sql:micronaut-jdbc-hikari"
-    implementation "io.micronaut.serde:micronaut-serde-jackson"
-    implementation "io.micronaut:micronaut-inject"
-    implementation "io.micronaut:micronaut-runtime"
+    implementation(libs.micronautHttpServerNetty)
+    implementation(libs.micronautDataJdbc)
+    implementation(libs.micronautJdbcHikari)
+    implementation(libs.micronautSerdeJackson)
+    implementation(libs.micronautInject)
+    implementation(libs.micronautRuntime)
 
-    implementation "io.netty:netty-transport-native-epoll:linux-x86_64"
-    implementation "org.postgresql:postgresql"
-    implementation "gg.jte:jte-runtime:3.2.3"
+    implementation(variantOf(libs.nettyTransportNativeEpoll) { classifier("linux-x86_64") })
+    implementation(libs.postgresql)
+    implementation(libs.jteRuntime)
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
-    testImplementation "org.testcontainers:testcontainers:1.21.4"
-    testImplementation "org.testcontainers:postgresql:1.21.4"
-    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
 }
 
 jte {

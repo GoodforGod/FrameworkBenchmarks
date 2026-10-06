@@ -12,7 +12,7 @@ micronaut:
 r2dbc:
   datasources:
     default:
-      url: ${POSTGRES_R2DBC_URL:r2dbc:postgresql://localhost:5432/postgres}
+      url: ${POSTGRES_R2DBC_URL:r2dbc:pool:postgresql://localhost:5432/postgres}
       username: ${POSTGRES_USER:postgres}
       password: ${POSTGRES_PASS:postgres}
       dialect: POSTGRES
@@ -21,6 +21,10 @@ r2dbc:
         preparedStatementCacheQueries: 512
         preparedStatementCacheSizeMiB: 16
         sslmode: disable
+        initialSize: 16
+        maxSize: 512
+        maxIdleTime: PT30M
+        validationQuery: SELECT 1
 
 jackson:
   serialization-inclusion: ALWAYS

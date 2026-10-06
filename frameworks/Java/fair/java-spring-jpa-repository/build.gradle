@@ -1,11 +1,11 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "$springBootVersion"
-    id "io.spring.dependency-management" version "1.1.7"
-    id "gg.jte.gradle" version "3.2.3"
+    alias(libs.plugins.springBoot)
+    alias(libs.plugins.springDependencyManagement)
+    alias(libs.plugins.jte)
 }
 
-version = springBootVersion
+version = libs.versions.springBoot.get()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -17,19 +17,19 @@ configurations.all {
 }
 
 dependencies {
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+    runtimeOnly(libs.slf4jNop)
 
-    implementation "org.springframework.boot:spring-boot-starter-web"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-    implementation "org.postgresql:postgresql:42.7.11"
-    implementation "gg.jte:jte-runtime:3.2.3"
+    implementation(libs.springBootStarterWeb)
+    implementation(libs.springBootStarterDataJpa)
+    implementation(libs.postgresql)
+    implementation(libs.jteRuntime)
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.springframework.boot:spring-boot-webmvc-test"
-    testImplementation "org.testcontainers:testcontainers:1.21.4"
-    testImplementation "org.testcontainers:postgresql:1.21.4"
-    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.springBootStarterTest)
+    testImplementation(libs.springBootWebmvcTest)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
 }
 
 jte {

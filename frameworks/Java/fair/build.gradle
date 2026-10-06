@@ -1,5 +1,5 @@
 group = 'io.fairframework'
-version = '1.0.0'
+version = libs.versions.benchmark.get()
 
 allprojects {
     repositories {
@@ -38,10 +38,10 @@ subprojects {
     }
 
     dependencies {
-        testImplementation platform("org.junit:junit-bom:5.14.4")
-        testRuntimeOnly platform("org.junit:junit-bom:5.14.4")
-        testImplementation("org.junit.jupiter:junit-jupiter")
-        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testImplementation(platform(libs.junitBom))
+        testRuntimeOnly(platform(libs.junitBom))
+        testImplementation(libs.junitJupiter)
+        testRuntimeOnly(libs.junitPlatformLauncher)
     }
 
     test {
@@ -52,8 +52,8 @@ subprojects {
 
         useJUnitPlatform()
         testLogging {
-            showStandardStreams = true
-            events("passed", "skipped", "failed")
+            showStandardStreams = false
+            events("failed")
             exceptionFormat = "full"
         }
 

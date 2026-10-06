@@ -1,32 +1,32 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "2.4.10"
-    id "org.jetbrains.kotlin.plugin.serialization" version "2.4.10"
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.kotlinSerialization)
     id "application"
-    id "gg.jte.gradle" version "3.2.3"
+    alias(libs.plugins.jte)
 }
 
-version = "$ktorVersion"
+version = libs.versions.ktor.get()
 
 dependencies {
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+    runtimeOnly(libs.slf4jNop)
 
-    implementation "io.ktor:ktor-server-cio-jvm:$ktorVersion"
-    implementation "io.ktor:ktor-server-default-headers-jvm:$ktorVersion"
-    implementation "io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion"
-    implementation "io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0"
+    implementation(libs.ktorServerCioJvm)
+    implementation(libs.ktorServerDefaultHeadersJvm)
+    implementation(libs.ktorServerContentNegotiationJvm)
+    implementation(libs.ktorSerializationKotlinxJsonJvm)
+    implementation(libs.kotlinxCoroutinesCore)
+    implementation(libs.kotlinxSerializationJson)
 
-    implementation "org.postgresql:postgresql:42.7.11"
-    implementation "com.zaxxer:HikariCP:7.0.2"
-    implementation "gg.jte:jte:3.2.3"
+    implementation(libs.postgresql)
+    implementation(libs.hikariCP)
+    implementation(libs.jte)
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
-    testImplementation "org.testcontainers:testcontainers:1.21.4"
-    testImplementation "org.testcontainers:postgresql:1.21.4"
-    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
-    testImplementation "org.postgresql:postgresql:42.7.11"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+    testImplementation(libs.postgresql)
+    testImplementation(libs.junitJupiter)
 }
 
 kotlin {

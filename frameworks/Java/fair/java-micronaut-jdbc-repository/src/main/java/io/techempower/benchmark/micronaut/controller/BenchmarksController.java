@@ -22,7 +22,6 @@ import java.util.Comparator;
 import java.util.List;
 
 @Introspected
-@ExecuteOn(TaskExecutors.BLOCKING)
 @Controller
 public class BenchmarksController {
 
@@ -50,11 +49,13 @@ public class BenchmarksController {
         return MESSAGE;
     }
 
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get("/db")
     public World db() {
         return repository.findById(QueryUtils.randomWorld());
     }
 
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get("/queries")
     public List<World> queries(@Nullable @QueryValue("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
@@ -67,6 +68,7 @@ public class BenchmarksController {
         return worlds;
     }
 
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get("/updates")
     public List<World> updates(@Nullable @QueryValue("queries") String queries) {
         int count = QueryUtils.parseCount(queries);
@@ -86,6 +88,7 @@ public class BenchmarksController {
         return worlds;
     }
 
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)
     public HttpResponse<byte[]> fortunes() {
         List<Fortune> fortunes = repository.fortunes();

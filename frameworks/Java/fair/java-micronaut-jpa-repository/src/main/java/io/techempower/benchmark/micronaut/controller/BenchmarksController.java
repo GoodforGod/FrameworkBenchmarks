@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Introspected
-@ExecuteOn(TaskExecutors.BLOCKING)
 @Controller
 public final class BenchmarksController {
 
@@ -56,12 +55,14 @@ public final class BenchmarksController {
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#single-database-query
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get(value = "/db", produces = MediaType.APPLICATION_JSON)
     public World db() {
         return worldRepository.findById(QueryUtils.randomWorld());
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#multiple-database-queries
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get(value = "/queries", produces = MediaType.APPLICATION_JSON)
     public List<World> queries(@QueryValue(value = "queries", defaultValue = "1") String queries) {
         int count = QueryUtils.parseCount(queries);
@@ -76,6 +77,7 @@ public final class BenchmarksController {
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#database-updates
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get(value = "/updates", produces = MediaType.APPLICATION_JSON)
     public List<World> updates(@QueryValue(value = "queries", defaultValue = "1") String queries) {
         int count = QueryUtils.parseCount(queries);
@@ -95,6 +97,7 @@ public final class BenchmarksController {
     }
 
     // https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview#fortunes
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)
     public HttpResponse<byte[]> fortunes() {
         List<Fortune> fortunes = new ArrayList<>(fortuneRepository.findAll());

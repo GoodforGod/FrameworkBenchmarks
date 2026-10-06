@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY build/libs/java-spring-jdbc-repository.jar app.jar
 
-ENV JAVA_OPTS="-XX:+UseParallelGC -XX:+UseNUMA -Djava.net.preferIPv4Stack=true -Djdk.trackAllThreads=false -XX:AutoBoxCacheMax=11000 -XX:InitialCodeCacheSize=64m -XX:ReservedCodeCacheSize=64m -XX:MaxInlineLevel=20"
+ENV JAVA_OPTS="-XX:+UseParallelGC -XX:+UseNUMA -Djava.net.preferIPv4Stack=true -Djdk.trackAllThreads=false -XX:AutoBoxCacheMax=11000 -XX:InitialCodeCacheSize=64m -XX:ReservedCodeCacheSize=64m -XX:MaxInlineLevel=20 -XX:+UseCompactObjectHeaders"
 # Virtual Threads (enabled by default)
 ENV VIRTUAL_THREADS_ENABLED=true
 

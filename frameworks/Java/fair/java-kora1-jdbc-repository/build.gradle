@@ -1,10 +1,10 @@
 plugins {
     id "java"
     id "application"
-    id "gg.jte.gradle" version "3.2.3"
+    alias(libs.plugins.jte)
 }
 
-version = kora2Version
+version = libs.versions.kora1.get()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
@@ -12,32 +12,26 @@ java {
 }
 
 dependencies {
-    annotationProcessor "ru.tinkoff.kora:annotation-processors:$kora1Version"
-    implementation platform("ru.tinkoff.kora:kora-parent:$kora1Version")
+    annotationProcessor(libs.kora1AnnotationProcessors)
+    implementation(platform(libs.kora1KoraParent))
 
-    runtimeOnly "org.slf4j:slf4j-nop:2.0.17"
+    runtimeOnly(libs.slf4jNop)
 
-    implementation "ru.tinkoff.kora:database-jdbc"
-    implementation "ru.tinkoff.kora:config-hocon"
-    implementation "ru.tinkoff.kora:json-module"
-    implementation "ru.tinkoff.kora:http-server-undertow"
-    implementation "gg.jte:jte:3.2.3"
-    implementation "org.postgresql:postgresql:42.7.11"
-    implementation("io.undertow:undertow-core") {
-        version { strictly("2.3.24.Final") }
-    }
-    implementation("org.jboss.threads:jboss-threads") {
-        version { strictly("3.9.2") }
-    }
-    implementation("org.jboss.xnio:xnio-nio") {
-        version { strictly("3.8.17.Final") }
-    }
+    implementation(libs.kora1DatabaseJdbc)
+    implementation(libs.kora1ConfigHocon)
+    implementation(libs.kora1JsonModule)
+    implementation(libs.kora1HttpServerUndertow)
+    implementation(libs.jte)
+    implementation(libs.postgresql)
+    implementation(libs.undertowCore)
+    implementation(libs.jbossThreads)
+    implementation(libs.xnioNio)
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
-    testImplementation "org.testcontainers:testcontainers:1.21.4"
-    testImplementation "org.testcontainers:postgresql:1.21.4"
-    testImplementation "org.testcontainers:junit-jupiter:1.21.4"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+    testImplementation(libs.junitJupiter)
 }
 
 jte {
