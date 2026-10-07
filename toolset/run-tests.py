@@ -166,7 +166,7 @@ def main(argv=None):
     # Benchmark options
     parser.add_argument(
         '--duration',
-        default=15,
+        default=30,
         help='Time in seconds that each test should run for.')
     parser.add_argument(
         '--server-host',
@@ -176,6 +176,13 @@ def main(argv=None):
         '--database-host',
         default='tfb-database',
         help='Hostname/IP for database server')
+    parser.add_argument(
+        '--external-database',
+        default=None,
+        metavar='IP',
+        help=
+        'IP of an already-running, provisioned Postgres (see tfb-ext). The tfb-database container is not started and the tfb-database hostname resolves to this IP inside the test containers.'
+    )
     parser.add_argument(
         '--client-host', default='', help='Hostname/IP for client server')
     parser.add_argument(

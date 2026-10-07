@@ -67,10 +67,16 @@ neon = ["ntex/neon-polling"]
 neon-uring = ["ntex/neon-uring"]
 
 [dependencies]
-ntex = "3.4.0"
-ntex-io = "3.9"
+# Pinned to the 3.7.x/3.9.x/1.1.x line: ntex 3.8.0 bumped ntex-io to 3.10 (IoRef::with_write_buf
+# switched its closure buffer type from BytesMut to BytePages) and ntex-codec to 1.2.0 (added a
+# Debug bound on Decoder::Item). The tokio-postgres fork below (branch "ntex-3") predates that
+# API change and fails to compile against it, so the whole ntex family is held back until the
+# fork is updated.
+ntex = "~3.7"
+ntex-io = "~3.9"
+ntex-codec = "~1.1"
 ntex-service = "4.5"
-ntex-bytes = { version = "1.5", features=["simd"] }
+ntex-bytes = { version = "~1.5", features=["simd"] }
 mimalloc = { version = "0.1.25", default-features = false }
 snmalloc-rs = { version = "0.3.3", features = ["native-cpu"] }
 yarte = { version = "0.15", features = ["bytes-buf", "json"] }
@@ -88,7 +94,7 @@ tok_io = {version = "1", package = "tokio" }
 tokio-postgres = { git="https://github.com/fafhrd91/postgres.git", branch="ntex-3" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-compio-driver = { version = "*", features = ["io-uring"]}
+compio-driver = { version = "0.11", features = ["io-uring"]}
 
 [patch.crates-io]
 buf-min = { git = "https://github.com/fafhrd91/buf-min.git" }

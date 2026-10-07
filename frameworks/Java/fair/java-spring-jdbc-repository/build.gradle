@@ -1,0 +1,66 @@
+plugins {
+    id "java"
+    alias(libs.plugins.springBoot)
+    alias(libs.plugins.springDependencyManagement)
+    alias(libs.plugins.jte)
+}
+
+version = libs.versions.springBoot.get()
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+configurations.all {
+    exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+}
+
+dependencies {
+    runtimeOnly(libs.slf4jNop)
+
+    implementation(libs.springBootStarterWeb)
+    implementation(libs.springBootStarterDataJdbc)
+    implementation(libs.postgresql)
+    implementation(libs.jteRuntime)
+
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.springBootStarterTest)
+    testImplementation(libs.springBootWebmvcTest)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("bootJar"))
+}
+
+tasks.named("bootJar") {
+    archiveFileName = "${project.name}.jar"
+}

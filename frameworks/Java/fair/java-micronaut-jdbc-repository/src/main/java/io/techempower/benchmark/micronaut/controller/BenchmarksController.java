@@ -1,0 +1,98 @@
+package io.techempower.benchmark.micronaut.controller;
+
+import io.micronaut.core.annotation.Introspected;
+import io.techempower.benchmark.micronaut.model.Fortune;
+import io.techempower.benchmark.micronaut.model.Message;
+import io.techempower.benchmark.micronaut.model.World;
+import io.techempower.benchmark.micronaut.repository.WorldRepository;
+import io.techempower.benchmark.micronaut.util.JteUtils;
+import io.techempower.benchmark.micronaut.util.QueryUtils;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.QueryValue;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
+import org.jspecify.annotations.Nullable;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+@Introspected
+@Controller
+public class BenchmarksController {
+
+    private static final byte[] PLAINTEXT_RESPONSE = "Hello, World!".getBytes(StandardCharsets.UTF_8);
+    private static final Message MESSAGE = new Message("Hello, World!");
+    private static final String TEXT_HTML_UTF_8 = "text/html;charset=utf-8";
+
+    private static final Comparator<Fortune> FORTUNE_COMPARATOR = Comparator.comparing(Fortune::message);
+    private static final Comparator<World> WORLD_COMPARATOR = Comparator.comparingInt(World::id);
+
+    private final WorldRepository repository;
+
+    public BenchmarksController(WorldRepository repository) {
+        this.repository = repository;
+    }
+
+    @Get("/plaintext")
+    public HttpResponse<byte[]> plaintext() {
+        return HttpResponse.ok(PLAINTEXT_RESPONSE)
+                .contentType(MediaType.TEXT_PLAIN_TYPE);
+    }
+
+    @Get("/json")
+    public Message json() {
+        return MESSAGE;
+    }
+
+    @ExecuteOn(TaskExecutors.BLOCKING)
+    @Get("/db")
+    public World db() {
+        return repository.findById(QueryUtils.randomWorld());
+    }
+
+    @ExecuteOn(TaskExecutors.BLOCKING)
+    @Get("/queries")
+    public List<World> queries(@Nullable @QueryValue("queries") String queries) {
+        int count = QueryUtils.parseCount(queries);
+        List<World> worlds = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            int id = QueryUtils.randomWorld();
+            var world = repository.findById(id);
+            worlds.add(world);
+        }
+        return worlds;
+    }
+
+    @ExecuteOn(TaskExecutors.BLOCKING)
+    @Get("/updates")
+    public List<World> updates(@Nullable @QueryValue("queries") String queries) {
+        int count = QueryUtils.parseCount(queries);
+        List<World> worlds = new ArrayList<>(count);
+
+        for (int i = 0; i < count; i++) {
+            int id = QueryUtils.randomWorld();
+            var oldRandomNumber = repository.findRandomNumberById(id);
+            var newWorld = new World(id, QueryUtils.randomWorld(oldRandomNumber));
+            worlds.add(newWorld);
+        }
+
+        worlds.sort(WORLD_COMPARATOR);
+        repository.updateAll(worlds);
+        return worlds;
+    }
+
+    @ExecuteOn(TaskExecutors.BLOCKING)
+    @Get(value = "/fortunes", produces = TEXT_HTML_UTF_8)
+    public HttpResponse<byte[]> fortunes() {
+        List<Fortune> fortunes = repository.fortunes();
+        fortunes.add(new Fortune(0, "Additional fortune added at request time."));
+        fortunes.sort(FORTUNE_COMPARATOR);
+        return HttpResponse.ok(JteUtils.serializeStandard(fortunes))
+                .header("Content-Type", TEXT_HTML_UTF_8);
+    }
+}

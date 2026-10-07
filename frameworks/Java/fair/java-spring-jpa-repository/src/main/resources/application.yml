@@ -1,0 +1,50 @@
+spring:
+  threads:
+    virtual:
+      enabled: ${VIRTUAL_THREADS_ENABLED:true}
+  datasource:
+    url: ${POSTGRES_JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 256
+      minimum-idle: 16
+      connection-timeout: 10000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: SpringJpaHikari
+      data-source-properties:
+        preparedStatementCacheQueries: 512
+        preparedStatementCacheSizeMiB: 16
+        prepareThreshold: 1
+        loggerLevel: OFF
+        sslmode: disable
+        disableColumnSanitiser: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        generate_statistics: false
+        # /updates writes up to 500 entities: send them as one JDBC batch
+        jdbc:
+          batch_size: 500
+        order_updates: true
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: NONE
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: WARN

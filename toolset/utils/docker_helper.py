@@ -35,13 +35,18 @@ class DockerHelper:
         with open(build_log_file, 'w') as build_log:
             try:
                 client = docker.APIClient(base_url=base_url)
+                dockerfile_path = os.path.join(path, dockerfile)
+                pull_base_images = True
+                if os.path.exists(dockerfile_path):
+                    with open(dockerfile_path, 'r', encoding='utf-8') as df:
+                        pull_base_images = 'fair-gradle-cache-' not in df.read()
                 output = client.build(
                     path=path,
                     dockerfile=dockerfile,
                     tag=tag,
                     forcerm=self.benchmarker.config.force_rm_intermediate_docker_layers,
                     timeout=3600,
-                    pull=True,
+                    pull=pull_base_images,
                     buildargs=buildargs,
                     decode=True
                 )
@@ -172,6 +177,13 @@ class DockerHelper:
                     str(self.benchmarker.config.database_host)
                 }
                 name = None
+            elif self.benchmarker.config.external_database:
+                # No tfb-database container on the network: point the
+                # hostname the frameworks use at the external Postgres.
+                extra_hosts = {
+                    'tfb-database':
+                    str(self.benchmarker.config.external_database)
+                }
 
             if self.benchmarker.config.network_mode is None:
                 sysctl = {'net.core.somaxconn': 65535}
@@ -315,6 +327,8 @@ class DockerHelper:
         Builds all the databases necessary to run the list of benchmarker tests
         '''
         built = []
+        if self.benchmarker.config.external_database:
+            return built
         for test in self.benchmarker.tests:
             db = test.database.lower()
             if db not in built and db != "none":
@@ -341,6 +355,23 @@ class DockerHelper:
         '''
         image_name = "techempower/%s:latest" % database
         log_prefix = image_name + ": "
+
+        if self.benchmarker.config.external_database:
+            host = self.benchmarker.config.external_database
+            if database != "postgres":
+                log("--external-database only supports postgres, but this test needs %s"
+                    % database,
+                    prefix=log_prefix,
+                    color=Fore.RED)
+                return None
+            if not databases[database].test_connection(self.benchmarker.config):
+                log("External database %s is not accepting connections as benchmarkdbuser (run: ./tfb-ext provision)"
+                    % host,
+                    prefix=log_prefix,
+                    color=Fore.RED)
+                return None
+            log("Using external database %s" % host, prefix=log_prefix)
+            return True
 
         if self.benchmarker.config.network_mode is None:
             sysctl = {

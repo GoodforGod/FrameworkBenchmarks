@@ -1,0 +1,40 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'fair-benchmark'
+
+include 'java-kora1-jdbc-repository'
+include 'kotlin-kora2-jdbc-repository'
+include 'kotlin-kora1-jdbc-repository-suspend'
+include 'kotlin-kora1-vertx-repository-suspend'
+include 'kotlin-ktor-cio-jdbc-driver'
+include 'kotlin-ktor-netty-jdbc-driver'
+include 'java-kora2-jdbc-repository'
+include 'java-quarkus-jpa-ac'
+include 'java-quarkus-jpa-repository'
+include 'java-quarkus-jooq'
+include 'java-quarkus-jpa-ac-reactive'
+include 'java-quarkus-jpa-repository-reactive'
+include 'java-micronaut-jpa-repository'
+include 'java-micronaut-jdbc-repository'
+include 'java-micronaut-jpa-repository-reactive'
+include 'java-micronaut-r2dbc-repository-reactive'
+include 'java-spring-jdbc-repository'
+include 'java-spring-jdbc-template'
+include 'java-spring-jpa-repository'
+include 'java-spring-r2dbc-repository-reactive'
+include 'java-spring-r2dbc-client-reactive'
+include 'java-helidon-mp-jdbc-client'
+include 'java-helidon-mp-jpa-repository'
+include 'java-vertx-pg-client'

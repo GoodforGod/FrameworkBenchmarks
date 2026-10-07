@@ -1,0 +1,94 @@
+plugins {
+    id "java"
+    id "application"
+    alias(libs.plugins.micronautApplication)
+    alias(libs.plugins.micronautAot)
+    alias(libs.plugins.jte)
+}
+
+version = libs.versions.micronaut.get()
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+micronaut {
+    version(libs.versions.micronaut.get())
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        module(project.name)
+        group(project.group)
+        annotations("io.techempower.benchmark.*")
+    }
+}
+
+configurations.named("runtimeClasspath") {
+    exclude group: "ch.qos.logback", module: "logback-classic"
+}
+
+dependencies {
+    annotationProcessor(libs.micronautInjectJava)
+    annotationProcessor(libs.micronautSerdeProcessor)
+    annotationProcessor(libs.micronautDataProcessor)
+
+    runtimeOnly(libs.slf4jNop)
+    runtimeOnly(libs.snakeyaml)
+
+    implementation(libs.micronautHttpServerNetty)
+    implementation(libs.micronautDataJdbc)
+    implementation(libs.micronautJdbcHikari)
+    implementation(libs.micronautSerdeJackson)
+    implementation(libs.micronautInject)
+    implementation(libs.micronautRuntime)
+
+    implementation(variantOf(libs.nettyTransportNativeEpoll) { classifier("linux-x86_64") })
+    implementation(libs.postgresql)
+    implementation(libs.jteRuntime)
+
+    testRuntimeOnly(libs.logbackClassic)
+    testImplementation(libs.testcontainersTestcontainers)
+    testImplementation(libs.testcontainersPostgresql)
+    testImplementation(libs.testcontainersJunitJupiter)
+}
+
+jte {
+    generate()
+    binaryStaticContent = true
+    contentType = gg.jte.ContentType.Html
+}
+
+tasks.generateJte {
+    sourceDirectory = layout.projectDirectory.dir("src/main/jte").asFile.toPath()
+    targetDirectory = layout.buildDirectory.dir("generated/jte").get().asFile.toPath()
+    contentType = gg.jte.ContentType.Html
+}
+
+sourceSets {
+    main {
+        java.srcDir(layout.buildDirectory.dir("generated/jte"))
+    }
+}
+
+compileJava.dependsOn tasks.generateJte
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    dependsOn(tasks.named("distTar"))
+}
+
+application {
+    applicationName = "application"
+    mainClass.set("io.techempower.benchmark.micronaut.Application")
+    applicationDefaultJvmArgs = ["-Dfile.encoding=UTF-8"]
+}
+
+tasks.named("distTar") {
+    archiveFileName = "application.tar"
+}
