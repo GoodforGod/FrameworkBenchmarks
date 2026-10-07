@@ -35,6 +35,8 @@
 Прогон от 2026-10-06, тест `db` при 256 соединениях ([`results.json`](results.json)). Все 26 кандидатов;
 отклонение и максимум задержек — в [README набора fair](frameworks/Java/fair/README.ru.md#результаты).
 
+**[Интерактивная визуализация результатов на techempower.com](https://www.techempower.com/benchmarks/#section=test&resultsurl=https://raw.githubusercontent.com/GoodforGod/FrameworkBenchmarks/refs/heads/master/results.json&test=db)**
+
 | # | Кандидат | Запросов/с | Задержка, средняя |
 |---:|---|---:|---:|
 | 1 | Kora 2, JDBC-репозиторий (Java) | 134 313 | 7.20 мс |
